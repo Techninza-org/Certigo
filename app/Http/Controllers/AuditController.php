@@ -400,6 +400,7 @@ class AuditController extends Controller
             $tempLate['tot_que_answered'] = count($auditfilled);
             $tempLate['tot_que'] = count($tempLateD);
             $total_questions_array[] = count($tempLateD);
+            // dd($total_questions_array);
             $total_questionsAnswered_array[] = count($auditfilled);
             $tenplates_names_in_audit[] = $tempLate;
 
@@ -1223,6 +1224,8 @@ class AuditController extends Controller
             'cid' => 'required',
             'report' => 'required|mimes:pdf', // Max file size is 2MB
         ]);
+        dd($request->all());
+
 
         // Validate the uploaded file
         // dd($request->all());
@@ -1237,6 +1240,7 @@ class AuditController extends Controller
         $fileInDb->audit_id = $request->auditId;
         $fileInDb->audit_index = $request->auditIndex;
         $fileInDb->report = $filename;
+        $fileInDb->path = $pdfPath;
         if ($fileInDb->save()) {
             return redirect()->back()->with('success', 'PDF file uploaded successfully.');
         }

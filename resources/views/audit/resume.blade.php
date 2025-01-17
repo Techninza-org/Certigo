@@ -564,26 +564,20 @@
 
 
                                     @foreach($tenplates_names_in_audit as $key => $tem_in_aud)
-
-
-
-                                        <button class="nav-link areaSectionNav text-nowrap {{ $key == 0 ? 'active' : '' }}" 
-
-
-
-                                                id="v-pills-home-tab{{ $tem_in_aud->id }}" 
-
-
-
-                                                data-bs-toggle="pill" data-bs-target="#v-pills-home{{ $tem_in_aud->id }}" 
-
-
-
-                                                type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">{{ $tem_in_aud->template_name }} {{ $tem_in_aud['tot_que_answered'] }}/{{ $tem_in_aud['tot_que'] }}</button>
-
-
-
-                                    @endforeach                                  
+                                    <button class="nav-link areaSectionNav text-nowrap {{ $key == 0 ? 'active' : '' }}" 
+                                            id="v-pills-home-tab{{ $tem_in_aud->id }}" 
+                                            data-bs-toggle="pill" data-bs-target="#v-pills-home{{ $tem_in_aud->id }}" 
+                                            type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">
+                                        {{ $tem_in_aud->template_name }} 
+                                        {{ $tem_in_aud['tot_que_answered'] }}/{{ $tem_in_aud['tot_que'] }}
+                                        @if($tem_in_aud['tot_que_answered'] != $tem_in_aud['tot_que'])
+                                            <i class="fa-regular fa-circle-check ms-2" style="color: white; background-color: red; border-radius: 50%;" aria-hidden="true"></i>
+                                        @else
+                                            <i class="fa-regular fa-circle-check ms-2" style="color: white; background-color: green; border-radius: 50%;" aria-hidden="true"></i>
+                                        @endif
+                                    </button>
+                                @endforeach
+                                                                
 
 
 
@@ -873,7 +867,7 @@
 
                                                         <input type="hidden" value="{{ $clientId }}" name="cid">
                                                         <input type="hidden" value="{{ \Auth::user()->id }}" name="auth_id">
-                                                        <input class="form-control" type="file" name="report" id="">
+                                                        <input class="form-control" type="file" name="report" id="">        
 
                                                         <button type="submit" class="btn btn-danger">Save Report</button>
                                                     </form>
