@@ -1,0 +1,145 @@
+@extends('layout.layout')
+@push('css')
+
+    <style>
+        /* Styling for the popup */
+        .popup {
+            display: none;
+            position: absolute;
+            right: 30px;
+            background-color: #f9f9f9;
+            padding: 5px;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            z-index: 1;
+            border-radius: 8px;
+            width: 8rem;
+        }
+
+        /* Styling for the popup options */
+        .option {
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .vscomp-ele {
+            display: inline-block;
+            max-width: -webkit-fill-available!important;
+            width: 100%;
+        }
+    </style>
+@endpush
+@section('content')
+    <div class="row">
+        <div class="col-lg-12 d-flex align-items-strech">
+            <div class="card w-100">
+                <div class="card-body">
+                    <div class="mb-5">
+                        <h3>Sample Details</h3>
+                    </div>
+
+                    <div class=" d-block align-items-center justify-content-between mb-9" >
+                        <div class="row">
+                            <div class="col-md-10"> 
+                                <div class="row">
+                                                           
+                                <div class="mb-3 col-md-6">
+                                    <p><strong>Subject :</strong> {{ $sample->name }}</p>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <p><strong>Start Date :</strong> @php
+                                        $date = date('F j, Y  H:i A', strtotime($sample->date));
+                                        @endphp
+                                        {{ $date }}</p>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <p><strong>Client :</strong> {{ $client->organisation_name }}</p>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <p><strong>Location :</strong> {{ $sample->location }}</p>
+                                </div>
+                                
+                                <div class="mb-3 col-md-6">
+                                    <p><strong>Quantity : </strong>  {{ $sample->quantity }} </p>
+                                </div>
+
+                                <div class="mb-3 col-md-6">
+                                    <p><strong>Sample Type :</strong>
+                                         @if($sample->type == 1) 
+                                         Food
+                                         @elseif($sample->type == 2)
+                                         Water
+                                         @else
+                                         Swad
+                                         @endif
+                                    </p>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <p><strong>Weight : </strong>  {{ $sample->weight }}</p>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <p><strong>Temperature : </strong>  {{ $sample->temperature }} °C</p>
+                                </div>
+                                
+                                <div class="mb-3 col-md-6">
+                                    <p><strong>Parameters : </strong> 
+                                    @foreach($param as $p)
+                                        <span style="    background-color: #d6e8f3;
+                                        display: inline-block;
+                                        padding: 7px;
+                                        border-radius: 20px;color: #007ef9;">{{ $p->name }}</span>
+                                    @endforeach
+                                </p>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <p><strong>Amount : </strong> ₹ {{ $sample->amount }}</p>
+                                </div>
+                                
+                            </div>    
+                            </div> 
+                            
+
+                        </div>
+                        <div class="text-center">
+                            <a class="btn btn-warning pt-0 pb-0" href="{{ route('startSample') }}" onclick="event.preventDefault(); document.getElementById('startsample').submit();">
+                                 Start sample </a>
+                              <form id="startsample" action="{{ route('startSample') }}" method="post" class="d-none">
+                                @csrf
+                                <input type="hidden" value="{{ $sample->id }}" name="sampleId">
+                            </form>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+@endsection
+
+
+
+
+
+@push('js')
+
+
+
+    <script>
+        $(document).ready(function() {
+            
+          
+
+        });
+
+        VirtualSelect.init({ 
+            ele: '#select-attendees' ,
+            
+
+        });
+
+        VirtualSelect.init({ 
+            ele: '#select-members' 
+        });
+    </script>
+@endpush

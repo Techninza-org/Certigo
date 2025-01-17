@@ -1,0 +1,31 @@
+ :: CLIENTS PAGE ::
+1. Clients list
+    -> Clients details page 
+        Audits: 5, samples: 10, trainings: 2
+        :::Doubt::: samples is 10, is it only number we entered in "add client form" or the client samples are to be stored in DB and display on the App
+                 we can remove this field from add client form amd shows it dynamically from database after counting the samples of that client
+
+        Location
+
+        Edit and delete button
+
+        3 Tabs: 
+            Upcoming   /   In progress  /  Completed
+
+
+
+AUDITS PAGE ::
+1. Schedule an audit
+2. Audits listing, view,resume audit, delete
+
+
+TEMPLATES ::
+1. Add Folders
+2. Folders listing,open, edit, delete
+3. After opening folder :
+    1. Templates Add
+    2. Template: open, edit, delete 
+
+
+Doubts to ask::
+1.
