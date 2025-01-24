@@ -845,10 +845,10 @@
                                         <div class="row mt-5" >
                                             <div class="col-md-4">
                                                 <div class="text-center mb-3" id="genRepBtn">
-                                                    <a class="btn btn-primary btn-sm p-2 text-white " target="_blank"
+                                                    <a class="btn btn-danger btn-sm p-2 text-white " target="_blank"
                                                         href="{{ route('audit.report.view') }}" onclick="event.preventDefault(); document.getElementById('audit-report-view{{ $audit->id }}').submit();">
-                                                        View Report </a>
-                                                    <p>After pressing "View Report", Save report (.pdf) using Ctrl+P <br>, then upload it by pressing the button on right</p>
+                                                        Save Report </a>
+                                                    {{-- <p>After pressing "View Report", Save report (.pdf) using Ctrl+P <br>, then upload it by pressing the button on right</p> --}}
                                                     <form id="audit-report-view{{ $audit->id }}" action="{{ route('audit.report.view') }}" method="get" class="d-none">
                                                         <input type="hidden" value="{{ $audit->id }}" name="auditId">
                                                         <input type="hidden" value="{{ $clientId }}" name="cid">
@@ -857,7 +857,7 @@
                                                     </form>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
+                                            {{-- <div class="col-md-4">
                                                 <div class="text-center mb-3" id="save_report">
                                                    
                                                     <form  action="{{ route('audit.report.save') }}" method="post" enctype="multipart/form-data">
@@ -872,7 +872,7 @@
                                                         <button type="submit" class="btn btn-danger">Save Report</button>
                                                     </form>
                                                 </div>
-                                            </div>
+                                            </div> --}}
 
 
                                             {{-- @if($signDone == 1)

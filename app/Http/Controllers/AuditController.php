@@ -1,10 +1,5 @@
 <?php
-
-
-
 namespace App\Http\Controllers;
-
-
 
 use App\Models\ReportColor;
 
@@ -43,16 +38,10 @@ use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Mail;
 
-
-
 use App\Models\GraphType;
 
-
-
-
-
-
-
+use Illuminate\Support\Facades\View;
+// use Niklasravnsborg\Pdf\Pdf;
 
 class AuditController extends Controller
 {
@@ -61,12 +50,7 @@ class AuditController extends Controller
     {
 
         return view('audits');
-
     }
-
-
-
-
 
     public function schedule_audit(Request $request)
     {
@@ -118,7 +102,6 @@ class AuditController extends Controller
         if ($client_audits >= $client->no_audit_conduct) {
 
             return response()->json(['error' => "Audits limit reached", 'status' => 400], 200);
-
         }
 
 
@@ -186,9 +169,6 @@ class AuditController extends Controller
             $scheduled_time = Carbon::now()->addDay()->format('Y-m-d');
 
             $request['deadline_time'] = $scheduled_time;
-
-
-
         }
 
 
@@ -198,25 +178,15 @@ class AuditController extends Controller
 
         $yearNumber = $carbonDate->year;
 
-
-
-
-
         $request['month'] = $monthNumber;
 
         $request['year'] = $yearNumber;
-
-
-
-
-
 
         if ($request->auditing_for == 1) {
 
             $request['audit_index'] = $request->audit_index . "-" . $client->client_id . "-INDUS-" . $request->audit_number;
         } else {
             $request['audit_index'] = $request->audit_index . "-" . $client->client_id . "-" . $request->audit_number;
-
         }
 
         // dd($request['audit_index']);
@@ -243,7 +213,6 @@ class AuditController extends Controller
         $audit = Audit::where(['id' => $id])->first();
 
         return view('audit.view', ['audit' => $audit]);
-
     }
 
 
@@ -296,13 +265,7 @@ class AuditController extends Controller
 
 
         return redirect()->back()->with('success', 'Audit updated successfully');
-
     }
-
-
-
-
-
 
 
     public function template_options(Request $request)
@@ -321,7 +284,6 @@ class AuditController extends Controller
 
 
         return response()->json(['template' => $template], 200);
-
     }
 
 
@@ -334,7 +296,6 @@ class AuditController extends Controller
         $temppsinfolder = Template::where(['temp_folder_id' => $request->folderID])->get(['id', 'template_name']);
 
         return response()->json(['response' => $temppsinfolder], 200);
-
     }
 
 
@@ -359,15 +320,10 @@ class AuditController extends Controller
         if ($audit) {
 
             return redirect()->back()->with('success', 'Audit removed successfully');
-
-
-
         } else {
 
             return redirect()->back()->with('success', 'Problem removing audit. PLease try again.');
-
         }
-
     }
 
 
@@ -444,7 +400,6 @@ class AuditController extends Controller
         }
 
         return view('audit.resume', ['client' => $client, 'emptyInputs' => $emptyInputs, 'clientId' => $request->cid, 'audit' => $audit, 'start_time' => $start_time, 'tenplates_names_in_audit' => $tenplates_names_in_audit, 'auditfilled' => $auditfilled, 'total_questions_in_audit' => $total_questions_in_audit, 'total_answers_in_audit' => $total_answers_in_audit, 'signDone' => $signDone]);
-
     }
 
 
@@ -600,7 +555,6 @@ class AuditController extends Controller
                 return redirect()->back()->with('error', 'Details update failed. Try again.');
             }
         }
-
     }
 
 
@@ -633,9 +587,7 @@ class AuditController extends Controller
             if ($key == $request->imageIndex) {
 
                 unset($evidencesArr[$key]);
-
             }
-
         }
 
 
@@ -661,17 +613,10 @@ class AuditController extends Controller
         if ($auditDetail->save()) {
 
             return redirect()->back()->with('success', 'Image removed');
-
         } else {
 
             return redirect()->back()->with('error', 'Image  not removed');
-
         }
-
-
-
-
-
     }
 
 
@@ -726,7 +671,6 @@ class AuditController extends Controller
             ]);
 
             return $pdf->stream('auditreportPdf.pdf');
-
         }
 
 
@@ -734,16 +678,11 @@ class AuditController extends Controller
         // return $pdf->download('itsolutionstuff.pdf');
 
         return redirect()->back()->with('error', 'Client not found');
-
     }
-
-
-
 
 
     public function auditRepView(Request $request)
     {
-
         $request->validate([
 
             'auditId' => 'required',
@@ -753,9 +692,6 @@ class AuditController extends Controller
             'cid' => 'required',
 
         ]);
-
-
-
         // Auth user 
 
         if ($request->auth_id != 'client') {
@@ -778,17 +714,9 @@ class AuditController extends Controller
         $type = GraphType::first();
 
         // dd($type->type);
-
-
-
-
-
         // Audit record
 
         $audit = Audit::where(['id' => $request->auditId])->first();
-
-
-
         // Previous Audit report 
 
         // $previous_audit = Audit::where('id','<',$request->auditId)->where(['client_id' => $request->cid])->first();
@@ -802,10 +730,6 @@ class AuditController extends Controller
 
 
         // }
-
-
-
-
 
         // Templates json data from above audit record
 
@@ -887,19 +811,10 @@ class AuditController extends Controller
                 if ($qResponse->response_score == 'null' || $qResponse->response_score == 0) {
 
                     $target_score_array[] = $base_score;
-
                 } else {
 
                     $target_score_array[] = $qResponse->response_score;
-
                 }
-
-
-
-
-
-
-
             }
 
             $target__score = array_sum($target_score_array);
@@ -1024,13 +939,12 @@ class AuditController extends Controller
                 if ($qResponse->response_score == null) {
                     $q->res = 1;
                 } elseif (is_array($qResponse->response_score)) {
-                    $q->res = json_decode($qResponse->response_score);
+                    $q->res = json_encode($qResponse->response_score);
                 } else {
                     $q->res = $qResponse;
                 }
 
                 $q->images = json_decode($qResponse->evidences);
-
             }
 
             $total_positive_responses[] = array_sum($positive_responses);
@@ -1097,121 +1011,91 @@ class AuditController extends Controller
         if ($client) {
 
             if ($audit->auditing_for == 0) {
-
-                return view('view-audit-report', [
-
+                // $pdf = PDF::loadView('view-audit-report', [        
+                    $html =  view('view-audit-report', [
                     'templatecoll' => $templatecoll,
-
                     'audit' => $audit,
-
                     'client' => $client,
-
                     'start_time' => $start_time,
-
                     'end_time' => $end_time,
-
                     'end_date' => $end_date,
-
                     'todayDate' => $todayDate,
-
                     'todayTime' => $todayTime,
-
                     'auditor' => $auditor,
-
                     'sectionCount' => $sectionCount,
-
                     'total_qu_count' => $total_qu_count,
-
                     'actual_responses' => array_sum($actual_responses),
-
                     'target_responses' => array_sum($target_responses),
-
                     'auth_user' => $auth_user,
-
                     'templatenames' => $templatenames,
-
                     'roundPercen' => $roundPercen,
-
                     'color_code' => $color_code->color,
-
                     'type' => $type->type,
-
                     'sdgs' => $sdgsArrJSON,
+                ]) -> render();
 
-                    // 'signDone' =>$signDone
+                // dd($html);
 
-
-
-
-
-
-
+                $pdf = PDF::loadHTML($html, [
+                    'isHtml5ParserEnabled' => true, 
+                    'isPhpEnabled' => true, 
+                    'isCssEnabled' => true,
+                    'isJavascriptEnabled' => true,
                 ]);
+                // dd($pdf);
 
+                $folderPath = public_path('storage/completed_reports');
 
+                $fileName = 'audit-report-' . $audit->id . '-' . now()->format('Y-m-d_H-i-s') . '.pdf';
+            
+                $pdfPath = $folderPath . '/' . $fileName;
+                $pdf->save($pdfPath);
 
+                // return $pdf->stream($fileName);
+                return response($html, 200)->header('Content-Type', 'text/html'); 
+                
+                // return redirect()->back()->with('success', 'PDF saved successfully.');
             }
+            
 
 
 
             if ($audit->auditing_for == 1) {
-
-                return view('industrial', [
-
+                $pdf = PDF::loadView('industrial', [
                     'templatecoll' => $templatecoll,
-
                     'audit' => $audit,
-
                     'client' => $client,
-
                     'start_time' => $start_time,
-
                     'end_time' => $end_time,
-
                     'end_date' => $end_date,
-
                     'todayDate' => $todayDate,
-
                     'todayTime' => $todayTime,
-
                     'auditor' => $auditor,
-
                     'sectionCount' => $sectionCount,
-
                     'total_qu_count' => $total_qu_count,
-
                     'actual_responses' => array_sum($actual_responses),
-
                     'target_responses' => array_sum($target_responses),
-
                     'auth_user' => $auth_user,
-
                     'templatenames' => $templatenames,
-
                     'roundPercen' => $roundPercen,
-
                     'color_code_ind' => $color_code_ind->color,
-
                     'type' => $type->type,
-
                     'sdgs' => $sdgsArrJSON,
-                    // 'signDone' =>$signDone
-
-
                 ]);
 
+                $folderPath = public_path('storage/completed_reports');
+
+                $fileName = 'audit-report-' . $audit->id . '-' . now()->format('Y-m-d_H-i-s') . '.pdf';
+            
+                $pdfPath = $folderPath . '/' . $fileName;
+                $pdf->save($pdfPath);
+                
+                return redirect()->back()->with('success', 'PDF saved successfully.');
             }
-
-
-
+            return redirect()->back()->with('error', 'Failed to save pdf');
         }
 
-
-
-        // return $pdf->download('itsolutionstuff.pdf');
-
         return redirect()->back()->with('error', 'Client not found');
-
     }
 
     public function auditRepSave(Request $request)
@@ -1224,7 +1108,7 @@ class AuditController extends Controller
             'cid' => 'required',
             'report' => 'required|mimes:pdf', // Max file size is 2MB
         ]);
-        dd($request->all());
+        // dd($request->all());
 
 
         // Validate the uploaded file
@@ -1248,7 +1132,6 @@ class AuditController extends Controller
 
         // Optionally, you can return a response or redirect the user
         return redirect()->back()->with('error', 'PDF file uploaded failed. Try again');
-
     }
 
     public function viewCompletedReport(Request $request)
@@ -1262,7 +1145,6 @@ class AuditController extends Controller
             return redirect($pdfFile);
         }
         return redirect()->back()->with('error', 'Pdf not available');
-
     }
 
 
@@ -1331,7 +1213,6 @@ class AuditController extends Controller
                 $dept_score->score = round($percentagetochart, 2);
                 $dept_score->save();
             }
-
         }
 
         $audit->final_score = (array_sum($actual_responses) / array_sum($target_responses)) * 100;
@@ -1369,9 +1250,6 @@ class AuditController extends Controller
         if ($request->auditorsign == null || $request->auditeesign == null || $request->auditorsign == '' || $request->auditeesign == '') {
 
             return redirect()->back()->with('error', 'Please upload signatures');
-
-
-
         }
 
 
@@ -1387,7 +1265,6 @@ class AuditController extends Controller
 
 
             $request['auditor_sign'] = $image_name;
-
         }
 
 
@@ -1403,7 +1280,6 @@ class AuditController extends Controller
 
 
             $request['auditee_sign'] = $image_name2;
-
         }
 
         // dd($request->all());
@@ -1417,17 +1293,10 @@ class AuditController extends Controller
 
 
             return redirect()->back()->with('success', 'Signatures Uploaded Successfully');
-
         } else {
 
             return redirect()->back()->with('error', 'Please try again');
-
-
-
         }
-
-
-
     }
 
 
@@ -1464,8 +1333,7 @@ class AuditController extends Controller
 
         // dd($request->company_emailid);
         Mail::send('mail-report', $data, function ($message) use ($data) {
-            $message->to($data['cemail'], 'Certigo QAS')->subject
-            ('Download your audit report');
+            $message->to($data['cemail'], 'Certigo QAS')->subject('Download your audit report');
             $message->from('sanurag0022@gmail.com', 'Certigo QAS');
         });
 
@@ -1545,8 +1413,6 @@ class AuditController extends Controller
                         } else {
                             $createdArrays[$single] = [$deptResult->score];
                         }
-
-
                     }
 
                     // fro getting negative answers
@@ -1561,10 +1427,6 @@ class AuditController extends Controller
                 $average = 0;
             }
             $allAuditsAvg[$q] = $average;
-
-
-
-
         }
 
         // NEW CODE FOR ANSWERS WITH DATE 
@@ -1799,8 +1661,6 @@ class AuditController extends Controller
                         } else {
                             $createdArrays[$single] = [$deptResult->score];
                         }
-
-
                     }
 
                     // fro getting negative answers
@@ -1814,10 +1674,6 @@ class AuditController extends Controller
                 $average = 0;
             }
             $allAuditsAvg[$q] = $average;
-
-
-
-
         }
 
         // for getting final negative answers from last audit  
@@ -1957,16 +1813,13 @@ class AuditController extends Controller
         // =================mail code======================
         Mail::send('consolidate-mail', $dataToGraph, function ($message) use ($client, $quartersWithFound) {
 
-            $message->to('smsunnythefunny@gmail.com', 'Consolidated report')->subject
-
-            ('Consolidated report from Certigo QAS');
+            $message->to('smsunnythefunny@gmail.com', 'Consolidated report')->subject('Consolidated report from Certigo QAS');
 
             // $message->attach('C:\laravel-master\laravel\public\uploads\image.png');
 
             // $message->attach(public_path('/pdfs/consolidate'.$client->id.$quartersWithFound.'.pdf'));
 
             $message->from('xyz@gmail.com', 'Certigo QAS');
-
         });
 
         return view('consolidated', ['client' => $client, 'formattedData' => $formattedData, 'nameValuesArray' => $nameValuesArray, 'avgValuesArray' => $avgValuesArray, 'negAnsArr' => $negAnsArr]);
@@ -1992,16 +1845,13 @@ class AuditController extends Controller
         // =================mail code======================
         Mail::send('consolidate-mail', $data, function ($message) {
 
-            $message->to('smsunnythefunny@gmail.com', 'Consolidated report')->subject
-
-            ('Consolidated report from Certigo QAS');
+            $message->to('smsunnythefunny@gmail.com', 'Consolidated report')->subject('Consolidated report from Certigo QAS');
 
             // $message->attach('C:\laravel-master\laravel\public\uploads\image.png');
 
             // $message->attach(public_path('/pdfs/consolidate'.$client->id.$quartersWithFound.'.pdf'));
 
             $message->from('xyz@gmail.com', 'Certigo QAS');
-
         });
         return redirect()->back()->with('success', 'Email sent successfully');
     }
@@ -2076,8 +1926,6 @@ class AuditController extends Controller
                         } else {
                             $createdArrays[$single] = [$deptResult->score];
                         }
-
-
                     }
 
                     // fro getting negative answers
@@ -2092,10 +1940,6 @@ class AuditController extends Controller
                 $average = 0;
             }
             $allAuditsAvg[$q] = $average;
-
-
-
-
         }
 
 
@@ -2287,16 +2131,13 @@ class AuditController extends Controller
         // =================mail code======================
         Mail::send('consolidate-mail', $dataToGraph, function ($message) use ($client, $quartersWithFound) {
 
-            $message->to('smsunnythefunny@gmail.com', 'Consolidated report')->subject
-
-            ('Laravel Testing Mail with Attachment');
+            $message->to('smsunnythefunny@gmail.com', 'Consolidated report')->subject('Laravel Testing Mail with Attachment');
 
             // $message->attach('C:\laravel-master\laravel\public\uploads\image.png');
 
             // $message->attach(public_path('/pdfs/consolidate'.$client->id.$quartersWithFound.'.pdf'));
 
             $message->from('xyz@gmail.com', 'Certigo QAS');
-
         });
         // =================mail code======================
         // return redirect()->back()->with('success','Consolidated Report sent to client');
@@ -2320,7 +2161,6 @@ class AuditController extends Controller
         $serviceCodes = ServiceCode::all();
 
         return view('services.service', ['codes' => $serviceCodes]);
-
     }
 
 
@@ -2349,15 +2189,10 @@ class AuditController extends Controller
         if ($service->save()) {
 
             return redirect()->back()->with('success', 'Service Code saved')->withInput(['servCode' => $servCode]);
-
         } else {
 
             return redirect()->back()->with('error', 'Service Code not saved')->withInput(['servCode' => $servCode]);
-
-
-
         }
-
     }
 
 
@@ -2368,7 +2203,6 @@ class AuditController extends Controller
     {
 
         return view('audit.signature-pad', ['audit_id' => $request->audit_id, 'client_id' => $request->client_id]);
-
     }
 
 
@@ -2379,7 +2213,6 @@ class AuditController extends Controller
     {
 
         return view('audit.sign-pad', ['audit_id' => $request->audit_id, 'client_id' => $request->client_id]);
-
     }
 
     public function store(Request $request)
@@ -2410,13 +2243,9 @@ class AuditController extends Controller
             $audit->save();
 
             return back()->with('success', 'Signature saved successfully !!');
-
         }
 
         return back()->with('error', 'Re-upload your signature');
-
-
-
     }
 
 
@@ -2449,15 +2278,9 @@ class AuditController extends Controller
             $audit->save();
 
             return back()->with('success', 'Signature saved successfully !!');
-
         }
 
         return back()->with('error', 'Re-upload your signature');
-
-
-
-
-
     }
 
 
@@ -2490,21 +2313,14 @@ class AuditController extends Controller
             if ($audit->save()) {
 
                 return back()->with('success', 'Doc. Ref. and Personal Responsible saved successfully');
-
             }
 
             return back()->with('error', 'Problem saving Doc. Ref. and Personal Responsible, try again...');
-
-
-
         } else {
 
             return back()->with('error', 'Audit not found, try again.');
-
         }
-
     }
-
 }
 
 
