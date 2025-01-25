@@ -59,9 +59,6 @@ class ClientController extends Controller
         if (Auth::user()->role == 1) {
 
             return view('index');
-
-
-
         }
 
         return view('index2');

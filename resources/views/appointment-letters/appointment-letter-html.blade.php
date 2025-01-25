@@ -501,6 +501,11 @@
         integrity="sha512-v/wOVTkoU7mXEJC3hXnw9AA6v32qzpknvuUF6J2Lbkasxaxn2nYcl+HGB7fr/kChGfCqubVr1n2sq1UFu3Gh1w=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+        <script>
+            window.onload = function () {
+                window.print();
+            }
+        </script>
 </body>
 
 </html>

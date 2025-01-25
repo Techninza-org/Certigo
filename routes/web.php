@@ -26,6 +26,9 @@ use App\Http\Controllers\ClientAuthController;
 
 use App\Http\Controllers\HrController;
 
+use App\Http\Controllers\AuditAgreementController;
+
+use App\Http\Controllers\RoleController;
 
 
 
@@ -100,6 +103,9 @@ Route::get('/quarter-consolidated-link/{id}/{quarter}', [AuditController::class,
 Route::group(['middleware' => 'auth'], function () {
 
 
+    Route::post('/roles/store', [RoleController::class, 'store'])->name('roles.store');
+
+
 
     Route::controller(AuditController::class)->group(function () {
 
@@ -164,6 +170,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/service-code', 'getServiceCode')->name('get.serviceCode');
 
         Route::post('/service-code', 'saveServiceCode')->name('post.serviceCode');
+
+        Route::post('/service-code-update', 'updateServiceCode')->name('update.serviceCode');
+
+        Route::get('/service-code-delete/{id}', 'deleteServiceCode')->name('delete.serviceCode');
+
 
 
 
@@ -378,6 +389,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 
+
         Route::get('/remove-point', 'remove_point')->name('remove_point');
 
 
@@ -539,11 +551,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/view-offer-letter', [HrController::class, 'viewOfferLetterPdf'])->name('view.pdf');
     Route::get('/edit-offer-letter', [HrController::class, 'geteditofferLetter'])->name('edit.offer.letter.page');
     Route::post('/edit-offer-letter', [HrController::class, 'posteditofferLetter'])->name('post.edit.offer.letter.page');
+    Route::get('/delete-offer-letter/{id}', [HrController::class, 'deleteOfferLetterPdf'])->name('delete.offer.letter');
 
 
     Route::get('/create-pay-slip', [HrController::class, 'getPayslipPage'])->name('get.payslip.page');
     Route::post('/create-pay-slip', [HrController::class, 'postPayslipPage'])->name('post.payslip.page');
     Route::get('/view-pay-slip', [HrController::class, 'viewPaySlipPdf'])->name('view.paySlip.pdf');
+
     Route::get('/edit-pay-slip', [HrController::class, 'editPaySlipPdf'])->name('edit.paySlip');
     Route::post('/edit-pay-slip', [HrController::class, 'posteditPaySlipPdf'])->name('post.edit.paySlip');
     Route::post('/delete-pay-slip', [HrController::class, 'deletePaySlipPdf'])->name('delete.paySlip');
@@ -579,6 +593,29 @@ Route::get('/client/login', [ClientAuthController::class, 'login'])->name('clien
 Route::get('/client/logout', [ClientAuthController::class, 'logout'])->name('client.logout');
 
 Route::post('/client/login', [ClientAuthController::class, 'handleLogin'])->name('client.handleLogin');
+
+Route::get('/client/upload-signatures', [ClientAuthController::class, 'uploadSignatures'])->name('client.uploadSignatures');
+
+Route::post('/client/upload-signatures', [ClientAuthController::class, 'uploadSignaturesClient'])->name('client.uploadSignaturesClient');
+
+
+
+
+
+
+Route::get('/audit-agreement', [AuditAgreementController::class, 'index'])->name('audit.agreement');
+
+Route::get('/genrate-agreement', [AuditAgreementController::class, 'genrateAgreement'])->name('genrate.agreement');
+
+
+
+
+
+
+
+
+
+
 
 
 

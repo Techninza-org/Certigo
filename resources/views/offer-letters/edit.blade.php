@@ -33,6 +33,13 @@
 
             <div class="card-body">
 
+                <div style="margin-bottom: 15px;">
+                    <div class="d-flex justify-content-between items-center">
+                    <button id="backButton" class="btn btn-primary">Back</button>
+                    <button id="forwardButton" class="btn btn-secondary">Forward</button>
+                    </div>
+                </div>
+
 
                 @if(Session::has('success')) 
                     <p class="text-success">{!! \Session::get('success') !!}</p>
@@ -259,5 +266,14 @@ $(document).ready( function () {
 
 </script>
 
+<script>
+    // Add event listeners for back and forward buttons
+    document.getElementById('backButton').addEventListener('click', function () {
+        window.history.back(); // Navigate to the previous page in history
+    });
 
+    document.getElementById('forwardButton').addEventListener('click', function () {
+        window.history.forward(); // Navigate to the next page in history
+    });
+</script>
 @endpush

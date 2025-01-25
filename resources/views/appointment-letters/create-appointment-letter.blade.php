@@ -67,7 +67,9 @@
                             <td>
                                 <a class="bg-success text-white ps-1 pe-1 pt-2 pb-2" href="{{ route('edit.appointment.letter.page',['id'=> $one->id]) }}">Edit</a>
 
-                                <a href="{{ route('view.appointment.pdf',['id'=> $one->id]) }}">View</a>
+                                <a href="javascript:void(0)" class="view-appointment-btn" data-id="{{ $one->id }}">View</a>
+
+                                <a class="bg-danger text-white ps-1 pe-1 pt-2 pb-2" href="{{ route('view.appointment.pdf',['id'=> $one->id]) }}">Download</a>
                             </td>
                         </tr>
                         @endforeach
@@ -97,7 +99,20 @@
 
 
 
-
+<!-- Modal -->
+<div class="modal fade" id="appointmentLetterModal" tabindex="-1" aria-labelledby="appointmentLetterModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="appointmentLetterModalLabel">Appointment Letter Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="appointmentLetterContent">
+                <!-- Content will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+</div>
 
 @endsection
 
@@ -433,5 +448,41 @@ $(document).ready( function () {
 
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const buttons = document.querySelectorAll('.view-appointment-btn');
+        const modal = new bootstrap.Modal(document.getElementById('appointmentLetterModal'));
+        const content = document.getElementById('appointmentLetterContent');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', function () {
+                const id = this.getAttribute('data-id');
+
+                // Clear previous content
+                content.innerHTML = '<p>Loading...</p>';
+
+                // Fetch the HTML for the appointment letter
+                fetch("{{ route('view.appointment.pdf') }}?id=" + id)
+                    .then(response => response.text())
+                    .then(html => {
+                        // Inject the HTML into the modal
+                        content.innerHTML = html;
+
+                        // Show the modal
+                        modal.show();
+                    })
+                    .catch(error => {
+                        console.error('Error loading appointment letter:', error);
+                        content.innerHTML = '<p>Error loading content. Please try again.</p>';
+                    });
+            });
+        });
+
+        // Clear modal content on close
+        document.getElementById('appointmentLetterModal').addEventListener('hidden.bs.modal', function () {
+            content.innerHTML = '';
+        });
+    });
+</script>
 
 @endpush

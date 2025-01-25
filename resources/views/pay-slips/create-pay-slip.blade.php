@@ -65,7 +65,10 @@
                             <td>{{ $one->employee_name }}</td>
                             <td>{{ $one->designation }}</td>
                             <td>
-                                <a class="view-btn bg-primary" href="{{ route('view.paySlip.pdf',['id'=> $one->id]) }}">View</a>
+                              <!-- Button to Open the Modal -->
+<a class="view-btn" href="javascript:void(0)" data-id="{{ $one->id }}">View</a>
+
+<a class="download-btn" href="{{ route('view.paySlip.pdf',['id'=> $one->id]) }}">Download</a>
 
                                 <a class="edit-btn" href="{{ route('edit.paySlip',['id'=> $one->id]) }}">Edit</a>
 
@@ -88,7 +91,20 @@
 
 
 
-
+<!-- Modal -->
+<div class="modal fade" id="paySlipModal" tabindex="-1" aria-labelledby="paySlipModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="paySlipModalLabel">Pay Slip Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="paySlipContent">
+                <!-- Content will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+</div>
 
 @endsection
 
@@ -449,5 +465,43 @@ function confirmAndSubmit(deleteUrl, payslipId) {
 
 }
 </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const buttons = document.querySelectorAll('.view-btn');
+        const modal = new bootstrap.Modal(document.getElementById('paySlipModal'));
+        const content = document.getElementById('paySlipContent');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', function () {
+                const id = this.getAttribute('data-id');
+
+                // Clear previous content
+                content.innerHTML = '<p>Loading...</p>';
+
+                // Make AJAX request to fetch the pay slip
+                fetch("{{ route('view.paySlip.pdf') }}?id=" + id)
+                    .then(response => response.text())
+                    .then(html => {
+                        // Inject the returned HTML into the modal content
+                        content.innerHTML = html;
+
+                        // Show the modal
+                        modal.show();
+                    })
+                    .catch(error => {
+                        console.error('Error fetching pay slip:', error);
+                        content.innerHTML = '<p>Error loading content. Please try again.</p>';
+                    });
+            });
+        });
+
+        document.getElementById('paySlipModal').addEventListener('hidden.bs.modal', function () {
+            // Clear the modal content when closed
+            content.innerHTML = '';
+        });
+    });
+</script>
+
 
 @endpush
