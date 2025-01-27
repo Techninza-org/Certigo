@@ -9,6 +9,7 @@
         "adrianorosa/laravel-geolocation": "^1.2",
         "barryvdh/laravel-dompdf": "^2.1",
         "guzzlehttp/guzzle": "^7.2",
+        "h4cc/wkhtmltopdf-amd64": "^0.12.4",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",

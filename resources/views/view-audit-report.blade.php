@@ -155,7 +155,8 @@
 
 <body>
     <!--  Body Wrapper -->
-    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+
+    <div class="page-wrapper" id="contentToSave" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed">
         <!-- Sidebar Start -->
         <div style="margin: 20px;">
@@ -168,6 +169,7 @@
                             Unit <i>fssai</i> license number:<br> {{ $client->fssai_no }}
                         </p>
                     </div>
+
 
                     <div style="margin-bottom: 10px; text-align: center;">
                         <strong style="font-size: 16px; margin-top: 10px;">{{ $audit->audit_name }} For
@@ -620,7 +622,8 @@
                                                 <p class="mt-2 " style="color: #009b00;">{!! $q->answewrs->suggestions !!}
                                                 </p>
                                                 @foreach ($q->images as $image)
-                                                    <img src="{{ url('') }}/{{ $image }}" style="max-width: 130px;" alt="">
+                                                    <img src="{{ url('') }}/{{ $image }}"
+                                                        style="max-width: 130px;" alt="">
                                                 @endforeach
                                             </td>
                                             <td>
@@ -666,8 +669,7 @@
                         <div style="margin-top: 20px;">
                             <div
                                 style="background-color:{{ $color_code }};display: flex; justify-content: space-between; align-items: center;">
-                                <p style="color: white; margin: 0; padding-left: 10px; padding-top: 10px;">No
-                                    Compliances</p>
+                                <p style="color: white; margin: 0; padding-left: 10px; padding-top: 10px;">Non-Compliances</p>
                                 <p style="margin-bottom: 0; margin-right: 20px; color: white;">
                                     {{-- <span style="margin-bottom: 0; margin-right: 20px; color: white;">{{ $tq['positive_responses'] }}/{{ count($tq['tempQues']) }}</span> --}}
                                     @php
@@ -768,6 +770,7 @@
                         <table style="border-collapse: collapse;width:100%">
                             <tr>
                                 <td style="height: 150px;width:20%">
+                                    {{-- not getting signs --}}
                                     <img src="{{ url('') }}/{{ $audit->auditor_sign }}"
                                         style="width: 10rem; padding-left: 18px;" alt="">
                                 </td>
@@ -839,7 +842,66 @@
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
 
+    <script>
+        window.onload = function() {
+            setTimeout(function() {
+                const element = document.getElementById('contentToSave');
+
+                const options = {
+                    margin: 10,
+                    filename: 'rendered_page.pdf',
+                    image: {
+                        type: 'jpeg',
+                        quality: 0.98
+                    },
+                    html2canvas: {
+                        scale: 2
+                    },
+                    jsPDF: {
+                        unit: 'mm',
+                        format: 'a4',
+                        orientation: 'portrait'
+                    }
+                };
+
+                html2pdf()
+                    .from(element)
+                    .set(options)
+                    .toPdf()
+                    .get('pdf')
+                    .then(function(pdf) {
+                        const pdfBlob = pdf.output('blob'); // Get the PDF as a Blob
+                        const formData = new FormData();
+                        formData.append('report_pdf', pdfBlob, 'audit-report.pdf'); // Append Blob as a file
+
+                        // Get the CSRF token
+                        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content');
+
+                        const id = {{ $audit->id }};
+                        console.log(id, 'id');
+
+                        formData.append('_token', csrfToken);
+                        formData.append('audit_id', id);
+
+                        fetch('/certigo/audit-report-savepdf', {
+                                method: 'POST',
+                                body: formData,
+
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log('Success:', data); 
+                            })
+                            .catch(error => {
+                                console.error('Error:', error); 
+                            });
+                    });
+            }, 2000);
+        };
+    </script>
 
     <script>
         document.addEventListener('contextmenu', event => event.preventDefault());
@@ -852,11 +914,11 @@
 
 
 
-            "showDuration": "300",
+            "showDuration": "0",
 
 
 
-            "hideDuration": "1000",
+            "hideDuration": "0",
 
 
 
@@ -864,7 +926,7 @@
 
 
 
-            "extendedTimeOut": "1000",
+            "extendedTimeOut": "0",
 
 
 
@@ -885,9 +947,11 @@
 
 
         }
+        console.log(2);
     </script>
 
     <script>
+        console.log(3);
         // Data retrieved from: https://www.uefa.com/uefachampionsleague/history/
 
         @if ($type == 0)
@@ -1282,6 +1346,7 @@
             }]
 
         });
+        console.log(4);
     </script>
 
     @stack('js')

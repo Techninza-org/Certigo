@@ -47,7 +47,8 @@ class AuditDetail extends Model
         'evidences' ,
         'doc_ref',
         'person_responsible',
-        'timeline'
+        'timeline',
+        'report_path'
 
         
 

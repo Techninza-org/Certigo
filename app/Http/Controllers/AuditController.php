@@ -3,7 +3,13 @@ namespace App\Http\Controllers;
 
 use App\Models\ReportColor;
 
-use PDF;
+// use PDF;
+// use Dompdf\Dompdf;
+use H4cc\WkhtmlToPdf\WkhtmlToPdf;
+use Illuminate\Support\Facades\Log;
+
+
+use Dompdf\Options;
 
 use Carbon\Carbon;
 
@@ -1006,13 +1012,37 @@ class AuditController extends Controller
             return redirect()->back()->with('error', 'Score not saved, try again');
         }
 
+        // $chartConfig = [
+        //     'chart' => ['type' => 'bar'],
+        //     'title' => ['text' => 'SCORE BY SECTION'],
+        //     'xAxis' => ['categories' => $templatenames],
+        //     'yAxis' => [
+        //         'min' => 0,
+        //         'max' => 100,
+        //         'title' => ['text' => 'Percentage'],
+        //     ],
+        //     'series' => [
+        //         ['data' => $roundPercen]
+        //     ],
+        // ];
+
+        // // Encode the configuration to send it to the Export Server
+        // $encodedConfig = json_encode($chartConfig);
+
+        // // Highcharts Export Server URL
+        // $exportServerUrl = 'https://export.highcharts.com/';
+
+        // // Send request to the Export Server and get the image URL
+        // $imageUrl = $exportServerUrl . '?options=' . urlencode($encodedConfig);
+
+
 
 
         if ($client) {
 
             if ($audit->auditing_for == 0) {
                 // $pdf = PDF::loadView('view-audit-report', [        
-                    $html =  view('view-audit-report', [
+                return view('view-audit-report', [
                     'templatecoll' => $templatecoll,
                     'audit' => $audit,
                     'client' => $client,
@@ -1032,31 +1062,41 @@ class AuditController extends Controller
                     'color_code' => $color_code->color,
                     'type' => $type->type,
                     'sdgs' => $sdgsArrJSON,
-                ]) -> render();
-
-                // dd($html);
-
-                $pdf = PDF::loadHTML($html, [
-                    'isHtml5ParserEnabled' => true, 
-                    'isPhpEnabled' => true, 
-                    'isCssEnabled' => true,
-                    'isJavascriptEnabled' => true,
                 ]);
-                // dd($pdf);
 
-                $folderPath = public_path('storage/completed_reports');
 
-                $fileName = 'audit-report-' . $audit->id . '-' . now()->format('Y-m-d_H-i-s') . '.pdf';
-            
-                $pdfPath = $folderPath . '/' . $fileName;
-                $pdf->save($pdfPath);
+                // $options = new \Dompdf\Options();
+                // $options->set('isHtml5ParserEnabled', true);
+                // $options->set('isPhpEnabled', true); 
+                // $options->set('isRemoteEnabled', true); 
 
-                // return $pdf->stream($fileName);
-                return response($html, 200)->header('Content-Type', 'text/html'); 
-                
+                // // Initialize Dompdf
+                // $dompdf = new \Dompdf\Dompdf($options);
+                // $dompdf->loadHtml($html);
+
+                // // Set the paper size and orientation
+                // $dompdf->setPaper('A4', 'portrait');
+
+                // // Render the PDF
+                // $dompdf->render();
+                // $folderPath = public_path('storage/completed_reports');
+
+                // // Ensure the folder exists
+                // if (!file_exists($folderPath)) {
+                //     mkdir($folderPath, 0755, true);
+                // }
+
+                // $fileName = 'audit-report-' . $audit->id . '-' . now()->format('Y-m-d_H-i-s') . '.pdf';
+                // $pdfPath = $folderPath . '/' . $fileName;
+
+                // // Save the generated PDF to the file path
+                // file_put_contents($pdfPath, $dompdf->output());
+
+                // return response($html, 200)->header('Content-Type', 'text/html');
+
                 // return redirect()->back()->with('success', 'PDF saved successfully.');
             }
-            
+
 
 
 
@@ -1086,16 +1126,54 @@ class AuditController extends Controller
                 $folderPath = public_path('storage/completed_reports');
 
                 $fileName = 'audit-report-' . $audit->id . '-' . now()->format('Y-m-d_H-i-s') . '.pdf';
-            
+
                 $pdfPath = $folderPath . '/' . $fileName;
                 $pdf->save($pdfPath);
-                
+
                 return redirect()->back()->with('success', 'PDF saved successfully.');
             }
             return redirect()->back()->with('error', 'Failed to save pdf');
         }
 
         return redirect()->back()->with('error', 'Client not found');
+    }
+
+    public function saveReportToDb(Request $request)
+    {
+        // Get the currently authenticated user's ID
+        // $userid = Auth::guard('webclient')->user()->id;
+
+        // Validate the request
+        $request->validate([
+            'report_pdf' => 'required|file|mimes:pdf|max:2048', // Ensures it's a valid file type
+            'audit_id' => 'required',
+        ]);
+
+        // Get the uploaded file
+        $pdf = $request->file('report_pdf');
+        $audit_id = $request->input('audit_id');
+
+        // Check if the file is valid
+        if ($pdf->isValid()) {
+            // Define the folder path for saving the file
+            $folderPath = public_path('storage/completed_reports');
+
+            $fileName = 'audit-report-' . $audit_id . '-' . now()->format('Y-m-d_H-i-s') . '.pdf';
+
+            // Move the file to the folder
+            $pdf->move($folderPath, $fileName);
+
+            $pdfPath = $folderPath . '/' . $fileName;
+            $audit = AuditDetail::where('id', $audit_id)->first();
+            if ($audit) {
+                $audit->report_path = $pdfPath;
+                $audit->save();
+            }
+            return response()->json(['message' => 'File uploaded successfully'], 200);
+        } else {
+            return response()->json(['message' => 'File upload failed'], 500);
+        }
+
     }
 
     public function auditRepSave(Request $request)
@@ -2282,6 +2360,19 @@ class AuditController extends Controller
 
         return back()->with('error', 'Re-upload your signature');
     }
+
+
+    public function viewGeneratedReport($id)
+    {
+        $audit = AuditDetail::find($id);
+
+        if (!$audit) {
+            abort(404, 'Audit not found.');
+        }
+
+        return view('audit-report-viewpdf', ['audit' => $audit]);
+    }
+
 
 
 
