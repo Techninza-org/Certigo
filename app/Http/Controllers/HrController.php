@@ -8,6 +8,8 @@ use App\Models\OfferLetter;
 use App\Models\AppointmentLetter;
 use Carbon\Carbon;
 use App\Models\PaySlip;
+use Auth;
+use App\Models\User;
 
 
 
@@ -126,11 +128,15 @@ class HrController extends Controller
     public function getPayslipPage()
     {
 
-        $slips = PaySlip::all();
-
-
-        return view('pay-slips.create-pay-slip', ['slips' => $slips]);
-
+        $user_role = Auth::user()->role;
+        if ($user_role == 0) {
+            $slips = PaySlip::where('user_id', Auth::user()->id)->get();
+            return view('pay-slips.create-pay-slip', ['slips' => $slips]);
+        } else {
+            $slips = PaySlip::all();
+            $users = User::all();
+            return view('pay-slips.create-pay-slip', ['slips' => $slips, 'users' => $users]);
+        }
 
     }
 

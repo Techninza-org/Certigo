@@ -241,7 +241,7 @@
                     </li>
                 @endif
 
-                @if (Auth::user() && (Auth::user()->role === 1 || Auth::user()->role === 3) && Auth::user()->hasPermission(12))
+                @if (Auth::user() && (Auth::user()->role === 1 || Auth::user()->role === 3 || Auth::user()->role === 0))
                     <!-- HR  -->
                     <div class="accordion accordion-flush" id="accordionFlushExample">
                         <div class="accordion-item">
@@ -256,30 +256,37 @@
                                 data-bs-parent="#accordionFlushExample">
                                 <div class="accordion-body">
                                     <ul>
-                                        <li class="sidebar-item">
-                                            <a class="sidebar-link" href="{{ route('get.offer.letter.page') }}">
-                                                <span>
-                                                    <i class="fa-solid fa-user"></i>
-                                                </span>
-                                                <span class="hide-menu">Offer Letter</span>
-                                            </a>
-                                        </li>
-                                        <li class="sidebar-item">
-                                            <a class="sidebar-link" href="{{ route('get.payslip.page') }}">
-                                                <span>
-                                                    <i class="fa-solid fa-user"></i>
-                                                </span>
-                                                <span class="hide-menu"> Pay Slip</span>
-                                            </a>
-                                        </li>
-                                        <li class="sidebar-item">
-                                            <a class="sidebar-link" href="{{ route('get.appointment.letter.page') }}">
-                                                <span>
-                                                    <i class="fa-solid fa-user"></i>
-                                                </span>
-                                                <span class="hide-menu">Appointment Letter</span>
-                                            </a>
-                                        </li>
+                                        @if ((Auth::user() && Auth::user()->role === 1) || Auth::user()->role === 3)
+                                            <li class="sidebar-item">
+                                                <a class="sidebar-link" href="{{ route('get.offer.letter.page') }}">
+                                                    <span>
+                                                        <i class="fa-solid fa-user"></i>
+                                                    </span>
+                                                    <span class="hide-menu">Offer Letter</span>
+                                                </a>
+                                            </li>
+                                        @endif
+                                        @if (Auth::user() && (Auth::user()->role === 1 || Auth::user()->role === 0 || Auth::user()->role === 3))
+                                            <li class="sidebar-item">
+                                                <a class="sidebar-link" href="{{ route('get.payslip.page') }}">
+                                                    <span>
+                                                        <i class="fa-solid fa-user"></i>
+                                                    </span>
+                                                    <span class="hide-menu"> Pay Slip</span>
+                                                </a>
+                                            </li>
+                                        @endif
+                                        @if ((Auth::user() && Auth::user()->role === 1) || Auth::user()->role === 3)
+                                            <li class="sidebar-item">
+                                                <a class="sidebar-link"
+                                                    href="{{ route('get.appointment.letter.page') }}">
+                                                    <span>
+                                                        <i class="fa-solid fa-user"></i>
+                                                    </span>
+                                                    <span class="hide-menu">Appointment Letter</span>
+                                                </a>
+                                            </li>
+                                        @endif
                                     </ul>
 
                                 </div>
