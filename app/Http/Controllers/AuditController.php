@@ -1,14 +1,15 @@
 <?php
-
-
-
 namespace App\Http\Controllers;
-
-
 
 use App\Models\ReportColor;
 
-use PDF;
+// use PDF;
+// use Dompdf\Dompdf;
+use H4cc\WkhtmlToPdf\WkhtmlToPdf;
+use Illuminate\Support\Facades\Log;
+
+
+use Dompdf\Options;
 
 use Carbon\Carbon;
 
@@ -43,16 +44,10 @@ use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Mail;
 
-
-
 use App\Models\GraphType;
 
-
-
-
-
-
-
+use Illuminate\Support\Facades\View;
+// use Niklasravnsborg\Pdf\Pdf;
 
 class AuditController extends Controller
 {
@@ -61,12 +56,7 @@ class AuditController extends Controller
     {
 
         return view('audits');
-
     }
-
-
-
-
 
     public function schedule_audit(Request $request)
     {
@@ -118,7 +108,6 @@ class AuditController extends Controller
         if ($client_audits >= $client->no_audit_conduct) {
 
             return response()->json(['error' => "Audits limit reached", 'status' => 400], 200);
-
         }
 
 
@@ -186,9 +175,6 @@ class AuditController extends Controller
             $scheduled_time = Carbon::now()->addDay()->format('Y-m-d');
 
             $request['deadline_time'] = $scheduled_time;
-
-
-
         }
 
 
@@ -198,25 +184,15 @@ class AuditController extends Controller
 
         $yearNumber = $carbonDate->year;
 
-
-
-
-
         $request['month'] = $monthNumber;
 
         $request['year'] = $yearNumber;
-
-
-
-
-
 
         if ($request->auditing_for == 1) {
 
             $request['audit_index'] = $request->audit_index . "-" . $client->client_id . "-INDUS-" . $request->audit_number;
         } else {
             $request['audit_index'] = $request->audit_index . "-" . $client->client_id . "-" . $request->audit_number;
-
         }
 
         // dd($request['audit_index']);
@@ -243,7 +219,6 @@ class AuditController extends Controller
         $audit = Audit::where(['id' => $id])->first();
 
         return view('audit.view', ['audit' => $audit]);
-
     }
 
 
@@ -296,13 +271,7 @@ class AuditController extends Controller
 
 
         return redirect()->back()->with('success', 'Audit updated successfully');
-
     }
-
-
-
-
-
 
 
     public function template_options(Request $request)
@@ -321,7 +290,6 @@ class AuditController extends Controller
 
 
         return response()->json(['template' => $template], 200);
-
     }
 
 
@@ -334,7 +302,6 @@ class AuditController extends Controller
         $temppsinfolder = Template::where(['temp_folder_id' => $request->folderID])->get(['id', 'template_name']);
 
         return response()->json(['response' => $temppsinfolder], 200);
-
     }
 
 
@@ -359,15 +326,10 @@ class AuditController extends Controller
         if ($audit) {
 
             return redirect()->back()->with('success', 'Audit removed successfully');
-
-
-
         } else {
 
             return redirect()->back()->with('success', 'Problem removing audit. PLease try again.');
-
         }
-
     }
 
 
@@ -443,8 +405,15 @@ class AuditController extends Controller
             $signDone = 1;
         }
 
-        return view('audit.resume', ['client' => $client, 'emptyInputs' => $emptyInputs, 'clientId' => $request->cid, 'audit' => $audit, 'start_time' => $start_time, 'tenplates_names_in_audit' => $tenplates_names_in_audit, 'auditfilled' => $auditfilled, 'total_questions_in_audit' => $total_questions_in_audit, 'total_answers_in_audit' => $total_answers_in_audit, 'signDone' => $signDone]);
+        $auditDetail = AuditDetail::where(['id' => $request->auditId])->first();
 
+        $isSaved = false;
+
+        if ($auditDetail && $auditDetail->report_path) {
+            $isSaved = true;
+        }
+
+        return view('audit.resume', ['isSaved' => $isSaved, 'client' => $client, 'emptyInputs' => $emptyInputs, 'clientId' => $request->cid, 'audit' => $audit, 'start_time' => $start_time, 'tenplates_names_in_audit' => $tenplates_names_in_audit, 'auditfilled' => $auditfilled, 'total_questions_in_audit' => $total_questions_in_audit, 'total_answers_in_audit' => $total_answers_in_audit, 'signDone' => $signDone]);
     }
 
 
@@ -600,7 +569,6 @@ class AuditController extends Controller
                 return redirect()->back()->with('error', 'Details update failed. Try again.');
             }
         }
-
     }
 
 
@@ -633,9 +601,7 @@ class AuditController extends Controller
             if ($key == $request->imageIndex) {
 
                 unset($evidencesArr[$key]);
-
             }
-
         }
 
 
@@ -661,17 +627,10 @@ class AuditController extends Controller
         if ($auditDetail->save()) {
 
             return redirect()->back()->with('success', 'Image removed');
-
         } else {
 
             return redirect()->back()->with('error', 'Image  not removed');
-
         }
-
-
-
-
-
     }
 
 
@@ -726,7 +685,6 @@ class AuditController extends Controller
             ]);
 
             return $pdf->stream('auditreportPdf.pdf');
-
         }
 
 
@@ -734,16 +692,11 @@ class AuditController extends Controller
         // return $pdf->download('itsolutionstuff.pdf');
 
         return redirect()->back()->with('error', 'Client not found');
-
     }
-
-
-
 
 
     public function auditRepView(Request $request)
     {
-
         $request->validate([
 
             'auditId' => 'required',
@@ -753,9 +706,7 @@ class AuditController extends Controller
             'cid' => 'required',
 
         ]);
-
-
-
+        Log::info('Audit report view request', ['request' => $request->all()]);
         // Auth user 
 
         if ($request->auth_id != 'client') {
@@ -778,17 +729,9 @@ class AuditController extends Controller
         $type = GraphType::first();
 
         // dd($type->type);
-
-
-
-
-
         // Audit record
 
         $audit = Audit::where(['id' => $request->auditId])->first();
-
-
-
         // Previous Audit report 
 
         // $previous_audit = Audit::where('id','<',$request->auditId)->where(['client_id' => $request->cid])->first();
@@ -802,10 +745,6 @@ class AuditController extends Controller
 
 
         // }
-
-
-
-
 
         // Templates json data from above audit record
 
@@ -887,11 +826,9 @@ class AuditController extends Controller
                 if ($qResponse->response_score == 'null' || $qResponse->response_score == 0) {
 
                     $target_score_array[] = $base_score;
-
                 } else {
 
                     $target_score_array[] = $qResponse->response_score;
-
                 }
 
             }
@@ -988,6 +925,7 @@ class AuditController extends Controller
                     $previous_audit = Audit::where('id', '<', $request->auditId)->where(['client_id' => $request->cid, 'auditing_for' => 1])->first();
                 }
                 if ($previous_audit !== null) {
+                    Log::info('Previous audit found', ['audit' => $previous_audit]);
                     $previous_qResponse = AuditDetail::where(['audit_id' => $previous_audit->id])->where(['question_id' => $q->id])->first();
                     // dd($previous_qResponse);
                     if ($previous_qResponse !== null) {
@@ -1018,13 +956,12 @@ class AuditController extends Controller
                 if ($qResponse->response_score == null) {
                     $q->res = 1;
                 } elseif (is_array($qResponse->response_score)) {
-                    $q->res = json_decode($qResponse->response_score);
+                    $q->res = json_encode($qResponse->response_score);
                 } else {
                     $q->res = $qResponse;
                 }
 
                 $q->images = json_decode($qResponse->evidences);
-
             }
 
             $total_positive_responses[] = array_sum($positive_responses);
@@ -1086,125 +1023,134 @@ class AuditController extends Controller
             return redirect()->back()->with('error', 'Score not saved, try again');
         }
 
+        // $chartConfig = [
+        //     'chart' => ['type' => 'bar'],
+        //     'title' => ['text' => 'SCORE BY SECTION'],
+        //     'xAxis' => ['categories' => $templatenames],
+        //     'yAxis' => [
+        //         'min' => 0,
+        //         'max' => 100,
+        //         'title' => ['text' => 'Percentage'],
+        //     ],
+        //     'series' => [
+        //         ['data' => $roundPercen]
+        //     ],
+        // ];
+
+        // // Encode the configuration to send it to the Export Server
+        // $encodedConfig = json_encode($chartConfig);
+
+        // // Highcharts Export Server URL
+        // $exportServerUrl = 'https://export.highcharts.com/';
+
+        // // Send request to the Export Server and get the image URL
+        // $imageUrl = $exportServerUrl . '?options=' . urlencode($encodedConfig);
+
+
 
 
         if ($client) {
 
             if ($audit->auditing_for == 0) {
-
                 return view('view-audit-report', [
-
                     'templatecoll' => $templatecoll,
-
                     'audit' => $audit,
-
                     'client' => $client,
-
                     'start_time' => $start_time,
-
                     'end_time' => $end_time,
-
                     'end_date' => $end_date,
-
                     'todayDate' => $todayDate,
-
                     'todayTime' => $todayTime,
-
                     'auditor' => $auditor,
-
                     'sectionCount' => $sectionCount,
-
                     'total_qu_count' => $total_qu_count,
-
                     'actual_responses' => array_sum($actual_responses),
-
                     'target_responses' => array_sum($target_responses),
-
                     'auth_user' => $auth_user,
-
                     'templatenames' => $templatenames,
-
                     'roundPercen' => $roundPercen,
-
                     'color_code' => $color_code->color,
-
                     'type' => $type->type,
-
                     'sdgs' => $sdgsArrJSON,
-
-                    // 'signDone' =>$signDone
-
-
-
-
-
-
-
                 ]);
-
-
-
             }
+
 
 
 
             if ($audit->auditing_for == 1) {
-
-                return view('industrial', [
-
+               return view('industrial', [
                     'templatecoll' => $templatecoll,
-
                     'audit' => $audit,
-
                     'client' => $client,
-
                     'start_time' => $start_time,
-
                     'end_time' => $end_time,
-
                     'end_date' => $end_date,
-
                     'todayDate' => $todayDate,
-
                     'todayTime' => $todayTime,
-
                     'auditor' => $auditor,
-
                     'sectionCount' => $sectionCount,
-
                     'total_qu_count' => $total_qu_count,
-
                     'actual_responses' => array_sum($actual_responses),
-
                     'target_responses' => array_sum($target_responses),
-
                     'auth_user' => $auth_user,
-
                     'templatenames' => $templatenames,
-
                     'roundPercen' => $roundPercen,
-
                     'color_code_ind' => $color_code_ind->color,
-
                     'type' => $type->type,
-
                     'sdgs' => $sdgsArrJSON,
-                    // 'signDone' =>$signDone
-
-
                 ]);
 
+                // $folderPath = public_path('storage/completed_reports');
+
+                // $fileName = 'audit-report-' . $audit->id . '-' . now()->format('Y-m-d_H-i-s') . '.pdf';
+
+                // $pdfPath = $folderPath . '/' . $fileName;
+                // $pdf->save($pdfPath);
+
+                // return redirect()->back()->with('success', 'PDF saved successfully.');
             }
-
-
-
+            // return redirect()->back()->with('error', 'Failed to save pdf');
         }
 
-
-
-        // return $pdf->download('itsolutionstuff.pdf');
-
         return redirect()->back()->with('error', 'Client not found');
+    }
+
+    public function saveReportToDb(Request $request)
+    {
+        // Get the currently authenticated user's ID
+        // $userid = Auth::guard('webclient')->user()->id;
+
+        // Validate the request
+        $request->validate([
+            'report_pdf' => 'required|file|mimes:pdf|max:2048', // Ensures it's a valid file type
+            'audit_id' => 'required',
+        ]);
+
+        // Get the uploaded file
+        $pdf = $request->file('report_pdf');
+        $audit_id = $request->input('audit_id');
+
+        // Check if the file is valid
+        if ($pdf->isValid()) {
+            // Define the folder path for saving the file
+            $folderPath = public_path('storage/completed_reports');
+
+            $fileName = 'audit-report-' . $audit_id . '-' . now()->format('Y-m-d_H-i-s') . '.pdf';
+
+            // Move the file to the folder
+            $pdf->move($folderPath, $fileName);
+
+            $pdfPath = $folderPath . '/' . $fileName;
+            $audit = AuditDetail::where('id', $audit_id)->first();
+            if ($audit) {
+                $audit->report_path = $pdfPath;
+                $audit->save();
+            }
+            return response()->json(['message' => 'File uploaded successfully'], 200);
+        } else {
+            return response()->json(['message' => 'File upload failed'], 500);
+        }
 
     }
 
@@ -1218,7 +1164,7 @@ class AuditController extends Controller
             'cid' => 'required',
             'report' => 'required|mimes:pdf', // Max file size is 2MB
         ]);
-        dd($request->all());
+        // dd($request->all());
 
 
         // Validate the uploaded file
@@ -1242,7 +1188,6 @@ class AuditController extends Controller
 
         // Optionally, you can return a response or redirect the user
         return redirect()->back()->with('error', 'PDF file uploaded failed. Try again');
-
     }
 
     public function viewCompletedReport(Request $request)
@@ -1256,7 +1201,6 @@ class AuditController extends Controller
             return redirect($pdfFile);
         }
         return redirect()->back()->with('error', 'Pdf not available');
-
     }
 
 
@@ -1325,7 +1269,6 @@ class AuditController extends Controller
                 $dept_score->score = round($percentagetochart, 2);
                 $dept_score->save();
             }
-
         }
 
         $audit->final_score = (array_sum($actual_responses) / array_sum($target_responses)) * 100;
@@ -1363,9 +1306,6 @@ class AuditController extends Controller
         if ($request->auditorsign == null || $request->auditeesign == null || $request->auditorsign == '' || $request->auditeesign == '') {
 
             return redirect()->back()->with('error', 'Please upload signatures');
-
-
-
         }
 
 
@@ -1381,7 +1321,6 @@ class AuditController extends Controller
 
 
             $request['auditor_sign'] = $image_name;
-
         }
 
 
@@ -1397,7 +1336,6 @@ class AuditController extends Controller
 
 
             $request['auditee_sign'] = $image_name2;
-
         }
 
         // dd($request->all());
@@ -1411,17 +1349,10 @@ class AuditController extends Controller
 
 
             return redirect()->back()->with('success', 'Signatures Uploaded Successfully');
-
         } else {
 
             return redirect()->back()->with('error', 'Please try again');
-
-
-
         }
-
-
-
     }
 
 
@@ -1458,8 +1389,7 @@ class AuditController extends Controller
 
         // dd($request->company_emailid);
         Mail::send('mail-report', $data, function ($message) use ($data) {
-            $message->to($data['cemail'], 'Certigo QAS')->subject
-            ('Download your audit report');
+            $message->to($data['cemail'], 'Certigo QAS')->subject('Download your audit report');
             $message->from('sanurag0022@gmail.com', 'Certigo QAS');
         });
 
@@ -1527,7 +1457,6 @@ class AuditController extends Controller
                             $createdArrays[$arrayName] = [];
                         }
                     }
-                    // dd($createdArrays);
 
                     foreach ($template_array as $index => $single) {
                         $template = Template::where(['id' => $single])->first();
@@ -1539,13 +1468,22 @@ class AuditController extends Controller
                         } else {
                             $createdArrays[$single] = [$deptResult->score];
                         }
-
-
                     }
-
                     // fro getting negative answers
-
-
+                    // $negativeAnswers = [];
+                    // $audit_details = AuditDetail::where('audit_id', $audit->id)->where('response_score', '<', 0)->get();
+            
+                    // foreach ($audit_details as $detail) {
+                    //     // Store the negative answers with their details (could also store `question_id`, etc.)
+                    //     $negativeAnswers[] = [
+                    //         'question_id' => $detail->question_id,
+                    //         'response_score' => $detail->response_score,
+                    //         'created_at' => $detail->created_at,
+                    //     ];
+                    // }
+            
+                    // // If you want to store negative answers inside a separate array
+                    // $createdArrays['negative_answers'][$audit->id] = $negativeAnswers;
                 }
             }
 
@@ -1555,46 +1493,10 @@ class AuditController extends Controller
                 $average = 0;
             }
             $allAuditsAvg[$q] = $average;
-
-
-
-
         }
 
-        // NEW CODE FOR ANSWERS WITH DATE 
-        // $aud_date_arr = [];
-        // foreach ($qFound as $index => $q) {
-        //     $months = [];
-        //     // All audits in particular month 
-        //     $allAuditsInMonth = Audit::where(['month' => $q, 'client_id' => $id, 'auditing_for' => 0])->get();    
-        //     // working on each audit 
-        //     foreach ($allAuditsInMonth as $a) {
-        //         $unique_audit_details = [];
-        //         // Questions in this audit having response_score = 0 
-        //         $audit_details = AuditDetail::where(['audit_id' => $a->id, 'response_score' => 0])->get();
-        //         // on each question 
-        //         foreach ($audit_details as $auditDetail) {
-        //             $a_dates = [];
-        //             $a_dates[] = $auditDetail->created_at;
-        //             $unique_audit_details[] = [
-        //                 'detail' => $auditDetail,
-        //                 'question_id' => $auditDetail->question_id,
-        //                 'allDates' => $a_dates,
-        //             ];
-        //         }
-        //         $a->audit_details = $unique_audit_details;
-        //     }
-        //     $months['month'] = $q;
-        //     $months['audit'] = $allAuditsInMonth;
-        //     $aud_date_arr[] = $months;
-        // }
 
-
-        // dd($aud_date_arr);
-
-
-        // for getting final negative answers from last audit  
-        $myaudits_latest = Audit::where(['month' => end($qFound), 'client_id' => $id, 'auditing_for' => 0])->latest()->first();
+        $myaudits_latest = Audit::whereIn('month', $qFound)->where(['client_id' => $id, 'auditing_for' => 0])->latest()->first();
         if ($myaudits_latest) {
             $nwgAns = AuditDetail::where(['audit_id' => $myaudits_latest->id, 'response_score' => 0])->get();
             $negAnsArr[] = $nwgAns;
@@ -1642,15 +1544,22 @@ class AuditController extends Controller
                 $onee->nc = $qNC->nc;
 
                 $dates = [];
+                $addedQuestions = [];
                 foreach ($audits as $audit) {
                     $ques = [];
                     // audit:66, ques. no. 100                    
                     $nwgAns = AuditDetail::where(['audit_id' => $audit, 'question_id' => $onee->question_id])->first();
-                    // $ques['q_no'] = $nwgAns->question_id;
                     if ($nwgAns) {
-
-                        $ques[] = $nwgAns->created_at;
-                        $dates[] = $ques;
+                        // Check if this question has already been added
+                        if (!in_array($nwgAns->question_id, $addedQuestions)) {
+                            $tempQues = TemplateDetail::where(['id' => $nwgAns->question_id])->first();
+                            $ques['q_no'] = $nwgAns->question_id;
+                            $ques['q_name'] = $tempQues->question;
+                            $ques['response_date'] = $nwgAns->created_at;
+        
+                            $dates[] = $ques;
+                            $addedQuestions[] = $nwgAns->question_id;  // Mark this question as added
+                        }
                     }
                 }
                 $onee->datess = $dates;
@@ -1720,6 +1629,10 @@ class AuditController extends Controller
         //  $pdf = PDF::loadView('consolidate-pdf',$data);
         //  $pdf->save(storage_path('app/public/pdfs/consolidate'.$client->id.$quartersWithFound.'.pdf'));
         // generate pdf and download 
+
+        // dd($negAnsArr);
+
+
 
 
         return view('consolidated', ['client' => $client, 'formattedData' => $formattedData, 'nameValuesArray' => $nameValuesArray, 'avgValuesArray' => $avgValuesArray, 'negAnsArr' => $negAnsArr]);
@@ -1793,8 +1706,6 @@ class AuditController extends Controller
                         } else {
                             $createdArrays[$single] = [$deptResult->score];
                         }
-
-
                     }
 
                     // fro getting negative answers
@@ -1808,10 +1719,6 @@ class AuditController extends Controller
                 $average = 0;
             }
             $allAuditsAvg[$q] = $average;
-
-
-
-
         }
 
         // for getting final negative answers from last audit  
@@ -1951,16 +1858,13 @@ class AuditController extends Controller
         // =================mail code======================
         Mail::send('consolidate-mail', $dataToGraph, function ($message) use ($client, $quartersWithFound) {
 
-            $message->to('smsunnythefunny@gmail.com', 'Consolidated report')->subject
-
-            ('Consolidated report from Certigo QAS');
+            $message->to('smsunnythefunny@gmail.com', 'Consolidated report')->subject('Consolidated report from Certigo QAS');
 
             // $message->attach('C:\laravel-master\laravel\public\uploads\image.png');
 
             // $message->attach(public_path('/pdfs/consolidate'.$client->id.$quartersWithFound.'.pdf'));
 
             $message->from('xyz@gmail.com', 'Certigo QAS');
-
         });
 
         return view('consolidated', ['client' => $client, 'formattedData' => $formattedData, 'nameValuesArray' => $nameValuesArray, 'avgValuesArray' => $avgValuesArray, 'negAnsArr' => $negAnsArr]);
@@ -1986,16 +1890,13 @@ class AuditController extends Controller
         // =================mail code======================
         Mail::send('consolidate-mail', $data, function ($message) {
 
-            $message->to('smsunnythefunny@gmail.com', 'Consolidated report')->subject
-
-            ('Consolidated report from Certigo QAS');
+            $message->to('smsunnythefunny@gmail.com', 'Consolidated report')->subject('Consolidated report from Certigo QAS');
 
             // $message->attach('C:\laravel-master\laravel\public\uploads\image.png');
 
             // $message->attach(public_path('/pdfs/consolidate'.$client->id.$quartersWithFound.'.pdf'));
 
             $message->from('xyz@gmail.com', 'Certigo QAS');
-
         });
         return redirect()->back()->with('success', 'Email sent successfully');
     }
@@ -2070,8 +1971,6 @@ class AuditController extends Controller
                         } else {
                             $createdArrays[$single] = [$deptResult->score];
                         }
-
-
                     }
 
                     // fro getting negative answers
@@ -2086,10 +1985,6 @@ class AuditController extends Controller
                 $average = 0;
             }
             $allAuditsAvg[$q] = $average;
-
-
-
-
         }
 
 
@@ -2281,16 +2176,13 @@ class AuditController extends Controller
         // =================mail code======================
         Mail::send('consolidate-mail', $dataToGraph, function ($message) use ($client, $quartersWithFound) {
 
-            $message->to('smsunnythefunny@gmail.com', 'Consolidated report')->subject
-
-            ('Laravel Testing Mail with Attachment');
+            $message->to('smsunnythefunny@gmail.com', 'Consolidated report')->subject('Laravel Testing Mail with Attachment');
 
             // $message->attach('C:\laravel-master\laravel\public\uploads\image.png');
 
             // $message->attach(public_path('/pdfs/consolidate'.$client->id.$quartersWithFound.'.pdf'));
 
             $message->from('xyz@gmail.com', 'Certigo QAS');
-
         });
         // =================mail code======================
         // return redirect()->back()->with('success','Consolidated Report sent to client');
@@ -2393,15 +2285,10 @@ class AuditController extends Controller
         if ($service->save()) {
 
             return redirect()->back()->with('success', 'Service Code saved')->withInput(['servCode' => $servCode]);
-
         } else {
 
             return redirect()->back()->with('error', 'Service Code not saved')->withInput(['servCode' => $servCode]);
-
-
-
         }
-
     }
 
 
@@ -2412,7 +2299,6 @@ class AuditController extends Controller
     {
 
         return view('audit.signature-pad', ['audit_id' => $request->audit_id, 'client_id' => $request->client_id]);
-
     }
 
 
@@ -2423,7 +2309,6 @@ class AuditController extends Controller
     {
 
         return view('audit.sign-pad', ['audit_id' => $request->audit_id, 'client_id' => $request->client_id]);
-
     }
 
     public function store(Request $request)
@@ -2454,13 +2339,9 @@ class AuditController extends Controller
             $audit->save();
 
             return back()->with('success', 'Signature saved successfully !!');
-
         }
 
         return back()->with('error', 'Re-upload your signature');
-
-
-
     }
 
 
@@ -2493,16 +2374,35 @@ class AuditController extends Controller
             $audit->save();
 
             return back()->with('success', 'Signature saved successfully !!');
-
         }
 
         return back()->with('error', 'Re-upload your signature');
-
-
-
-
-
     }
+
+
+    public function viewGeneratedReport($id)
+    {
+        Log::info('Audit ID: ' . $id);
+        $audit = AuditDetail::find($id);
+
+        if (!$audit) {
+            abort(404, 'Audit not found.');
+        }
+
+        return view('audit-report-viewpdf', ['audit' => $audit]);
+    }
+
+    public function viewGeneratedReportIndustrial($id)
+    {
+        $audit = AuditDetail::find($id);
+
+        if (!$audit) {
+            abort(404, 'Audit not found.');
+        }
+
+        return view('industrial-viewpdf', ['audit' => $audit]);
+    }
+
 
 
 
@@ -2534,21 +2434,14 @@ class AuditController extends Controller
             if ($audit->save()) {
 
                 return back()->with('success', 'Doc. Ref. and Personal Responsible saved successfully');
-
             }
 
             return back()->with('error', 'Problem saving Doc. Ref. and Personal Responsible, try again...');
-
-
-
         } else {
 
             return back()->with('error', 'Audit not found, try again.');
-
         }
-
     }
-
 }
 
 
