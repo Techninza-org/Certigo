@@ -405,7 +405,15 @@ class AuditController extends Controller
             $signDone = 1;
         }
 
-        return view('audit.resume', ['client' => $client, 'emptyInputs' => $emptyInputs, 'clientId' => $request->cid, 'audit' => $audit, 'start_time' => $start_time, 'tenplates_names_in_audit' => $tenplates_names_in_audit, 'auditfilled' => $auditfilled, 'total_questions_in_audit' => $total_questions_in_audit, 'total_answers_in_audit' => $total_answers_in_audit, 'signDone' => $signDone]);
+        $auditDetail = AuditDetail::where(['id' => $request->auditId])->first();
+
+        $isSaved = false;
+
+        if ($auditDetail && $auditDetail->report_path) {
+            $isSaved = true;
+        }
+
+        return view('audit.resume', ['isSaved' => $isSaved, 'client' => $client, 'emptyInputs' => $emptyInputs, 'clientId' => $request->cid, 'audit' => $audit, 'start_time' => $start_time, 'tenplates_names_in_audit' => $tenplates_names_in_audit, 'auditfilled' => $auditfilled, 'total_questions_in_audit' => $total_questions_in_audit, 'total_answers_in_audit' => $total_answers_in_audit, 'signDone' => $signDone]);
     }
 
 
@@ -698,6 +706,7 @@ class AuditController extends Controller
             'cid' => 'required',
 
         ]);
+        Log::info('Audit report view request', ['request' => $request->all()]);
         // Auth user 
 
         if ($request->auth_id != 'client') {
@@ -915,6 +924,7 @@ class AuditController extends Controller
                     $previous_audit = Audit::where('id', '<', $request->auditId)->where(['client_id' => $request->cid, 'auditing_for' => 1])->first();
                 }
                 if ($previous_audit !== null) {
+                    Log::info('Previous audit found', ['audit' => $previous_audit]);
                     $previous_qResponse = AuditDetail::where(['audit_id' => $previous_audit->id])->where(['question_id' => $q->id])->first();
                     // dd($previous_qResponse);
                     if ($previous_qResponse !== null) {
@@ -1041,7 +1051,6 @@ class AuditController extends Controller
         if ($client) {
 
             if ($audit->auditing_for == 0) {
-                // $pdf = PDF::loadView('view-audit-report', [        
                 return view('view-audit-report', [
                     'templatecoll' => $templatecoll,
                     'audit' => $audit,
@@ -1063,45 +1072,13 @@ class AuditController extends Controller
                     'type' => $type->type,
                     'sdgs' => $sdgsArrJSON,
                 ]);
-
-
-                // $options = new \Dompdf\Options();
-                // $options->set('isHtml5ParserEnabled', true);
-                // $options->set('isPhpEnabled', true); 
-                // $options->set('isRemoteEnabled', true); 
-
-                // // Initialize Dompdf
-                // $dompdf = new \Dompdf\Dompdf($options);
-                // $dompdf->loadHtml($html);
-
-                // // Set the paper size and orientation
-                // $dompdf->setPaper('A4', 'portrait');
-
-                // // Render the PDF
-                // $dompdf->render();
-                // $folderPath = public_path('storage/completed_reports');
-
-                // // Ensure the folder exists
-                // if (!file_exists($folderPath)) {
-                //     mkdir($folderPath, 0755, true);
-                // }
-
-                // $fileName = 'audit-report-' . $audit->id . '-' . now()->format('Y-m-d_H-i-s') . '.pdf';
-                // $pdfPath = $folderPath . '/' . $fileName;
-
-                // // Save the generated PDF to the file path
-                // file_put_contents($pdfPath, $dompdf->output());
-
-                // return response($html, 200)->header('Content-Type', 'text/html');
-
-                // return redirect()->back()->with('success', 'PDF saved successfully.');
             }
 
 
 
 
             if ($audit->auditing_for == 1) {
-                $pdf = PDF::loadView('industrial', [
+               return view('industrial', [
                     'templatecoll' => $templatecoll,
                     'audit' => $audit,
                     'client' => $client,
@@ -1123,16 +1100,16 @@ class AuditController extends Controller
                     'sdgs' => $sdgsArrJSON,
                 ]);
 
-                $folderPath = public_path('storage/completed_reports');
+                // $folderPath = public_path('storage/completed_reports');
 
-                $fileName = 'audit-report-' . $audit->id . '-' . now()->format('Y-m-d_H-i-s') . '.pdf';
+                // $fileName = 'audit-report-' . $audit->id . '-' . now()->format('Y-m-d_H-i-s') . '.pdf';
 
-                $pdfPath = $folderPath . '/' . $fileName;
-                $pdf->save($pdfPath);
+                // $pdfPath = $folderPath . '/' . $fileName;
+                // $pdf->save($pdfPath);
 
-                return redirect()->back()->with('success', 'PDF saved successfully.');
+                // return redirect()->back()->with('success', 'PDF saved successfully.');
             }
-            return redirect()->back()->with('error', 'Failed to save pdf');
+            // return redirect()->back()->with('error', 'Failed to save pdf');
         }
 
         return redirect()->back()->with('error', 'Client not found');
@@ -1479,7 +1456,6 @@ class AuditController extends Controller
                             $createdArrays[$arrayName] = [];
                         }
                     }
-                    // dd($createdArrays);
 
                     foreach ($template_array as $index => $single) {
                         $template = Template::where(['id' => $single])->first();
@@ -1492,10 +1468,21 @@ class AuditController extends Controller
                             $createdArrays[$single] = [$deptResult->score];
                         }
                     }
-
                     // fro getting negative answers
-
-
+                    // $negativeAnswers = [];
+                    // $audit_details = AuditDetail::where('audit_id', $audit->id)->where('response_score', '<', 0)->get();
+            
+                    // foreach ($audit_details as $detail) {
+                    //     // Store the negative answers with their details (could also store `question_id`, etc.)
+                    //     $negativeAnswers[] = [
+                    //         'question_id' => $detail->question_id,
+                    //         'response_score' => $detail->response_score,
+                    //         'created_at' => $detail->created_at,
+                    //     ];
+                    // }
+            
+                    // // If you want to store negative answers inside a separate array
+                    // $createdArrays['negative_answers'][$audit->id] = $negativeAnswers;
                 }
             }
 
@@ -1507,40 +1494,8 @@ class AuditController extends Controller
             $allAuditsAvg[$q] = $average;
         }
 
-        // NEW CODE FOR ANSWERS WITH DATE 
-        // $aud_date_arr = [];
-        // foreach ($qFound as $index => $q) {
-        //     $months = [];
-        //     // All audits in particular month 
-        //     $allAuditsInMonth = Audit::where(['month' => $q, 'client_id' => $id, 'auditing_for' => 0])->get();    
-        //     // working on each audit 
-        //     foreach ($allAuditsInMonth as $a) {
-        //         $unique_audit_details = [];
-        //         // Questions in this audit having response_score = 0 
-        //         $audit_details = AuditDetail::where(['audit_id' => $a->id, 'response_score' => 0])->get();
-        //         // on each question 
-        //         foreach ($audit_details as $auditDetail) {
-        //             $a_dates = [];
-        //             $a_dates[] = $auditDetail->created_at;
-        //             $unique_audit_details[] = [
-        //                 'detail' => $auditDetail,
-        //                 'question_id' => $auditDetail->question_id,
-        //                 'allDates' => $a_dates,
-        //             ];
-        //         }
-        //         $a->audit_details = $unique_audit_details;
-        //     }
-        //     $months['month'] = $q;
-        //     $months['audit'] = $allAuditsInMonth;
-        //     $aud_date_arr[] = $months;
-        // }
 
-
-        // dd($aud_date_arr);
-
-
-        // for getting final negative answers from last audit  
-        $myaudits_latest = Audit::where(['month' => end($qFound), 'client_id' => $id, 'auditing_for' => 0])->latest()->first();
+        $myaudits_latest = Audit::whereIn('month', $qFound)->where(['client_id' => $id, 'auditing_for' => 0])->latest()->first();
         if ($myaudits_latest) {
             $nwgAns = AuditDetail::where(['audit_id' => $myaudits_latest->id, 'response_score' => 0])->get();
             $negAnsArr[] = $nwgAns;
@@ -1588,15 +1543,22 @@ class AuditController extends Controller
                 $onee->nc = $qNC->nc;
 
                 $dates = [];
+                $addedQuestions = [];
                 foreach ($audits as $audit) {
                     $ques = [];
                     // audit:66, ques. no. 100                    
                     $nwgAns = AuditDetail::where(['audit_id' => $audit, 'question_id' => $onee->question_id])->first();
-                    // $ques['q_no'] = $nwgAns->question_id;
                     if ($nwgAns) {
-
-                        $ques[] = $nwgAns->created_at;
-                        $dates[] = $ques;
+                        // Check if this question has already been added
+                        if (!in_array($nwgAns->question_id, $addedQuestions)) {
+                            $tempQues = TemplateDetail::where(['id' => $nwgAns->question_id])->first();
+                            $ques['q_no'] = $nwgAns->question_id;
+                            $ques['q_name'] = $tempQues->question;
+                            $ques['response_date'] = $nwgAns->created_at;
+        
+                            $dates[] = $ques;
+                            $addedQuestions[] = $nwgAns->question_id;  // Mark this question as added
+                        }
                     }
                 }
                 $onee->datess = $dates;
@@ -1666,6 +1628,10 @@ class AuditController extends Controller
         //  $pdf = PDF::loadView('consolidate-pdf',$data);
         //  $pdf->save(storage_path('app/public/pdfs/consolidate'.$client->id.$quartersWithFound.'.pdf'));
         // generate pdf and download 
+
+        // dd($negAnsArr);
+
+
 
 
         return view('consolidated', ['client' => $client, 'formattedData' => $formattedData, 'nameValuesArray' => $nameValuesArray, 'avgValuesArray' => $avgValuesArray, 'negAnsArr' => $negAnsArr]);
@@ -2364,6 +2330,7 @@ class AuditController extends Controller
 
     public function viewGeneratedReport($id)
     {
+        Log::info('Audit ID: ' . $id);
         $audit = AuditDetail::find($id);
 
         if (!$audit) {
@@ -2371,6 +2338,17 @@ class AuditController extends Controller
         }
 
         return view('audit-report-viewpdf', ['audit' => $audit]);
+    }
+
+    public function viewGeneratedReportIndustrial($id)
+    {
+        $audit = AuditDetail::find($id);
+
+        if (!$audit) {
+            abort(404, 'Audit not found.');
+        }
+
+        return view('industrial-viewpdf', ['audit' => $audit]);
     }
 
 

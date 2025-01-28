@@ -72,7 +72,7 @@ Route::get('/clear-cache', function () {
 
 
 
-Route::get('/audit-report-viewpdf/{id}', [AuditController::class, 'viewGeneratedReport'])->name('audit-report.viewpdf');
+Route::get('/audit-report-viewpdf/{id}', [AuditController::class, 'viewGeneratedReport'])->name('audit-report-viewpdf');
 Route::post('/audit-report-savepdf', [AuditController::class, 'saveReportToDb'])->name('audit.report.savepdf');
 Route::get('/audit-report-view', [AuditController::class, 'auditRepView'])->name('audit.report.view');
 Route::get('/audit-final-score', [AuditController::class, 'auditFinalScore'])->name('audit.final.score');
