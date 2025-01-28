@@ -105,10 +105,10 @@ class AuditController extends Controller
 
 
 
-        if ($client_audits >= $client->no_audit_conduct) {
+        // if ($client_audits >= $client->no_audit_conduct) {
 
-            return response()->json(['error' => "Audits limit reached", 'status' => 400], 200);
-        }
+        //     return response()->json(['error' => "Audits limit reached", 'status' => 400], 200);
+        // }
 
 
         $request['location'] = $client->organisation_location;
@@ -916,17 +916,21 @@ class AuditController extends Controller
             foreach ($questions as $q) {
                 $qResponse = AuditDetail::where(['audit_id' => $request->auditId, 'question_id' => $q->id])->first();
                 $q->qName = TemplateDetail::where(['id' => $q->id])->first('question_name');
+                // Log::info('Question response', ['response' => $qResponse]);
+                // Log::info('Question', ['question' => $q]);
 
                 if ($audit->auditing_for == 0) {
-                    $previous_audit = Audit::where('id', '<', $request->auditId)->where(['client_id' => $request->cid, 'auditing_for' => 0])->first();
+                    $previous_audit = Audit::where('id', '<', value: $request->auditId)->where(['client_id' => $request->cid, 'auditing_for' => 0])->first();
                 }
 
                 if ($audit->auditing_for == 1) {
                     $previous_audit = Audit::where('id', '<', $request->auditId)->where(['client_id' => $request->cid, 'auditing_for' => 1])->first();
                 }
                 if ($previous_audit !== null) {
-                    Log::info('Previous audit found', ['audit' => $previous_audit]);
+                    // Log::info('Previous audit found', ['audit' => $previous_audit]);
+                    // Log::info('Q', [$q->id]);
                     $previous_qResponse = AuditDetail::where(['audit_id' => $previous_audit->id])->where(['question_id' => $q->id])->first();
+                    // Log::info('Previous question response', ['response' => $previous_qResponse]);
                     // dd($previous_qResponse);
                     if ($previous_qResponse !== null) {
 
@@ -1134,7 +1138,7 @@ class AuditController extends Controller
         // Check if the file is valid
         if ($pdf->isValid()) {
             // Define the folder path for saving the file
-            $folderPath = public_path('storage/completed_reports');
+            $folderPath = 'storage/completed_reports';
 
             $fileName = 'audit-report-' . $audit_id . '-' . now()->format('Y-m-d_H-i-s') . '.pdf';
 
@@ -1142,7 +1146,7 @@ class AuditController extends Controller
             $pdf->move($folderPath, $fileName);
 
             $pdfPath = $folderPath . '/' . $fileName;
-            $audit = AuditDetail::where('id', $audit_id)->first();
+            $audit = Audit::where('id', $audit_id)->first();
             if ($audit) {
                 $audit->report_path = $pdfPath;
                 $audit->save();
@@ -2382,7 +2386,6 @@ class AuditController extends Controller
 
     public function viewGeneratedReport($id)
     {
-        Log::info('Audit ID: ' . $id);
         $audit = AuditDetail::find($id);
 
         if (!$audit) {
@@ -2392,16 +2395,16 @@ class AuditController extends Controller
         return view('audit-report-viewpdf', ['audit' => $audit]);
     }
 
-    public function viewGeneratedReportIndustrial($id)
-    {
-        $audit = AuditDetail::find($id);
+    // public function viewGeneratedReportIndustrial($id)
+    // {
+    //     $audit = AuditDetail::find($id);
 
-        if (!$audit) {
-            abort(404, 'Audit not found.');
-        }
+    //     if (!$audit) {
+    //         abort(404, 'Audit not found.');
+    //     }
 
-        return view('industrial-viewpdf', ['audit' => $audit]);
-    }
+    //     return view('industrial-viewpdf', ['audit' => $audit]);
+    // }
 
 
 

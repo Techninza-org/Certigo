@@ -610,6 +610,10 @@
                                             style="padding: 5px;border: 1px solid {{ $color_code }};text-align: left;font-size:14px;">
                                             Previous
                                         </th>
+                                        <th
+                                            style="padding: 5px;border: 1px solid {{ $color_code }};text-align: left;font-size:14px;">
+                                            Previous Score
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -646,6 +650,20 @@
                                                     {{ $q->pr_resp_text }}
                                                 @endif
                                             </td>
+                                            {{-- <td>
+                                                @if ($q->res->response_score == 'null')
+                                                    1
+                                                @else
+                                                    @php
+                                                        $values = explode(',', $q->res->response_score);
+                                                        if (count($values) == 1) {
+                                                            echo $q->res->response_score;
+                                                        } else {
+                                                            echo array_sum($values);
+                                                        }
+                                                    @endphp
+                                                @endif
+                                            </td> --}}
                                         </tr>
                                     @endforeach
                                     {{-- 
