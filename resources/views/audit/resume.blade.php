@@ -787,18 +787,18 @@
                                         <div class="row mt-5">
                                             <div class="col-md-4">
                                                 <div class="text-center mb-3" id="genRepBtn">
-                                                    @if ($isSaved)
+                                                    {{-- @if ($isSaved) --}}
                                                         <a class="btn btn-primary btn-sm p-2 text-white" target="_blank"
                                                             href="{{ route('audit-report-viewpdf', ['id' => $audit->id]) }}">
                                                             View Report
                                                         </a>
-                                                    @else
+                                                    {{-- @else --}}
                                                         <a class="btn btn-danger btn-sm p-2 text-white" target="_blank"
                                                             href="{{ route('audit.report.view') }}"
                                                             onclick="event.preventDefault(); document.getElementById('audit-report-view{{ $audit->id }}').submit();">
                                                             Save Report
                                                         </a>
-                                                    @endif
+                                                    {{-- @endif --}}
 
 
                                                     {{-- <p>After pressing "View Report", Save report (.pdf) using Ctrl+P <br>, then upload it by pressing the button on right</p> --}}
