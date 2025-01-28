@@ -222,6 +222,8 @@
                                                 <span class="badge text-bg-warning">Employee</span>
                                             @elseif($client->role == 2)
                                                 <span class="badge text-bg-warning">Sub Admin</span>
+                                            @elseif($client->role == 3)
+                                                <span class="badge text-bg-success">HR</span>
                                             @endif
 
                                         </td>
@@ -439,6 +441,8 @@
 
                                 <option value="2"> Sub-Admin</option>
 
+                                <option value="3"> HR</option>
+
 
 
                             </Select>
@@ -509,6 +513,7 @@
                             <option value="0">Employee</option>
                             {{-- <option value="1">Super Admin</option> --}}
                             <option value="2">Sub-Admin</option>
+                            <option value="3">HR</option>
                         </select>
 
                         <!-- Permissions -->
