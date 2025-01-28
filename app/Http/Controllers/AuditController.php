@@ -1138,7 +1138,7 @@ class AuditController extends Controller
         // Check if the file is valid
         if ($pdf->isValid()) {
             // Define the folder path for saving the file
-            $folderPath = public_path('storage/completed_reports');
+            $folderPath = 'storage/completed_reports';
 
             $fileName = 'audit-report-' . $audit_id . '-' . now()->format('Y-m-d_H-i-s') . '.pdf';
 
@@ -1146,7 +1146,7 @@ class AuditController extends Controller
             $pdf->move($folderPath, $fileName);
 
             $pdfPath = $folderPath . '/' . $fileName;
-            $audit = AuditDetail::where('id', $audit_id)->first();
+            $audit = Audit::where('id', $audit_id)->first();
             if ($audit) {
                 $audit->report_path = $pdfPath;
                 $audit->save();
@@ -2395,16 +2395,16 @@ class AuditController extends Controller
         return view('audit-report-viewpdf', ['audit' => $audit]);
     }
 
-    public function viewGeneratedReportIndustrial($id)
-    {
-        $audit = AuditDetail::find($id);
+    // public function viewGeneratedReportIndustrial($id)
+    // {
+    //     $audit = AuditDetail::find($id);
 
-        if (!$audit) {
-            abort(404, 'Audit not found.');
-        }
+    //     if (!$audit) {
+    //         abort(404, 'Audit not found.');
+    //     }
 
-        return view('industrial-viewpdf', ['audit' => $audit]);
-    }
+    //     return view('industrial-viewpdf', ['audit' => $audit]);
+    // }
 
 
 
