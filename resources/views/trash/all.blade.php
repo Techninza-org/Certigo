@@ -128,6 +128,8 @@
 
                                         <th>Audit Name</th>
 
+                                        <th>Audit Date</th>
+
                                         <th>Client Name</th>
 
                                         <th>Ref Number</th>
@@ -140,6 +142,7 @@
 
                                         <th>Budget </th>
 
+                                        <th></th>
                                         <th></th>
 
                                     </tr>
@@ -162,6 +165,8 @@
 
                                             <td>{{ $aTrash->audit_name }} </td>
 
+                                            <td>{{ $aTrash->audit_start }} </td>
+
                                             <td>{{ $aTrash->client_name }} </td>
 
                                             <td>{{ $aTrash->doc_ref }}</td>
@@ -176,15 +181,28 @@
 
                                             <td> 
 
-                                                <a href="{{ route('restoreAudit') }}" class="" onclick="event.preventDefault(); document.getElementById('re_aud').submit();">Restore</a>
+                                                <a href="{{ route('restoreAudit') }}" class="" onclick="event.preventDefault(); document.getElementById('re_aud_{{ $aTrash->id }}').submit();">Restore</a>
 
-                                                <form action="{{ route('restoreAudit') }}" id="re_aud" method="post" class="d-none">
+                                                <form action="{{ route('restoreAudit') }}" id="re_aud_{{ $aTrash->id }}" method="post" class="d-none">
 
                                                     @csrf
 
                                                     <input type="hidden" name="rAudit" value="{{ $aTrash->id }}">
 
                                                 </form>
+
+                                            </td>
+                                            {{-- delete audit --}}
+                                            <td>
+                                                <a href="{{ route('deleteAudit') }}" class="text-danger" onclick="event.preventDefault(); document.getElementById('de_audit_{{ $aTrash->id }}').submit();">Delete</a>
+
+                                                <form action="{{ route('deleteAudit') }}" id="de_audit_{{ $aTrash->id }}" method="post" class="d-none">
+
+                                                    @csrf
+
+                                                    <input type="hidden" name="dAudit" value="{{ $aTrash->id }}">
+
+                                                </form>    
 
                                             </td>
 
@@ -217,6 +235,7 @@
                                         <th>Organisation  </th>
 
                                         <th></th>
+                                        <th></th>
 
                                     </tr>
 
@@ -240,9 +259,9 @@
 
                                             <td>
 
-                                                <a href="{{ route('restoreClient') }}" class="" onclick="event.preventDefault(); document.getElementById('re_clnt').submit();">Restore</a>
+                                                <a href="{{ route('restoreClient') }}" class="" onclick="event.preventDefault(); document.getElementById('re_clnt_{{ $cTrash->id }}').submit();">Restore</a>
 
-                                                <form action="{{ route('restoreClient') }}" id="re_clnt" method="post" class="d-none">
+                                                <form action="{{ route('restoreClient') }}" id="re_clnt_{{ $cTrash->id }}" method="post" class="d-none">
 
                                                     @csrf
 
@@ -251,6 +270,20 @@
                                                 </form>    
 
                                             </td>
+                                            {{-- delete client --}}
+                                            <td>
+                                                <a href="{{ route('deleteClient') }}" class="text-danger" onclick="event.preventDefault(); document.getElementById('de_client_{{$cTrash->id}}').submit();">Delete</a>
+
+                                                <form action="{{ route('deleteClient') }}" id="de_client_{{$cTrash->id}}" method="post" class="d-none">
+
+                                                    @csrf
+
+                                                    <input type="hidden" name="dClient" value="{{ $cTrash->id }}">
+
+                                                </form>    
+
+                                            </td>
+                                            
 
                                         </tr>
 
@@ -279,6 +312,7 @@
                                         <th>Description  </th>
 
                                         <th></th>
+                                        <th></th>
 
                                     </tr>
 
@@ -302,17 +336,31 @@
 
                                             <td>
 
-                                                <a href="{{ route('restoreClient') }}" class="" onclick="event.preventDefault(); document.getElementById('re_clnt').submit();">Restore</a>
+                                                <a href="{{ route('restoreTemplate') }}" class="" onclick="event.preventDefault(); document.getElementById('re_temp_{{$tTrash->id}}').submit();">Restore</a>
 
-                                                <form action="{{ route('restoreClient') }}" id="re_clnt" method="post" class="d-none">
+                                                <form action="{{ route('restoreTemplate') }}" id="re_temp_{{$tTrash->id}}" method="post" class="d-none">
 
                                                     @csrf
 
-                                                    <input type="hidden" name="rClient" value="{{ $tTrash->id }}">
+                                                    <input type="hidden" name="rTemplate" value="{{ $tTrash->id }}">
 
                                                 </form>    
 
                                             </td>
+                                            <td>
+
+                                                <a href="{{ route('deleteTemplate') }}" class="text-danger" onclick="event.preventDefault(); document.getElementById('de_temp_{{$tTrash->id}}').submit();">Delete</a>
+
+                                                <form action="{{ route('deleteTemplate') }}" id="de_temp_{{$tTrash->id}}" method="post" class="d-none">
+
+                                                    @csrf
+
+                                                    <input type="hidden" name="dTemplate" value="{{ $tTrash->id }}">
+
+                                                </form>    
+
+                                            </td>
+
 
                                         </tr>
 
@@ -340,13 +388,19 @@
 
                                         <th>Start Date</th>
 
+                                        <th>Client Name</th>
+
+                                        <th>Organisation Name</th>
+
                                         <th>Location  </th>
 
                                         <th>Amount  </th>
+                                        
+                                        <th>  </th>
+                                        <th>  </th>
 
 
 
-                                        <th></th>
 
                                     </tr>
 
@@ -364,6 +418,10 @@
 
                                             <td>{{ $train->audit_start_date }}</td>
 
+                                            <td>{{ $train->client_name }}</td>
+                                            
+                                            <td>{{ $train->organisation_name }}</td>
+
                                             <td>{{ $train->location }}</td>
 
                                             <td>{{ $train->amount }}</td>
@@ -372,13 +430,26 @@
 
                                             <td>
 
-                                                <a href="{{ route('restoreTraining') }}" class="" onclick="event.preventDefault(); document.getElementById('re_training').submit();">Restore</a>
+                                                <a href="{{ route('restoreTraining') }}" class="" onclick="event.preventDefault(); document.getElementById('re_training_{{ $train->id }}').submit();">Restore</a>
 
-                                                <form action="{{ route('restoreTraining') }}" id="re_training" method="post" class="d-none">
+                                                <form action="{{ route('restoreTraining') }}" id="re_training_{{ $train->id }}" method="post" class="d-none">
 
                                                     @csrf
 
                                                     <input type="hidden" name="rTraining" value="{{ $train->id }}">
+
+                                                </form>    
+
+                                            </td>
+                                            {{-- delete training --}}
+                                            <td>
+                                                <a href="{{ route('deleteTraining') }}" class="text-danger" onclick="event.preventDefault(); document.getElementById('de_training_{{$train->id}}').submit();">Delete</a>
+
+                                                <form action="{{ route('deleteTraining') }}" id="de_training_{{$train->id}}" method="post" class="d-none">
+
+                                                    @csrf
+
+                                                    <input type="hidden" name="dTraining" value="{{ $train->id }}">
 
                                                 </form>    
 
@@ -417,6 +488,7 @@
 
 
                                         <th></th>
+                                        <th></th>
 
                                     </tr>
 
@@ -452,13 +524,26 @@
 
                                             <td>
 
-                                                <a href="{{ route('restoreuser') }}" class="" onclick="event.preventDefault(); document.getElementById('re_user').submit();">Restore</a>
+                                                <a href="{{ route('restoreuser') }}" class="" onclick="event.preventDefault(); document.getElementById('re_user_{{ $train->id }}').submit();">Restore</a>
 
-                                                <form action="{{ route('restoreuser') }}" id="re_user" method="post" class="d-none">
+                                                <form action="{{ route('restoreuser') }}" id="re_user_{{ $train->id }}" method="post" class="d-none">
 
                                                     @csrf
 
                                                     <input type="hidden" name="ruser" value="{{ $train->id }}">
+
+                                                </form>    
+
+                                            </td>
+                                            {{-- delete user --}}
+                                            <td>
+                                                <a href="{{ route('deleteUser') }}" class="text-danger" onclick="event.preventDefault(); document.getElementById('de_user_{{$train->id}}').submit();">Delete</a>
+
+                                                <form action="{{ route('deleteUser') }}" id="de_user_{{$train->id}}" method="post" class="d-none">
+
+                                                    @csrf
+
+                                                    <input type="hidden" name="duser" value="{{ $train->id }}">
 
                                                 </form>    
 

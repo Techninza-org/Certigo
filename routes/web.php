@@ -333,16 +333,21 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/all-trash', 'allTrash')->name('get.trash');
 
         Route::post('/restore-audit', 'r_audit')->name('restoreAudit');
+        Route::post('/delete-audit', 'delete_audit')->name('deleteAudit');
+
 
         Route::post('/restore-client', 'r_client')->name('restoreClient');
+        Route::post('/delete-client', 'd_client')->name('deleteClient');
+
 
         Route::post('/restore-training', 'r_training')->name('restoreTraining');
+        Route::post('/delete-training', 'd_training')->name('deleteTraining');
 
         Route::post('/restore-user', 'r_user')->name('restoreuser');
+        Route::post('/delete-user', 'd_user')->name('deleteUser');
 
-
-
-
+        Route::post('/restore-template', 'r_template')->name('restoreTemplate');
+        Route::post('/delete-template', 'd_template')->name('deleteTemplate');
 
     });
 

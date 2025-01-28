@@ -619,7 +619,7 @@
                                 <tbody>
                                     @foreach ($tq['tempQues'] as $index => $q)
                                         <tr class="templates-questions">
-                                            <td>{{ $index + 1 }}</td>
+                                            <td class="all-index">{{ $index + 1 }}</td>
                                             <td>
                                                 {{ $q->question }}
                                                 <p class="mt-2 text-danger">{!! $q->answewrs->objective_evidences !!}</p>
@@ -650,20 +650,20 @@
                                                     {{ $q->pr_resp_text }}
                                                 @endif
                                             </td>
-                                            {{-- <td>
-                                                @if ($q->res->response_score == 'null')
+                                            <td>
+                                                @if ($q->pr_resp_score == 'null')
                                                     1
                                                 @else
                                                     @php
-                                                        $values = explode(',', $q->res->response_score);
+                                                        $values = explode(',', $q->pr_resp_score);
                                                         if (count($values) == 1) {
-                                                            echo $q->res->response_score;
+                                                            echo $q->pr_resp_score;
                                                         } else {
                                                             echo array_sum($values);
                                                         }
                                                     @endphp
                                                 @endif
-                                            </td> --}}
+                                            </td>
                                         </tr>
                                     @endforeach
                                     {{-- 
@@ -683,21 +683,15 @@
                             </table>
                         </div>
                     @endforeach
+                    {{-- ////////////non compliance --}}
                     @foreach ($templatecoll as $tq)
                         <div style="margin-top: 20px;">
                             <div
                                 style="background-color:{{ $color_code }};display: flex; justify-content: space-between; align-items: center;">
-                                <p style="color: white; margin: 0; padding-left: 10px; padding-top: 10px;">Non-Compliances</p>
-                                <p style="margin-bottom: 0; margin-right: 20px; color: white;">
-                                    {{-- <span style="margin-bottom: 0; margin-right: 20px; color: white;">{{ $tq['positive_responses'] }}/{{ count($tq['tempQues']) }}</span> --}}
-                                    @php
-                                        // $percen = ($tq['positive_responses']/(count($tq['tempQues'])*2))*100;
-                                        // echo round($percen,2);
-                                        // echo '%';
-                                    @endphp
-                                </p>
+                                <p style="color: white; margin: 0; padding-left: 10px; padding-top: 10px;">
+                                    Non-Compliances {{ $tq['tempName'] }}</p>
+
                             </div>
-                            {{-- NO questions --}}
                             <table style="border-collapse: collapse;width:100%;">
                                 <thead>
                                     <tr>
@@ -721,13 +715,17 @@
                                             style="padding: 5px;border: 1px solid {{ $color_code }};text-align: left;font-size:14px;">
                                             Previous
                                         </th>
+                                        <th
+                                            style="padding: 5px;border: 1px solid {{ $color_code }};text-align: left;font-size:14px;">
+                                            Previous Score
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($tq['tempQues'] as $index => $q)
-                                        @if ($q->resp_text->name === 'NO')
+                                        @if ($q->res->response_score === '0')
                                             <tr class="templates-questions">
-                                                <td>{{ $index + 1 }}</td>
+                                                <td class="no-index">{{ $index + 1 }}</td>
                                                 <td>
                                                     {{ $q->question }}
                                                     <p class="mt-2 text-danger">{!! $q->answewrs->objective_evidences !!}</p>
@@ -758,22 +756,23 @@
                                                         {{ $q->pr_resp_text }}
                                                     @endif
                                                 </td>
+                                                <td>
+                                                    @if ($q->pr_resp_score == 'null')
+                                                        1
+                                                    @else
+                                                        @php
+                                                            $values = explode(',', $q->pr_resp_score);
+                                                            if (count($values) == 1) {
+                                                                echo $q->pr_resp_score;
+                                                            } else {
+                                                                echo array_sum($values);
+                                                            }
+                                                        @endphp
+                                                    @endif
+                                                </td>
                                             </tr>
                                         @endif
                                     @endforeach
-                                    {{-- 
-                              <tr class="templates-questions">
-                                 <td>2</td>
-                                 <td>
-                                    <p>Are the cleaning and sanitization protocols in place and satisfactory?</p>
-                                    <p>The cleaning in the specified areas was unsatisfactory, as there was visible oil sedimentation near the rice steamers, water tap knobs in the production area, and the exhaust hood.</p>
-                                    <p>As per the guidelines set by the Food Safety and Standards Authority of India (FSSAI), it is essential for all food establishments to prioritize hygiene and safety. To comply with FSSAI regulations, food businesses should ensure regular cleaning and sanitization of all food preparation and storage areas, including surfaces near cooking equipment, water tap knobs, and exhaust hoods. Additionally, proper disposal of oil and grease buildup should be carried out to prevent sedimentation. Adhering to these guidelines not only ensures compliance but also guarantees the delivery of safe and hygienic food products to consumers, safeguarding public health and enhancing the reputation of the establishment.</p>
-                                 </td>
-                                 <td>0</td>
-                                 <td>No</td>
-                                 <td></td>
-                              </tr>
-                              --}}
                                 </tbody>
                             </table>
                         </div>
@@ -911,10 +910,10 @@
                             })
                             .then(response => response.json())
                             .then(data => {
-                                console.log('Success:', data); 
+                                console.log('Success:', data);
                             })
                             .catch(error => {
-                                console.error('Error:', error); 
+                                console.error('Error:', error);
                             });
                     });
             }, 2000);
@@ -977,13 +976,7 @@
                 chart: {
                     type: 'bar'
                 },
-
-
-
                 title: {
-
-
-
                     text: 'SCORE BY SECTION'
                 },
                 xAxis: {
@@ -1012,153 +1005,89 @@
                     data: {!! json_encode($roundPercen) !!}
                 }]
             });
+        @elseif ($type == 1)
+            Highcharts.chart('container', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'SCORE BY SECTION'
+                },
+                xAxis: {
+                    categories: {!! json_encode($templatenames) !!}
+                },
+                yAxis: {
+                    min: 0,
+                    max: 100,
+                    title: {
+                        text: 'Percentage'
+                    }
+                },
+                legend: {
+                    reversed: true
+                },
+                plotOptions: {
+                    series: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true
+                        }
+                    }
+                },
+                series: [{
+                    data: {!! json_encode($roundPercen) !!}
+                }]
+            });
         @else
+            const allIndexes = document.querySelectorAll('.all-index');
+            const allLength = allIndexes.length;
+            const noAnsIndexes = document.querySelectorAll('.no-index');
+            const noLength = noAnsIndexes.length;
 
-
-
+            const noPercentage = (noLength / allLength) * 100;
+            const yesPercentage = 100 - noPercentage;
 
 
             Highcharts.chart('container', {
-
-
-
                 chart: {
-
-
-
-                    type: 'column'
-
-
-
+                    type: 'pie'
                 },
-
-
-
                 title: {
-
-
-
                     text: 'SCORE BY SECTION'
-
-
-
                 },
-
-
-
-                xAxis: {
-
-
-
-                    categories: {!! json_encode($templatenames) !!}
-
-
-
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
                 },
-
-
-
-                yAxis: {
-
-
-
-                    min: 0,
-
-
-
-                    max: 100,
-
-
-
-
-
-
-
-                    title: {
-
-
-
-                        text: 'Percentage'
-
-
-
+                accessibility: {
+                    point: {
+                        valueSuffix: '%'
                     }
-
-
-
                 },
-
-
-
-                legend: {
-
-
-
-                    reversed: true
-
-
-
-                },
-
-
-
                 plotOptions: {
-
-
-
-                    series: {
-
-
-
-                        stacking: 'normal',
-
-
-
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
                         dataLabels: {
-
-
-
-                            enabled: true
-
-
-
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %'
                         }
-
-
-
                     }
-
-
-
                 },
-
-
-
                 series: [{
-
-
-
-
-
-
-
-                    data: {!! json_encode($roundPercen) !!}
-
-
-
+                    name: 'Score',
+                    colorByPoint: true,
+                    data: [{
+                            name: 'Non-Compliances',
+                            y: noPercentage
+                        },
+                        {
+                            name: 'Compliances',
+                            y: yesPercentage
+                        }
+                    ]
                 }]
-
-
-
             });
         @endif
-
-
-
-
-
-
-
 
 
         // var sdgsArr = <?php echo $sdgs; ?>;        

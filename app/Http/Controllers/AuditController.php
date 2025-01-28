@@ -930,12 +930,14 @@ class AuditController extends Controller
                     // Log::info('Previous audit found', ['audit' => $previous_audit]);
                     // Log::info('Q', [$q->id]);
                     $previous_qResponse = AuditDetail::where(['audit_id' => $previous_audit->id])->where(['question_id' => $q->id])->first();
-                    // Log::info('Previous question response', ['response' => $previous_qResponse]);
+                    Log::info('Previous question response', ['response' => $previous_qResponse]);
                     // dd($previous_qResponse);
                     if ($previous_qResponse !== null) {
 
                         $p_resp_text = ObjectiveResponse::where(['id' => $previous_qResponse->response_id])->first();
+                        $p_resp_score = $previous_qResponse->response_score;
                         $q->pr_resp_text = $p_resp_text->name;
+                        $q->pr_resp_score = $p_resp_score;
                     } else {
                         return redirect()->back()->with('error', "Your previous audit report is incomplete, please fill it completely to proceed further");
                     }

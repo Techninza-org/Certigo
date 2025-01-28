@@ -61,6 +61,7 @@
                       <select name="type" id="" class="form-select">
                         <option value="0" {{ $color->type == 0 ? 'selected' : '' }}>Horizontal</option>
                         <option value="1" {{ $color->type == 1 ? 'selected' : '' }}>Vertical</option>
+                        <option value="2" {{ $color->type == 2 ? 'selected' : '' }}>Pie Chart</option>
 
                       </select>
 
