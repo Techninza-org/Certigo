@@ -34,18 +34,9 @@ class ClientAuthController extends Controller
             $myaudits = Audit::where(['client_id' => Auth::guard('webclient')->user()->id])->get();
 
             foreach ($myaudits as $audit) {
-                $auditor = User::where(['id' => $audit->auditors])->first('name');
-                $audit->auditor = $auditor->name;
 
-                $templatesArr = $audit->checklists;
-                $templatesjson = json_decode($templatesArr);
-                $tempNames = [];
-                foreach ($templatesjson as $tArr) {
-                    $template = Template::where(['id' => $tArr])->first();
-                    $tempNames[] = $template;
-                }
-
-                $audit->tempname = $tempNames;
+               // get audit details
+               $audit->
             }
 
             $folders = TempFolder::all();

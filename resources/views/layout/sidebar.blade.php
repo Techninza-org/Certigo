@@ -241,7 +241,7 @@
                     </li>
                 @endif
 
-                @if (Auth::user() && Auth::user()->role === 1 && Auth::user()->hasPermission(12))
+                @if (Auth::user() && (Auth::user()->role === 1 || Auth::user()->role === 3) && Auth::user()->hasPermission(12))
                     <!-- HR  -->
                     <div class="accordion accordion-flush" id="accordionFlushExample">
                         <div class="accordion-item">
