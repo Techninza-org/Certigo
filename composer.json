@@ -15,6 +15,7 @@
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.2",
         "niklasravnsborg/laravel-pdf": "^4.1",
+        "setasign/fpdi": "^2.6",
         "stevebauman/location": "^7.0"
     },
     "require-dev": {

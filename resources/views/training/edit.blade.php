@@ -3,13 +3,7 @@
 
 
 @push('css')
-
-
-
     <style>
-
-
-
         /* Styling for the popup */
 
 
@@ -86,7 +80,7 @@
 
 
 
-        
+
 
 
 
@@ -122,7 +116,7 @@
 
 
 
-            max-width: -webkit-fill-available!important;
+            max-width: -webkit-fill-available !important;
 
 
 
@@ -131,21 +125,12 @@
 
 
         }
-
-
-
     </style>
-
-
-
 @endpush
 
 
 
 @section('content')
-
-
-
     <div class="row">
 
 
@@ -160,6 +145,12 @@
 
                 <div class="card-body">
 
+                    <div style="margin-bottom: 15px;">
+                        <div class="d-flex justify-content-between items-center">
+                            <button id="backButton" class="btn btn-primary">Back</button>
+                            <button id="forwardButton" class="btn btn-secondary">Forward</button>
+                        </div>
+                    </div>
 
 
                     <div>
@@ -174,63 +165,51 @@
 
 
 
-                    @if (\Session::has('success')) 
+                    @if (\Session::has('success'))
+                        <div class="alert alert-success">
 
 
 
-                    <div class="alert alert-success"> 
 
 
 
-                 
+
+                            {!! \Session::get('success') !!}
 
 
 
-                    {!! \Session::get('success') !!} 
 
 
 
-                     
 
-
-
-                    </div> 
-
-
-
+                        </div>
                     @endif
 
 
 
-                    @if (\Session::has('error')) 
+                    @if (\Session::has('error'))
+                        <div class="alert alert-danger">
 
 
 
-                    <div class="alert alert-danger"> 
 
 
 
-                     
+
+                            {!! \Session::get('error') !!}
 
 
 
-                        {!! \Session::get('error') !!}  
 
 
 
-                         
 
-
-
-                    </div> 
-
-
-
+                        </div>
                     @endif
 
 
 
-                    <div class=" d-block align-items-center justify-content-between mb-9" >
+                    <div class=" d-block align-items-center justify-content-between mb-9">
 
 
 
@@ -250,7 +229,7 @@
 
 
 
-        
+
 
 
 
@@ -262,19 +241,20 @@
 
 
 
-                                    <input type="text" class="form-control" name="topic" value="{{ $training->topic }}" required>
+                                    <input type="text" class="form-control" name="topic" value="{{ $training->topic }}"
+                                        required>
 
 
 
-                                </div>                       
+                                </div>
 
 
 
-        
 
 
 
-        
+
+
 
 
 
@@ -286,7 +266,8 @@
 
 
 
-                                    <input type="datetime-local" class="form-control" name="audit_start_date" {{ $training->audit_start_date }} required>
+                                    <input type="datetime-local" class="form-control" name="audit_start_date"
+                                        {{ $training->audit_start_date }} required>
 
 
 
@@ -294,7 +275,7 @@
 
 
 
-        
+
 
 
 
@@ -306,7 +287,8 @@
 
 
 
-                                    <input type="text" class="form-control" name="location" value="{{ $training->location  }}"  required>
+                                    <input type="text" class="form-control" name="location"
+                                        value="{{ $training->location }}" required>
 
 
 
@@ -314,7 +296,7 @@
 
 
 
-        
+
 
 
 
@@ -326,7 +308,8 @@
 
 
 
-                                    <input type="text" class="form-control" name="amount" value="{{ $training->amount  }}" required>
+                                    <input type="text" class="form-control" name="amount"
+                                        value="{{ $training->amount }}" required>
 
 
 
@@ -334,7 +317,7 @@
 
 
 
-        
+
 
 
 
@@ -346,7 +329,7 @@
 
 
 
-        
+
 
 
 
@@ -354,14 +337,8 @@
 
 
 
-                                        @foreach($clients as $c)
-
-
-
-                                        <option value="{{ $c->id }}" >{{ $c->organisation_name }} </option>                                
-
-
-
+                                        @foreach ($clients as $c)
+                                            <option value="{{ $c->id }}">{{ $c->organisation_name }} </option>
                                         @endforeach
 
 
@@ -374,15 +351,15 @@
 
 
 
-        
 
 
 
-                                <div class="mb-3 col-md-4">                            
+
+                                <div class="mb-3 col-md-4">
 
 
 
-                                   
+
 
 
 
@@ -390,18 +367,13 @@
 
 
 
-                                    <select id="select-members" multiple name="members" placeholder=" Select" data-search="true" data-silent-initial-value-set="true">
+                                    <select id="select-members" multiple name="members" placeholder=" Select"
+                                        data-search="true" data-silent-initial-value-set="true">
 
 
 
-                                        @foreach($users as $u)
-
-
-
-                                        <option value="{{ $u->id }}" >{{ $u->name }}</option>
-
-
-
+                                        @foreach ($users as $u)
+                                            <option value="{{ $u->id }}">{{ $u->name }}</option>
                                         @endforeach
 
 
@@ -410,7 +382,7 @@
 
 
 
-                                    
+
 
 
 
@@ -418,15 +390,15 @@
 
 
 
-        
 
 
 
-                                <div class="mb-3 col-md-4">                            
+
+                                <div class="mb-3 col-md-4">
 
 
 
-                                   
+
 
 
 
@@ -434,19 +406,15 @@
 
 
 
-                                    <select id="select-attendees" multiple name="attendees" placeholder=" Select" data-search="true" data-silent-initial-value-set="true">
+                                    <select id="select-attendees" multiple name="attendees" placeholder=" Select"
+                                        data-search="true" data-silent-initial-value-set="true">
 
 
 
-                                        @foreach($attendees as $aten)
-
-
-
-                                        <option value="{{ $aten->id }}"  >{{ $aten->fname }} {{ $aten->lname }}</option>
-
-
-
-                                        @endforeach                             
+                                        @foreach ($attendees as $aten)
+                                            <option value="{{ $aten->id }}">{{ $aten->fname }} {{ $aten->lname }}
+                                            </option>
+                                        @endforeach
 
 
 
@@ -454,7 +422,7 @@
 
 
 
-                                    
+
 
 
 
@@ -462,7 +430,7 @@
 
 
 
-        
+
 
 
 
@@ -474,7 +442,7 @@
 
 
 
-                                    <button type="submit" id="formSubmission" class="btn btn-primary" >ADD</button>
+                                    <button type="submit" id="formSubmission" class="btn btn-primary">ADD</button>
 
 
 
@@ -498,7 +466,7 @@
 
 
 
-                    
+
 
 
 
@@ -515,17 +483,6 @@
 
 
     </div>
-
-
-
-
-
-
-
-
-
-
-
 @endsection
 
 
@@ -551,58 +508,16 @@
 
 
 @push('js')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <script>
-
-
-
         $(document).ready(function() {
 
 
 
-            
-
-
-
-           
 
 
 
 
 
-
-
-        });
-
-
-
-
-
-
-
-        VirtualSelect.init({ 
-
-
-
-            ele: '#select-attendees' ,
-
-
-
-            
 
 
 
@@ -618,11 +533,19 @@
 
 
 
-        VirtualSelect.init({ 
+        VirtualSelect.init({
 
 
 
-            ele: '#select-members' 
+            ele: '#select-attendees',
+
+
+
+
+
+
+
+
 
 
 
@@ -630,11 +553,30 @@
 
 
 
+
+
+
+
+        VirtualSelect.init({
+
+
+
+            ele: '#select-members'
+
+
+
+        });
     </script>
 
 
+    <script>
+        // Add event listeners for back and forward buttons
+        document.getElementById('backButton').addEventListener('click', function() {
+            window.history.back(); // Navigate to the previous page in history
+        });
 
+        document.getElementById('forwardButton').addEventListener('click', function() {
+            window.history.forward(); // Navigate to the next page in history
+        });
+    </script>
 @endpush
-
-
-

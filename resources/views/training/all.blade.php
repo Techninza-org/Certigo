@@ -3,13 +3,7 @@
 
 
 @push('css')
-
-
-
     <style>
-
-
-
         /* Styling for the popup */
 
 
@@ -86,7 +80,7 @@
 
 
 
-        
+
 
 
 
@@ -114,7 +108,7 @@
 
 
 
-    
+
 
 
 
@@ -122,7 +116,7 @@
 
 
 
-            border-radius:0px;
+            border-radius: 0px;
 
 
 
@@ -138,15 +132,16 @@
 
 
 
-        .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+        .nav-tabs .nav-item.show .nav-link,
+        .nav-tabs .nav-link.active {
 
 
 
-            color: #fff!important;
+            color: #fff !important;
 
 
 
-            background-color: #5d87ff!important;
+            background-color: #5d87ff !important;
 
 
 
@@ -170,7 +165,7 @@
 
 
 
-             width: -webkit-fill-available;
+                width: -webkit-fill-available;
 
 
 
@@ -186,68 +181,57 @@
 
         /* Modal content */
 
-.modal-content {
+        .modal-content {
 
-    background-color: #fff;
+            background-color: #fff;
 
-    margin: 15% auto;
+            margin: 15% auto;
 
-    padding: 20px;
+            padding: 20px;
 
-    border: 1px solid #888;
+            border: 1px solid #888;
 
-    width: auto;
+            width: auto;
 
-    position: relative;
+            position: relative;
 
-}
-
-
-
-/* Close button */
-
-.close {
-
-    color: #aaa;
-
-    position: absolute;
-
-    top: 0;
-
-    right: 0;
-
-    font-size: 20px;
-
-    padding: 10px;
-
-    cursor: pointer;
-
-}
+        }
 
 
 
-.close:hover {
+        /* Close button */
 
-    color: red;
+        .close {
 
-}
+            color: #aaa;
+
+            position: absolute;
+
+            top: 0;
+
+            right: 0;
+
+            font-size: 20px;
+
+            padding: 10px;
+
+            cursor: pointer;
+
+        }
 
 
 
+        .close:hover {
 
+            color: red;
 
+        }
     </style>
-
-
-
 @endpush
 
 
 
 @section('content')
-
-
-
     <div class="row">
 
 
@@ -267,29 +251,31 @@
                     <div>
 
 
-                        @if(Auth::user()->role == 1 || Auth::user()->role == 2)
-                        <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#trainingModal">
+                        @if (Auth::user()->role == 1 || Auth::user()->role == 2)
+                            <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal"
+                                data-bs-target="#trainingModal">
 
 
 
-                            <i class="fa-solid fa-circle-plus" style="color: #f9f9f9"></i>&nbsp; Schedule training
+                                <i class="fa-solid fa-circle-plus" style="color: #f9f9f9"></i>&nbsp; Schedule training
 
 
 
-                          </button>
+                            </button>
 
 
 
-                          <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#attendeeModal" >
+                            <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal"
+                                data-bs-target="#attendeeModal">
 
 
 
-                            <i class="fa-solid fa-circle-plus" style="color: #f9f9f9"></i>&nbsp; Add new attendee
+                                <i class="fa-solid fa-circle-plus" style="color: #f9f9f9"></i>&nbsp; Add new attendee
 
 
 
-                          </button>
-                          @endif
+                            </button>
+                        @endif
 
 
                     </div>
@@ -304,58 +290,46 @@
 
 
 
-                        @if (\Session::has('success')) 
+                        @if (\Session::has('success'))
+                            <div class="alert alert-success">
 
 
 
-                        <div class="alert alert-success"> 
+                                <ul>
 
 
 
-                            <ul> 
+                                    <li>{!! \Session::get('success') !!} </li>
 
 
 
-                                <li>{!! \Session::get('success') !!} </li> 
+                                </ul>
 
 
 
-                            </ul> 
-
-
-
-                        </div> 
-
-
-
+                            </div>
                         @endif
 
 
 
-                        @if (\Session::has('error')) 
+                        @if (\Session::has('error'))
+                            <div class="alert alert-danger">
 
 
 
-                        <div class="alert alert-danger"> 
+                                <ul>
 
 
 
-                            <ul> 
+                                    <li>{!! \Session::get('error') !!} </li>
 
 
 
-                                <li>{!! \Session::get('error') !!} </li> 
+                                </ul>
 
 
 
-                            </ul> 
-
-
-
-                        </div> 
-
-
-
+                            </div>
                         @endif
 
 
@@ -364,15 +338,16 @@
 
 
 
-                            <div class="row d-flex">                
+                            <div class="row d-flex">
 
 
 
-                                <ul class="nav nav-tabs nav-justified mb-3 justify-content-center" id="ex1" role="tablist">
+                                <ul class="nav nav-tabs nav-justified mb-3 justify-content-center" id="ex1"
+                                    role="tablist">
 
 
 
-                                    <div class="col-md-4 col-sm-12">                        
+                                    <div class="col-md-4 col-sm-12">
 
 
 
@@ -380,43 +355,9 @@
 
 
 
-                                        <a
-
-
-
-                                            class="nav-link active"
-
-
-
-                                            id="ex3-tab-1"
-
-
-
-                                            data-bs-toggle="tab"
-
-
-
-                                            href="#ex3-tabs-1"
-
-
-
-                                            role="tab"
-
-
-
-                                            aria-controls="ex3-tabs-1"
-
-
-
-                                            aria-selected="true"
-
-
-
-                                            >Upcoming</a
-
-
-
-                                        >
+                                            <a class="nav-link active" id="ex3-tab-1" data-bs-toggle="tab"
+                                                href="#ex3-tabs-1" role="tab" aria-controls="ex3-tabs-1"
+                                                aria-selected="true">Upcoming</a>
 
 
 
@@ -428,115 +369,47 @@
 
 
 
-                                    <div class="col-md-4 col-sm-12">  
+                                    <div class="col-md-4 col-sm-12">
 
 
 
-                                    <li class="nav-item" role="presentation">
+                                        <li class="nav-item" role="presentation">
 
 
 
-                                    <a
+                                            <a class="nav-link" id="ex3-tab-2" data-bs-toggle="tab" href="#ex3-tabs-2"
+                                                role="tab" aria-controls="ex3-tabs-2" aria-selected="false">In Progress
+                                            </a>
 
 
 
-                                        class="nav-link"
+                                        </li>
 
 
 
-                                        id="ex3-tab-2"
+                                    </div>
 
 
 
-                                        data-bs-toggle="tab"
+                                    <div class="col-md-4 col-sm-12">
 
 
 
-                                        href="#ex3-tabs-2"
+                                        <li class="nav-item" role="presentation">
 
 
 
-                                        role="tab"
+                                            <a class="nav-link" id="ex3-tab-3" data-bs-toggle="tab" href="#ex3-tabs-3"
+                                                role="tab" aria-controls="ex3-tabs-3"
+                                                aria-selected="false">Completed</a>
 
 
 
-                                        aria-controls="ex3-tabs-2"
+                                        </li>
 
 
 
-                                        aria-selected="false"
-
-
-
-                                        >In Progress </a
-
-
-
-                                    >
-
-
-
-                                    </li>
-
-
-
-                                </div>
-
-
-
-                                <div class="col-md-4 col-sm-12">  
-
-
-
-                                    <li class="nav-item" role="presentation">
-
-
-
-                                    <a
-
-
-
-                                        class="nav-link"
-
-
-
-                                        id="ex3-tab-3"
-
-
-
-                                        data-bs-toggle="tab"
-
-
-
-                                        href="#ex3-tabs-3"
-
-
-
-                                        role="tab"
-
-
-
-                                        aria-controls="ex3-tabs-3"
-
-
-
-                                        aria-selected="false"
-
-
-
-                                        >Completed</a
-
-
-
-                                    >
-
-
-
-                                    </li>
-
-
-
-                                </div>
+                                    </div>
 
 
 
@@ -548,11 +421,12 @@
 
 
 
-                              <div class="tab-content" id="ex2-content" style="    overflow-x: auto;">
+                            <div class="tab-content" id="ex2-content" style="    overflow-x: auto;">
 
 
 
-                                <div class="tab-pane fade show active" id="ex3-tabs-1" role="tabpanel" aria-labelledby="ex3-tab-1" >
+                                <div class="tab-pane fade show active" id="ex3-tabs-1" role="tabpanel"
+                                    aria-labelledby="ex3-tab-1">
 
 
 
@@ -588,7 +462,7 @@
 
 
 
-            
+
 
 
 
@@ -596,7 +470,7 @@
 
 
 
-            
+
 
 
 
@@ -613,9 +487,6 @@
 
 
                                             @foreach ($uptrainings as $train)
-
-
-
                                                 <tr>
 
 
@@ -630,13 +501,12 @@
 
                                                     <td>@php
 
+                                                        $date = date(
+                                                            'F j, Y  H:i A',
+                                                            strtotime($train->audit_start_date),
+                                                        );
 
-
-                                                        $date = date('F j, Y  H:i A', strtotime($train->audit_start_date));
-
-
-
-                                                        @endphp
+                                                    @endphp
 
 
 
@@ -652,15 +522,15 @@
 
 
 
-                                                    <td> 
-                                                    @if(Auth::user()->role == 1)
-                                                    ₹ {{ $train->amount }}
-                                                @endif
-                                                </td>
+                                                    <td>
+                                                        @if (Auth::user()->role == 1)
+                                                            ₹ {{ $train->amount }}
+                                                        @endif
+                                                    </td>
 
 
 
-            
+
 
 
 
@@ -668,163 +538,160 @@
 
 
 
-                                                      <div style="    position: relative;">
+                                                        <div style="    position: relative;">
 
 
 
-                                                        <i class="fa-solid fa-ellipsis-vertical btn popupButton" ></i>
+                                                            <i class="fa-solid fa-ellipsis-vertical btn popupButton"></i>
 
 
 
-                                                        <div id="popup" class="popup">
+                                                            <div id="popup" class="popup">
 
 
 
-                                                            <div class="option d-flex p-1">
+                                                                <div class="option d-flex p-1">
 
 
 
-                                                                <a class="btn pt-0 pb-0" href="{{ route('view.training') }}" 
+                                                                    <a class="btn pt-0 pb-0"
+                                                                        href="{{ route('view.training') }}"
+                                                                        onclick="event.preventDefault(); document.getElementById('view-training{{ $train->id }}').submit();">
 
 
 
-                                                                onclick = "event.preventDefault(); document.getElementById('view-training{{ $train->id }}').submit();"
+                                                                        <i class="fa-regular fa-file-lines"></i> View </a>
 
 
 
-                                                                >
+                                                                    <form id="view-training{{ $train->id }}"
+                                                                        action="{{ route('view.training') }}" method="get"
+                                                                        class="d-none">
 
 
 
-                                                                <i class="fa-regular fa-file-lines"></i> View </a>
 
 
 
-                                                                <form id="view-training{{ $train->id }}" action="{{ route('view.training') }}" method="get" class="d-none">
+
+                                                                        <input type="hidden" name="trainingId"
+                                                                            value="{{ $train->id }}">
 
 
 
-                                                                    
+                                                                    </form>
 
 
 
-                                                                    <input type="hidden" name="trainingId" value="{{ $train->id }}">
+                                                                </div>
 
 
 
-                                                                </form>
+
+
+
+
+                                                                <div class="option d-flex p-1">
+
+
+
+                                                                    <a class="btn pt-0 pb-0"
+                                                                        href="{{ route('get.edit.training', $train->id) }}">
+
+
+
+                                                                        <i class="fa-solid fa-pen-to-square"></i> Edit </a>
+
+
+
+                                                                </div>
+
+
+
+
+
+
+
+                                                                {{-- <div class="option d-flex p-1">
+
+
+
+                                                                                                    <a class="btn pt-0 pb-0"
+                                                                                                        href="{{ route('get.edit.training') }}"
+                                                                                                        onclick="event.preventDefault(); document.getElementById('edit-training').submit();">
+
+
+
+                                                                                                        <i class="fa-solid fa-pen-to-square"></i> Edit </a>
+
+
+
+                                                                                                    <form id="edit-training"
+                                                                                                        action="{{ route('get.edit.training') }}" method="get"
+                                                                                                        class="d-none">
+
+
+
+                                                                                                        @csrf
+
+
+
+                                                                                                        <input type="hidden" name="trainingId"
+                                                                                                            value="{{ $train->id }}">
+
+
+
+                                                                                                    </form>
+
+
+
+                                                                                                </div> --}}
+
+
+                                                                @if (Auth::user()->role === 1 || Auth::user()->role === 2)
+                                                                    <div class="option d-flex p-1">
+
+
+
+                                                                        <a class="btn pt-0 pb-0"
+                                                                            href="{{ route('delete.training') }}"
+                                                                            onclick="event.preventDefault(); document.getElementById('delete-training{{ $train->id }}').submit();">
+
+
+
+                                                                            <i class="fa-solid fa-pen-to-square"></i> Delete
+                                                                        </a>
+
+
+
+                                                                        <form id="delete-training{{ $train->id }}"
+                                                                            action="{{ route('delete.training') }}"
+                                                                            method="get" class="d-none">
+
+
+
+                                                                            @csrf
+
+
+
+                                                                            <input type="hidden" name="trainingId"
+                                                                                value="{{ $train->id }}">
+
+
+
+                                                                        </form>
+
+
+
+                                                                    </div>
+                                                                @endif
+
+
+
 
 
 
                                                             </div>
-
-
-
-            
-
-
-
-                                                            <div class="option d-flex p-1">
-
-
-
-                                                                <a class="btn pt-0 pb-0" href="{{ route('get.edit.training', $train->id) }}"   >
-
-
-
-                                                                <i class="fa-solid fa-pen-to-square"></i> Edit </a>                                                    
-
-
-
-                                                            </div>
-
-
-
-                                                            
-
-
-
-                                                            {{-- <div class="option d-flex p-1">
-
-
-
-                                                                <a class="btn pt-0 pb-0" href="{{ route('get.edit.training') }}" 
-
-
-
-                                                                onclick = "event.preventDefault(); document.getElementById('edit-training').submit();"
-
-
-
-                                                                >
-
-
-
-                                                                <i class="fa-solid fa-pen-to-square"></i> Edit </a>
-
-
-
-                                                                <form id="edit-training" action="{{ route('get.edit.training') }}" method="get" class="d-none">
-
-
-
-                                                                    @csrf
-
-
-
-                                                                    <input type="hidden" name="trainingId" value="{{ $train->id }}">
-
-
-
-                                                                </form>
-
-
-
-                                                            </div> --}}
-
-
-                                                            @if(Auth::user()->role === 1 || Auth::user()->role === 2)
-                                                            <div class="option d-flex p-1">
-
-
-
-                                                                <a class="btn pt-0 pb-0" href="{{ route('delete.training') }}" 
-
-
-
-                                                                onclick = "event.preventDefault(); document.getElementById('delete-training{{ $train->id }}').submit();"
-
-
-
-                                                                >
-
-
-
-                                                                <i class="fa-solid fa-pen-to-square"></i> Delete </a>
-
-
-
-                                                                <form id="delete-training{{ $train->id }}" action="{{ route('delete.training') }}" method="get" class="d-none">
-
-
-
-                                                                    @csrf
-
-
-
-                                                                    <input type="hidden" name="trainingId" value="{{ $train->id }}">
-
-
-
-                                                                </form>
-
-
-
-                                                            </div>
-                                                            @endif
-
-
-                                                            
 
 
 
@@ -832,19 +699,15 @@
 
 
 
-                                                      </div>
 
 
 
-                                                        
 
 
 
-            
 
 
 
-            
 
 
 
@@ -852,14 +715,11 @@
 
 
 
-            
+
 
 
 
                                                 </tr>
-
-
-
                                             @endforeach
 
 
@@ -912,7 +772,7 @@
 
 
 
-            
+
 
 
 
@@ -920,7 +780,7 @@
 
 
 
-            
+
 
 
 
@@ -937,9 +797,6 @@
 
 
                                             @foreach ($inptrainings as $train)
-
-
-
                                                 <tr>
 
 
@@ -954,13 +811,12 @@
 
                                                     <td>@php
 
+                                                        $date = date(
+                                                            'F j, Y  H:i A',
+                                                            strtotime($train->audit_start_date),
+                                                        );
 
-
-                                                        $date = date('F j, Y  H:i A', strtotime($train->audit_start_date));
-
-
-
-                                                        @endphp
+                                                    @endphp
 
 
 
@@ -976,15 +832,15 @@
 
 
 
-                                                    <td> 
-                                                    @if(Auth::user()->role == 1)
-                                                    ₹ {{ $train->amount }}
-                                                @endif
-                                                </td>
+                                                    <td>
+                                                        @if (Auth::user()->role == 1)
+                                                            ₹ {{ $train->amount }}
+                                                        @endif
+                                                    </td>
 
 
 
-            
+
 
 
 
@@ -992,163 +848,160 @@
 
 
 
-                                                      <div style="    position: relative;">
+                                                        <div style="    position: relative;">
 
 
 
-                                                        <i class="fa-solid fa-ellipsis-vertical btn popupButton" ></i>
+                                                            <i class="fa-solid fa-ellipsis-vertical btn popupButton"></i>
 
 
 
-                                                        <div id="popup" class="popup">
+                                                            <div id="popup" class="popup">
 
 
 
-                                                            <div class="option d-flex p-1">
+                                                                <div class="option d-flex p-1">
 
 
 
-                                                                <a class="btn pt-0 pb-0" href="{{ route('get.complete.page') }}" 
+                                                                    <a class="btn pt-0 pb-0"
+                                                                        href="{{ route('get.complete.page') }}"
+                                                                        onclick="event.preventDefault(); document.getElementById('get-complete{{ $train->id }}').submit();">
 
 
 
-                                                                onclick = "event.preventDefault(); document.getElementById('get-complete{{ $train->id }}').submit();"
+                                                                        <i class="fa-regular fa-file-lines"></i> View </a>
 
 
 
-                                                                >
+                                                                    <form id="get-complete{{ $train->id }}"
+                                                                        action="{{ route('get.complete.page') }}"
+                                                                        method="get" class="d-none">
 
 
 
-                                                                <i class="fa-regular fa-file-lines"></i> View </a>
 
 
 
-                                                                <form id="get-complete{{ $train->id }}" action="{{ route('get.complete.page') }}" method="get" class="d-none">
+
+                                                                        <input type="hidden" name="tId"
+                                                                            value="{{ $train->id }}">
 
 
 
-                                                                    
+                                                                    </form>
 
 
 
-                                                                    <input type="hidden" name="tId" value="{{ $train->id }}">
+                                                                </div>
 
 
 
-                                                                </form>
+
+
+
+
+                                                                <div class="option d-flex p-1">
+
+
+
+                                                                    <a class="btn pt-0 pb-0"
+                                                                        href="{{ route('get.edit.training', $train->id) }}">
+
+
+
+                                                                        <i class="fa-solid fa-pen-to-square"></i> Edit </a>
+
+
+
+                                                                </div>
+
+
+
+
+
+
+
+                                                                {{-- <div class="option d-flex p-1">
+
+
+
+                                                                                                    <a class="btn pt-0 pb-0"
+                                                                                                        href="{{ route('get.edit.training') }}"
+                                                                                                        onclick="event.preventDefault(); document.getElementById('edit-training').submit();">
+
+
+
+                                                                                                        <i class="fa-solid fa-pen-to-square"></i> Edit </a>
+
+
+
+                                                                                                    <form id="edit-training"
+                                                                                                        action="{{ route('get.edit.training') }}" method="get"
+                                                                                                        class="d-none">
+
+
+
+                                                                                                        @csrf
+
+
+
+                                                                                                        <input type="hidden" name="trainingId"
+                                                                                                            value="{{ $train->id }}">
+
+
+
+                                                                                                    </form>
+
+
+
+                                                                                                </div> --}}
+
+
+                                                                @if (Auth::user()->role === 1 || Auth::user()->role === 2)
+                                                                    <div class="option d-flex p-1">
+
+
+
+                                                                        <a class="btn pt-0 pb-0"
+                                                                            href="{{ route('delete.training') }}"
+                                                                            onclick="event.preventDefault(); document.getElementById('delete-training{{ $train->id }}').submit();">
+
+
+
+                                                                            <i class="fa-solid fa-pen-to-square"></i>
+                                                                            Delete </a>
+
+
+
+                                                                        <form id="delete-training{{ $train->id }}"
+                                                                            action="{{ route('delete.training') }}"
+                                                                            method="get" class="d-none">
+
+
+
+                                                                            @csrf
+
+
+
+                                                                            <input type="hidden" name="trainingId"
+                                                                                value="{{ $train->id }}">
+
+
+
+                                                                        </form>
+
+
+
+                                                                    </div>
+                                                                @endif
+
+
+
 
 
 
                                                             </div>
-
-
-
-            
-
-
-
-                                                            <div class="option d-flex p-1">
-
-
-
-                                                                <a class="btn pt-0 pb-0" href="{{ route('get.edit.training', $train->id) }}"   >
-
-
-
-                                                                <i class="fa-solid fa-pen-to-square"></i> Edit </a>                                                    
-
-
-
-                                                            </div>
-
-
-
-                                                            
-
-
-
-                                                            {{-- <div class="option d-flex p-1">
-
-
-
-                                                                <a class="btn pt-0 pb-0" href="{{ route('get.edit.training') }}" 
-
-
-
-                                                                onclick = "event.preventDefault(); document.getElementById('edit-training').submit();"
-
-
-
-                                                                >
-
-
-
-                                                                <i class="fa-solid fa-pen-to-square"></i> Edit </a>
-
-
-
-                                                                <form id="edit-training" action="{{ route('get.edit.training') }}" method="get" class="d-none">
-
-
-
-                                                                    @csrf
-
-
-
-                                                                    <input type="hidden" name="trainingId" value="{{ $train->id }}">
-
-
-
-                                                                </form>
-
-
-
-                                                            </div> --}}
-
-
-                                                            @if(Auth::user()->role === 1 || Auth::user()->role === 2)
-                                                            <div class="option d-flex p-1">
-
-
-
-                                                                <a class="btn pt-0 pb-0" href="{{ route('delete.training') }}" 
-
-
-
-                                                                onclick = "event.preventDefault(); document.getElementById('delete-training{{ $train->id }}').submit();"
-
-
-
-                                                                >
-
-
-
-                                                                <i class="fa-solid fa-pen-to-square"></i> Delete </a>
-
-
-
-                                                                <form id="delete-training{{ $train->id }}" action="{{ route('delete.training') }}" method="get" class="d-none">
-
-
-
-                                                                    @csrf
-
-
-
-                                                                    <input type="hidden" name="trainingId" value="{{ $train->id }}">
-
-
-
-                                                                </form>
-
-
-
-                                                            </div>
-                                                            @endif
-
-
-                                                            
 
 
 
@@ -1156,19 +1009,15 @@
 
 
 
-                                                      </div>
 
 
 
-                                                        
 
 
 
-            
 
 
 
-            
 
 
 
@@ -1176,14 +1025,11 @@
 
 
 
-            
+
 
 
 
                                                 </tr>
-
-
-
                                             @endforeach
 
 
@@ -1236,7 +1082,7 @@
 
 
 
-            
+
 
 
 
@@ -1244,7 +1090,7 @@
 
 
 
-            
+
 
 
 
@@ -1261,9 +1107,6 @@
 
 
                                             @foreach ($comptrainings as $train)
-
-
-
                                                 <tr>
 
 
@@ -1278,13 +1121,12 @@
 
                                                     <td>@php
 
+                                                        $date = date(
+                                                            'F j, Y  H:i A',
+                                                            strtotime($train->audit_start_date),
+                                                        );
 
-
-                                                        $date = date('F j, Y  H:i A', strtotime($train->audit_start_date));
-
-
-
-                                                        @endphp
+                                                    @endphp
 
 
 
@@ -1301,14 +1143,14 @@
 
 
                                                     <td>
-                                                    @if(Auth::user()->role == 1)
-                                                    ₹ {{ $train->amount }}
-                                                @endif
-                                                </td>
+                                                        @if (Auth::user()->role == 1)
+                                                            ₹ {{ $train->amount }}
+                                                        @endif
+                                                    </td>
 
 
 
-            
+
 
 
 
@@ -1316,163 +1158,155 @@
 
 
 
-                                                      <div style="    position: relative;">
+                                                        <div style="    position: relative;">
 
 
 
-                                                        <i class="fa-solid fa-ellipsis-vertical btn popupButton" ></i>
+                                                            <i class="fa-solid fa-ellipsis-vertical btn popupButton"></i>
 
 
 
-                                                        <div id="popup" class="popup">
+                                                            <div id="popup" class="popup">
 
 
 
-                                                            <div class="option d-flex p-1">
+                                                                <div class="option d-flex p-1">
+                                                                    <!-- Download PDF Button -->
+                                                                    <a class="btn pt-0 pb-0"
+                                                                        href="{{ route('downlaod.training.pdf') }}"
+                                                                        onclick="event.preventDefault(); document.getElementById('view-training{{ $train->id }}').submit(); showCustomModal();">
+                                                                        <i class="fa-regular fa-file-lines"></i> Report
+                                                                    </a>
+
+                                                                    <form id="view-training{{ $train->id }}"
+                                                                        action="{{ route('downlaod.training.pdf') }}"
+                                                                        method="get" class="d-none">
+                                                                        @csrf
+                                                                        <input type="hidden" name="trainingId"
+                                                                            value="{{ $train->id }}">
+                                                                    </form>
+
+
+                                                                </div>
+
+                                                                <div class="option d-flex p-1">
+                                                                    <!-- Preview PDF Button -->
+                                                                    <a class="btn pt-0 pb-0" href="javascript:void(0)"
+                                                                        onclick="previewPDF('{{ route('downlaod.training.pdf', ['trainingId' => $train->id]) }}')">
+                                                                        <i class="fa-regular fa-eye"></i> Preview
+                                                                    </a>
+
+                                                                </div>
 
 
 
-                                                                <a class="btn pt-0 pb-0" href="{{ route('downlaod.training.pdf') }}" 
 
 
 
-                                                                onclick = "event.preventDefault(); document.getElementById('view-training{{ $train->id }}').submit();showCustomModal();"
+
+
+                                                                {{-- <div class="option d-flex p-1">
 
 
 
-                                                                >
+                                                                                                    <a class="btn pt-0 pb-0"
+                                                                                                        href="{{ route('get.signature.training',['trainingId'=> $train->id]) }}">
 
 
 
-                                                                <i class="fa-regular fa-file-lines"></i> Report </a>
+                                                                                                        <i class="fa-solid fa-upload"></i> Upload Signatures
+                                                                                                    </a>
 
 
 
-                                                                <form id="view-training{{ $train->id }}" action="{{ route('downlaod.training.pdf') }}" method="get" class="d-none">
+                                                                                                </div> --}}
 
 
 
-                                                                    @csrf
 
 
 
-                                                                    <input type="hidden" name="trainingId" value="{{ $train->id }}">
+
+                                                                {{-- <div class="option d-flex p-1">
 
 
 
-                                                                </form>
+                                                                                                    <a class="btn pt-0 pb-0"
+                                                                                                        href="{{ route('get.edit.training') }}"
+                                                                                                        onclick="event.preventDefault(); document.getElementById('edit-training').submit();">
+
+
+
+                                                                                                        <i class="fa-solid fa-pen-to-square"></i> Edit </a>
+
+
+
+                                                                                                    <form id="edit-training"
+                                                                                                        action="{{ route('get.edit.training') }}" method="get"
+                                                                                                        class="d-none">
+
+
+
+                                                                                                        @csrf
+
+
+
+                                                                                                        <input type="hidden" name="trainingId"
+                                                                                                            value="{{ $train->id }}">
+
+
+
+                                                                                                    </form>
+
+
+
+                                                                                                </div> --}}
+
+
+                                                                @if (Auth::user()->role === 1 || Auth::user()->role === 2)
+                                                                    <div class="option d-flex p-1">
+
+
+
+                                                                        <a class="btn pt-0 pb-0"
+                                                                            href="{{ route('delete.training') }}"
+                                                                            onclick="event.preventDefault(); document.getElementById('delete-training{{ $train->id }}').submit();">
+
+
+
+                                                                            <i class="fa-solid fa-pen-to-square"></i>
+                                                                            Delete </a>
+
+
+
+                                                                        <form id="delete-training{{ $train->id }}"
+                                                                            action="{{ route('delete.training') }}"
+                                                                            method="get" class="d-none">
+
+
+
+
+
+
+
+                                                                            <input type="hidden" name="trainingId"
+                                                                                value="{{ $train->id }}">
+
+
+
+                                                                        </form>
+
+
+
+                                                                    </div>
+                                                                @endif
+
+
+
 
 
 
                                                             </div>
-
-
-
-            
-
-
-
-                                                            {{-- <div class="option d-flex p-1">
-
-
-
-                                                                <a class="btn pt-0 pb-0" href="{{ route('get.signature.training',['trainingId'=> $train->id]) }}"   >
-
-
-
-                                                                    <i class="fa-solid fa-upload"></i> Upload Signatures </a>                                                    
-
-
-
-                                                            </div> --}}
-
-
-
-                                                            
-
-
-
-                                                            {{-- <div class="option d-flex p-1">
-
-
-
-                                                                <a class="btn pt-0 pb-0" href="{{ route('get.edit.training') }}" 
-
-
-
-                                                                onclick = "event.preventDefault(); document.getElementById('edit-training').submit();"
-
-
-
-                                                                >
-
-
-
-                                                                <i class="fa-solid fa-pen-to-square"></i> Edit </a>
-
-
-
-                                                                <form id="edit-training" action="{{ route('get.edit.training') }}" method="get" class="d-none">
-
-
-
-                                                                    @csrf
-
-
-
-                                                                    <input type="hidden" name="trainingId" value="{{ $train->id }}">
-
-
-
-                                                                </form>
-
-
-
-                                                            </div> --}}
-
-
-                                                            @if(Auth::user()->role === 1 || Auth::user()->role === 2)
-                                                            <div class="option d-flex p-1">
-
-
-
-                                                                <a class="btn pt-0 pb-0" href="{{ route('delete.training') }}" 
-
-
-
-                                                                onclick = "event.preventDefault(); document.getElementById('delete-training{{ $train->id }}').submit();"
-
-
-
-                                                                >
-
-
-
-                                                                <i class="fa-solid fa-pen-to-square"></i> Delete </a>
-
-
-
-                                                                <form id="delete-training{{ $train->id }}" action="{{ route('delete.training') }}" method="get" class="d-none">
-
-
-
-                                                                   
-
-
-
-                                                                    <input type="hidden" name="trainingId" value="{{ $train->id }}">
-
-
-
-                                                                </form>
-
-
-
-                                                            </div>
-                                                            @endif
-
-
-                                                            
 
 
 
@@ -1480,19 +1314,15 @@
 
 
 
-                                                      </div>
 
 
 
-                                                        
 
 
 
-            
 
 
 
-            
 
 
 
@@ -1500,14 +1330,11 @@
 
 
 
-            
+
 
 
 
                                                 </tr>
-
-
-
                                             @endforeach
 
 
@@ -1524,7 +1351,7 @@
 
 
 
-                              </div>
+                            </div>
 
 
 
@@ -1544,7 +1371,7 @@
 
 
 
-                        
+
 
 
 
@@ -1552,7 +1379,7 @@
 
 
 
-                    
+
 
 
 
@@ -1569,17 +1396,6 @@
 
 
     </div>
-
-
-
-
-
-
-
-
-
-
-
 @endsection
 
 
@@ -1608,299 +1424,47 @@
 
 
 
-{{-- ==================== Schedule training ================== --}}
+    {{-- ==================== Schedule training ================== --}}
 
 
 
-<div class="modal fade" id="trainingModal" tabindex="-1" aria-labelledby="trainingModalLabel" aria-hidden="true">
+    <div class="modal fade" id="trainingModal" tabindex="-1" aria-labelledby="trainingModalLabel" aria-hidden="true">
 
 
 
-    <div class="modal-dialog">
+        <div class="modal-dialog">
 
 
 
-        <div class="modal-content">
+            <div class="modal-content">
 
 
 
-            <div class="modal-header">
+                <div class="modal-header">
 
 
 
-                <h1 class="modal-title fs-5" id="trainingModalLabel">Schedule training</h1>
+                    <h1 class="modal-title fs-5" id="trainingModalLabel">Schedule training</h1>
 
 
 
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
 
 
-            </div>
+                </div>
 
 
 
-            <div class="modal-body">
+                <div class="modal-body">
 
 
 
-                <div id="overlay" style="display: none;">
+                    <div id="overlay" style="display: none;">
 
 
 
-                    <div id="loader"></div>
-
-
-
-                  </div>
-
-
-
-                <form action="{{ route('scheduleTraining') }}" method="post" enctype="multipart/form-data">
-
-
-
-                    @csrf
-
-
-
-                    <div class="row">
-
-
-
-                        
-
-
-
-
-
-
-
-                        <div class="mb-3 col-md-6">
-
-
-
-                            <label class="form-label">Training topic <span class="text-danger">*</span></label>
-
-
-
-                            <input type="text" class="form-control" name="topic" required>
-
-
-
-                        </div>                       
-
-
-
-
-
-
-
-
-
-
-
-                        <div class="mb-3 col-md-6">
-
-
-
-                            <label class="form-label">Audit start Date<span class="text-danger">*</span></label>
-
-
-
-                            <input type="datetime-local" class="form-control" name="audit_start_date" required>
-
-
-
-                        </div>
-
-
-
-
-
-
-
-                        <div class="mb-3 col-md-6">
-
-
-
-                            <label class="form-label">Location <span class="text-danger">*</span></label>
-
-
-
-                            <input type="text" class="form-control" name="location" required>
-
-
-
-                        </div>
-
-
-
-
-
-
-
-                        <div class="mb-3 col-md-6">
-
-
-
-                            <label class="form-label">Amount <span class="text-danger">*</span></label>
-
-
-
-                            <input type="text" class="form-control" name="amount" required>
-
-
-
-                        </div>
-
-
-
-
-
-
-
-                        <div class=" mb-3 col-md-4">
-
-
-
-                            <label class="form-label" >Select client</label>
-
-
-
-
-
-
-
-                            <select class="form-select" name="client" id="" required>
-
-
-
-                                @foreach($clients as $c)
-
-
-
-                                <option value="{{ $c->id }}">{{ $c->organisation_name }} </option>                                
-
-
-
-                                @endforeach
-
-
-
-                            </select>
-
-
-
-                        </div>
-
-
-
-
-
-
-
-                        <div class="mb-3 col-md-4">                            
-
-
-
-                           
-
-
-
-                            <label class="form-label" >Select members</label>
-
-
-
-                            <select id="select-members" multiple name="members" placeholder=" Select" data-search="true" data-silent-initial-value-set="true"  required>
-
-
-
-                                @foreach($users as $u)
-
-
-
-                                        <option value="{{ $u->id }}" >{{ $u->name }}</option>
-
-
-
-                                        @endforeach                              
-
-
-
-                            </select>
-
-
-
-                            
-
-
-
-                        </div>
-
-
-
-
-
-
-
-                        <div class="mb-3 col-md-4">                            
-
-
-
-                           
-
-
-
-                            <label class="form-label" >Select attendees</label>
-
-
-
-                            <select id="select-attendees" multiple name="attendees" placeholder=" Select" data-search="true" data-silent-initial-value-set="true" required>
-
-
-
-                                @foreach($attendees as $att)
-
-
-
-                                <option value="{{ $att->id }}" >{{ $att->fname }} {{ $att->lname }}</option>
-
-
-
-                                @endforeach
-
-
-
-                            </select>
-
-
-
-                            
-
-
-
-                        </div>
-
-
-
-
-
-
-
-                        <div class="modal-footer">
-
-
-
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-
-
-
-                            <button type="submit" id="formSubmission" class="btn btn-primary" >ADD</button>
-
-
-
-                        </div>
+                        <div id="loader"></div>
 
 
 
@@ -1908,11 +1472,256 @@
 
 
 
-                    {{-- <button type="submit" class="btn btn-primary">Submit</button> --}}
+                    <form action="{{ route('scheduleTraining') }}" method="post" enctype="multipart/form-data">
 
 
 
-                </form>
+                        @csrf
+
+
+
+                        <div class="row">
+
+
+
+
+
+
+
+
+
+
+
+                            <div class="mb-3 col-md-6">
+
+
+
+                                <label class="form-label">Training topic <span class="text-danger">*</span></label>
+
+
+
+                                <input type="text" class="form-control" name="topic" required>
+
+
+
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+                            <div class="mb-3 col-md-6">
+
+
+
+                                <label class="form-label">Audit start Date<span class="text-danger">*</span></label>
+
+
+
+                                <input type="datetime-local" class="form-control" name="audit_start_date" required>
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="mb-3 col-md-6">
+
+
+
+                                <label class="form-label">Location <span class="text-danger">*</span></label>
+
+
+
+                                <input type="text" class="form-control" name="location" required>
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="mb-3 col-md-6">
+
+
+
+                                <label class="form-label">Amount <span class="text-danger">*</span></label>
+
+
+
+                                <input type="text" class="form-control" name="amount" required>
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class=" mb-3 col-md-4">
+
+
+
+                                <label class="form-label">Select client</label>
+
+
+
+
+
+
+
+                                <select class="form-select" name="client" id="" required>
+
+
+
+                                    @foreach ($clients as $c)
+                                        <option value="{{ $c->id }}">{{ $c->organisation_name }} </option>
+                                    @endforeach
+
+
+
+                                </select>
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="mb-3 col-md-4">
+
+
+
+
+
+
+
+                                <label class="form-label">Select members</label>
+
+
+
+                                <select id="select-members" multiple name="members" placeholder=" Select"
+                                    data-search="true" data-silent-initial-value-set="true" required>
+
+
+
+                                    @foreach ($users as $u)
+                                        <option value="{{ $u->id }}">{{ $u->name }}</option>
+                                    @endforeach
+
+
+
+                                </select>
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="mb-3 col-md-4">
+
+
+
+
+
+
+
+                                <label class="form-label">Select attendees</label>
+
+
+
+                                <select id="select-attendees" multiple name="attendees" placeholder=" Select"
+                                    data-search="true" data-silent-initial-value-set="true" required>
+
+
+
+                                    @foreach ($attendees as $att)
+                                        <option value="{{ $att->id }}">{{ $att->fname }} {{ $att->lname }}
+                                        </option>
+                                    @endforeach
+
+
+
+                                </select>
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="modal-footer">
+
+
+
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+
+
+                                <button type="submit" id="formSubmission" class="btn btn-primary">ADD</button>
+
+
+
+                            </div>
+
+
+
+                        </div>
+
+
+
+                        {{-- <button type="submit" class="btn btn-primary">Submit</button> --}}
+
+
+
+                    </form>
+
+
+
+
+
+
+
+                </div>
 
 
 
@@ -1921,10 +1730,6 @@
 
 
             </div>
-
-
-
-
 
 
 
@@ -1936,7 +1741,6 @@
 
 
 
-</div>
 
 
 
@@ -1945,206 +1749,47 @@
 
 
 
+    {{-- ============= Add attendee modal ============ --}}
 
 
 
-{{-- ============= Add attendee modal ============  --}}
+    <div class="modal fade" id="attendeeModal" tabindex="-1" aria-labelledby="attendeeModalLabel" aria-hidden="true">
 
 
 
-<div class="modal fade" id="attendeeModal" tabindex="-1" aria-labelledby="attendeeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
 
 
 
-    <div class="modal-dialog">
+            <div class="modal-content">
 
 
 
-        <div class="modal-content">
+                <div class="modal-header">
 
 
 
-            <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="attendeeModalLabel">Add new attendee</h1>
 
 
 
-                <h1 class="modal-title fs-5" id="attendeeModalLabel">Add new attendee</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
 
 
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
 
 
 
-            </div>
+                <div class="modal-body">
 
 
 
-            <div class="modal-body">
+                    <div id="overlay" style="display: none;">
 
 
 
-                <div id="overlay" style="display: none;">
-
-
-
-                    <div id="loader"></div>
-
-
-
-                  </div>
-
-
-
-                <form id="atten_store" action="{{ route('attendee.store') }}" method="post" enctype="multipart/form-data" >
-
-
-
-                    @csrf
-
-
-
-                    <div class="row">
-
-
-
-                        
-
-
-
-
-
-
-
-                        <div class="mb-3 col-md-6">
-
-
-
-                            <label class="form-label">First name <span class="text-danger">*</span></label>
-
-
-
-                            <input type="text" class="form-control" name="fname" required>
-
-
-
-                        </div>
-
-
-
-
-
-
-
-                        
-
-
-
-
-
-
-
-
-
-
-
-                        <div class="mb-3 col-md-6">
-
-
-
-                            <label class="form-label">Last name<span class="text-danger">*</span></label>
-
-
-
-                            <input type="test" class="form-control" name="lname" >
-
-
-
-                        </div>
-
-
-
-
-
-
-
-                        <div class="mb-3 col-md-6">
-
-
-
-                            <label class="form-label">Email <span class="text-danger">*</span></label>
-
-
-
-                            <input type="text" class="form-control" name="email" required>
-
-
-
-                        </div>
-
-
-
-
-
-
-
-                        <div class="mb-3 col-md-6">
-
-
-
-                            <label class="form-label">Designation <span class="text-danger">*</span></label>
-
-
-
-                            <input type="text" class="form-control" name="designation" >
-
-
-
-                        </div>                        
-
-
-
-
-
-
-
-                        <div class="mb-3 col-md-6">
-
-
-
-                            <label class="form-label">Contact number <span class="text-danger">*</span></label>
-
-
-
-                            <input type="text" class="form-control" name="contact" >
-
-
-
-                        </div>   
-
-
-
-                        
-
-
-
-
-
-
-
-                        <div class="modal-footer">
-
-
-
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-
-
-
-                            <button type="submit" id="formSubmission" class="btn btn-primary" onclick = "event.preventDefault(); document.getElementById('atten_store').submit();toastr.success('Attendee added successfully!','Success');">ADD</button>
-
-
-
-                        </div>
+                        <div id="loader"></div>
 
 
 
@@ -2152,11 +1797,177 @@
 
 
 
-                    {{-- <button type="submit" class="btn btn-primary">Submit</button> --}}
+                    <form id="atten_store" action="{{ route('attendee.store') }}" method="post"
+                        enctype="multipart/form-data">
 
 
 
-                </form>
+                        @csrf
+
+
+
+                        <div class="row">
+
+
+
+
+
+
+
+
+
+
+
+                            <div class="mb-3 col-md-6">
+
+
+
+                                <label class="form-label">First name <span class="text-danger">*</span></label>
+
+
+
+                                <input type="text" class="form-control" name="fname" required>
+
+
+
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <div class="mb-3 col-md-6">
+
+
+
+                                <label class="form-label">Last name<span class="text-danger">*</span></label>
+
+
+
+                                <input type="test" class="form-control" name="lname">
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="mb-3 col-md-6">
+
+
+
+                                <label class="form-label">Email <span class="text-danger">*</span></label>
+
+
+
+                                <input type="text" class="form-control" name="email" required>
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="mb-3 col-md-6">
+
+
+
+                                <label class="form-label">Designation <span class="text-danger">*</span></label>
+
+
+
+                                <input type="text" class="form-control" name="designation">
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="mb-3 col-md-6">
+
+
+
+                                <label class="form-label">Contact number <span class="text-danger">*</span></label>
+
+
+
+                                <input type="text" class="form-control" name="contact">
+
+
+
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+                            <div class="modal-footer">
+
+
+
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+
+
+                                <button type="submit" id="formSubmission" class="btn btn-primary"
+                                    onclick="event.preventDefault(); document.getElementById('atten_store').submit();toastr.success('Attendee added successfully!','Success');">ADD</button>
+
+
+
+                            </div>
+
+
+
+                        </div>
+
+
+
+                        {{-- <button type="submit" class="btn btn-primary">Submit</button> --}}
+
+
+
+                    </form>
+
+
+
+
+
+
+
+                </div>
 
 
 
@@ -2165,10 +1976,6 @@
 
 
             </div>
-
-
-
-
 
 
 
@@ -2180,37 +1987,45 @@
 
 
 
-</div>
+    <div id="messageModal" class="modal">
 
+        <div class="modal-content" style="width: 24%">
 
+            <span class="close" id="closeModal">&times;</span>
 
-<div id="messageModal" class="modal">
+            <b>Report generation may take few seconds. Please wait.</b>
 
-    <div class="modal-content" style="width: 24%">
-
-        <span class="close" id="closeModal">&times;</span>
-
-        <b>Report generation may take few seconds. Please wait.</b>
+        </div>
 
     </div>
 
-</div>
-
-
+    <!-- Modal for Preview -->
+    <div id="pdfPreviewModal" class="modal fade" tabindex="-1" aria-labelledby="pdfPreviewModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pdfPreviewModalLabel">PDF Preview</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <iframe id="pdfPreviewIframe" src="" frameborder="0" width="100%"
+                        height="500px"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
-
-
-
         $(document).ready(function() {
 
 
 
-            
 
 
 
-            
+
+
 
 
 
@@ -2218,11 +2033,11 @@
 
 
 
-                order:[
+                order: [
 
 
 
-                    [0,'desc']
+                    [0, 'desc']
 
 
 
@@ -2230,7 +2045,7 @@
 
 
 
-                
+
 
 
 
@@ -2250,7 +2065,9 @@
 
 
 
-                order:[[0,'desc']]
+                order: [
+                    [0, 'desc']
+                ]
 
 
 
@@ -2270,7 +2087,9 @@
 
 
 
-                order:[[0,'desc']]
+                order: [
+                    [0, 'desc']
+                ]
 
 
 
@@ -2286,23 +2105,23 @@
 
 
 
-              var popup = $(this).next('.popup');
+                var popup = $(this).next('.popup');
 
 
 
-              // Hide all other popups
+                // Hide all other popups
 
 
 
-              $('.popup').not(popup).hide();
+                $('.popup').not(popup).hide();
 
 
 
-              // Toggle the display of the corresponding popup
+                // Toggle the display of the corresponding popup
 
 
 
-              popup.toggle();
+                popup.toggle();
 
 
 
@@ -2322,15 +2141,15 @@
 
 
 
-              if (!$(event.target).hasClass('popupButton') && !$(event.target).hasClass('popup')) {
+                if (!$(event.target).hasClass('popupButton') && !$(event.target).hasClass('popup')) {
 
 
 
-                $('.popup').hide();
+                    $('.popup').hide();
 
 
 
-              }
+                }
 
 
 
@@ -2350,15 +2169,15 @@
 
 
 
-        VirtualSelect.init({ 
+        VirtualSelect.init({
 
 
 
-            ele: '#select-attendees' ,
+            ele: '#select-attendees',
 
 
 
-            
+
 
 
 
@@ -2374,11 +2193,11 @@
 
 
 
-        VirtualSelect.init({ 
+        VirtualSelect.init({
 
 
 
-            ele: '#select-members' 
+            ele: '#select-members'
 
 
 
@@ -2399,14 +2218,17 @@
             messageModal.style.display = 'block';
 
         }
-
-
-
     </script>
 
 
+    <script>
+        function previewPDF(pdfUrl) {
+            // Set the iframe source to the PDF URL
+            document.getElementById('pdfPreviewIframe').src = pdfUrl;
 
+            // Show the modal
+            const modal = new bootstrap.Modal(document.getElementById('pdfPreviewModal'));
+            modal.show();
+        }
+    </script>
 @endpush
-
-
-

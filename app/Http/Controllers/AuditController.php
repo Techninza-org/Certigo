@@ -830,6 +830,7 @@ class AuditController extends Controller
 
                     $target_score_array[] = $qResponse->response_score;
                 }
+
             }
 
             $target__score = array_sum($target_score_array);
@@ -2205,7 +2206,58 @@ class AuditController extends Controller
         $serviceCodes = ServiceCode::all();
 
         return view('services.service', ['codes' => $serviceCodes]);
+
     }
+
+    // edit service code
+
+    public function updateServiceCode(Request $request)
+    {
+
+        $request->validate([
+
+            'service_code' => 'required',
+
+            'id' => 'required'
+
+        ]);
+
+        $service = ServiceCode::find($request->id);
+
+        $service->service_code = $request->service_code;
+
+        if ($service->save()) {
+
+            return redirect()->back()->with('success', 'Service Code updated successfully');
+
+        } else {
+
+            return redirect()->back()->with('error', 'Service Code not updated');
+
+        }
+
+    }
+
+    // delete service code
+
+    public function deleteServiceCode($id)
+    {
+        // Find the service by ID
+        $service = ServiceCode::find($id);
+
+        // Check if the service exists
+        if (!$service) {
+            return redirect()->back()->with('error', 'Service Code not found');
+        }
+
+        // Attempt to delete the service
+        if ($service->delete()) {
+            return redirect()->back()->with('success', 'Service Code deleted successfully');
+        } else {
+            return redirect()->back()->with('error', 'Service Code not deleted');
+        }
+    }
+
 
 
 
