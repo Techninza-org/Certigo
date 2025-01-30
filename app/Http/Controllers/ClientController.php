@@ -482,7 +482,7 @@ class ClientController extends Controller
                 } else {
                     $audit->auditor = $auditor->name;
                 }
-                $audit->auditor = $auditor->name;
+
 
                 $templatesArr = $audit->checklists;
                 $templatesjson = json_decode($templatesArr);
