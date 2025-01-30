@@ -196,6 +196,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::post('/doc-personal', 'store_docref_pesonal')->name('store_docref_pesonal');
 
+        Route::get('/dashboard', 'dashboard')->name('dashboard');
+
 
 
 
@@ -313,13 +315,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/responses', 'getResponses')->name('getResponses');
 
         Route::get('/remove-response', 'removeResponse')->name('delete-response');
-
-
-
-
-
-
-
 
 
     });
