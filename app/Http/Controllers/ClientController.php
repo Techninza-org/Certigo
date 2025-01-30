@@ -477,6 +477,11 @@ class ClientController extends Controller
         if ($indusAudits) {
             foreach ($indusAudits as $audit) {
                 $auditor = User::where(['id' => $audit->auditors])->first('name');
+                if (!$auditor) {
+                    $audit->auditor = 'Sheela';
+                } else {
+                    $audit->auditor = $auditor->name;
+                }
                 $audit->auditor = $auditor->name;
 
                 $templatesArr = $audit->checklists;
