@@ -15,4 +15,10 @@ class AuditAgreementController extends Controller
     {
         return view('agreement.genrateagreement');
     }
+
+    public function genrateAgreementPdf(Request $request)
+    {
+        $data = $request->all();
+        return view('agreement.agreement', ['data' => $data]);
+    }
 }

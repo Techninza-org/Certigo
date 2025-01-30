@@ -609,6 +609,8 @@ Route::get('/audit-agreement', [AuditAgreementController::class, 'index'])->name
 
 Route::get('/genrate-agreement', [AuditAgreementController::class, 'genrateAgreement'])->name('genrate.agreement');
 
+Route::post('/genrate-agreement', [AuditAgreementController::class, 'genrateAgreementPdf'])->name('genrate.agreement.pdf');
+
 
 
 
