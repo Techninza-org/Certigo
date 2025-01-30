@@ -31,19 +31,10 @@ class ClientAuthController extends Controller
         if (Auth::guard('webclient')->attempt($req->only(['company_emailid', 'password']))) {
             // dd("qwertyui");
             // dd(Auth::guard('webclient')->user());
-            $myaudits = Audit::where(['client_id' => Auth::guard('webclient')->user()->id])->get();
-
-            foreach ($myaudits as $audit) {
-
-               // get audit details
-               $audit->
-            }
-
-            $folders = TempFolder::all();
-
-            $employes = User::all();
+            $user = Auth::guard('webclient')->user();
+            $myaudits = Audit::where('client_id', Auth::guard('webclient')->user()->id)->whereNotNull('report_path')->get();
             // dd($myaudits);
-            return view('client.home', ['myaudits' => $myaudits, 'folders' => $folders, 'employes' => $employes]);
+            return view('client.home', ['myaudits' => $myaudits, 'user' => $user]);
         }
 
         return redirect()->back()->with('error', 'Invalid Credentials');

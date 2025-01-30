@@ -348,12 +348,10 @@ class AuditController extends Controller
 
     public function resume_audit(Request $request)
     {
-
         $request->validate([
             'auditId' => 'required',
             'cid' => 'nullable'
         ]);
-
 
         $audit = Audit::where(['id' => $request->auditId])->first();
         $client = Client::where(['id' => $request->cid])->first();
@@ -362,26 +360,29 @@ class AuditController extends Controller
         $total_questions_array = [];
         $total_questionsAnswered_array = [];
         $tenplates_names_in_audit = [];
-
         $emptyInputs = 0;
 
-        foreach ($template_array as $template) {
-            $tempLate = Template::where(['id' => $template])->first();
-            $tempLateD = TemplateDetail::where(['template_id' => $template])->get();
-            $auditfilled = AuditDetail::where(['audit_id' => $request->auditId, 'template_id' => $template])->get();
-            $tempLate['tot_que_answered'] = count($auditfilled);
-            $tempLate['tot_que'] = count($tempLateD);
-            $total_questions_array[] = count($tempLateD);
-            // dd($total_questions_array);
-            $total_questionsAnswered_array[] = count($auditfilled);
-            $tenplates_names_in_audit[] = $tempLate;
+        foreach ($template_array as $templateId) {
+            $template = Template::where(['id' => $templateId])->first();
+            $templateDetails = TemplateDetail::where(['template_id' => $templateId])->get();
+            $auditDetails = AuditDetail::where(['audit_id' => $request->auditId, 'template_id' => $templateId])->get();
 
-            $checking = AuditDetail::where(['audit_id' => $request->auditId, 'template_id' => $template])->get();
+            $template['tot_que_answered'] = count($auditDetails);
+            $template['tot_que'] = count($templateDetails);
+            $total_questions_array[] = count($templateDetails);
+            $total_questionsAnswered_array[] = count($auditDetails);
 
-            foreach ($checking as $chk) {
-                if ($chk->response_score == 0) {
-                    if ($chk->objective_evidences == null || $chk->suggestions == null || $chk->evidences == null || $chk->evidences == []) {
-                        $emptyInputs += 1;
+            $tenplates_names_in_audit[] = $template;
+
+            foreach ($auditDetails as $detail) {
+                if ($detail->response_score == 0) {
+                    if (
+                        is_null($detail->objective_evidences) ||
+                        is_null($detail->suggestions) ||
+                        is_null($detail->evidences) ||
+                        empty($detail->evidences)
+                    ) {
+                        $emptyInputs++;
                     }
                 }
             }
@@ -390,57 +391,33 @@ class AuditController extends Controller
         $total_questions_in_audit = array_sum($total_questions_array);
         $total_answers_in_audit = array_sum($total_questionsAnswered_array);
 
-        $auditfilled = AuditDetail::where(['audit_id' => $request->auditId, 'template_id' => $template])->first();
-        if ($auditfilled) {
-            $start_time = $auditfilled->created_at->format('H:i A');
-        } else {
-            $start_time = '';
-        }
+        $auditfilled = AuditDetail::where(['audit_id' => $request->auditId])->first();
+        $start_time = $auditfilled ? $auditfilled->created_at->format('H:i A') : '';
 
-        // dd($auditfilled);
-
-        // Parse the input date using Carbon
         $carbonDate = Carbon::parse($audit->start);
-
-        // Convert to the desired format with AM/PM
         $formattedDate = $carbonDate->format('d-m-Y');
         $audit->formated_date = $formattedDate;
 
-        // if($audit){
-        // return redirect()->back()->with('success','Audit resumed successfully');
-        // }else{
-        // return redirect()->back()->with('success','Problem removing audit. PLease try again.');
-        // }
+        $signDone = ($audit->auditor_sign !== null && $audit->auditee_sign !== null) ? 1 : 0;
 
-        $signDone = 0;
-        if ($audit->auditor_sign != null && $audit->auditee_sign != null) {
-            $signDone = 1;
-        }
+        $auditDetail = AuditDetail::where(['audit_id' => $request->auditId])->first();
+        $isSaved = ($auditDetail && $auditDetail->report_path) ? true : false;
 
-        $auditDetail = AuditDetail::where(['id' => $request->auditId])->first();
-
-        $isSaved = false;
-
-        if ($auditDetail && $auditDetail->report_path) {
-            $isSaved = true;
-        }
-
-        // $template_ids = [];
-        // foreach ($tenplates_names_in_audit as $template) {
-        //     $template_ids[] = $template['id'];
-        // }
-        // foreach ($template_ids as $templateId) {
-        //     $response = $this->tempdetAjax(new Request(['tem_id' => $templateId]));  // Call the existing function
-        //     $templateResponse = $response->getData()->response;
-        //     // $res_g_data = ObjectiveResponse::where(['group_id' => $templateResponse->data->response_group])->get();
-        //     // $templateResponse->data->responses = $res_g_data;
-        //     $responses[] = $templateResponse;
-        // }
-
-        // dd($tenplates_names_in_audit);
-
-        return view('audit.resume', ['isSaved' => $isSaved, 'client' => $client, 'emptyInputs' => $emptyInputs, 'clientId' => $request->cid, 'audit' => $audit, 'start_time' => $start_time, 'tenplates_names_in_audit' => $tenplates_names_in_audit, 'auditfilled' => $auditfilled, 'total_questions_in_audit' => $total_questions_in_audit, 'total_answers_in_audit' => $total_answers_in_audit, 'signDone' => $signDone]);
+        return view('audit.resume', [
+            'isSaved' => $isSaved,
+            'client' => $client,
+            'emptyInputs' => $emptyInputs,
+            'clientId' => $request->cid,
+            'audit' => $audit,
+            'start_time' => $start_time,
+            'tenplates_names_in_audit' => $tenplates_names_in_audit,
+            'auditfilled' => $auditfilled,
+            'total_questions_in_audit' => $total_questions_in_audit,
+            'total_answers_in_audit' => $total_answers_in_audit,
+            'signDone' => $signDone
+        ]);
     }
+
 
 
 
