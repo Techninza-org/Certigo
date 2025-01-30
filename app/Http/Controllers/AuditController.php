@@ -52,6 +52,18 @@ use Illuminate\Support\Facades\View;
 class AuditController extends Controller
 {
 
+
+    public function dashboard()
+    {
+        $audits = Audit::all()->sortByDesc('created_at');
+        foreach ($audits as $audit) {
+            $audit->client = Client::where('id', $audit->client_id)->first();
+            $audit->auditor = User::where('id', $audit->auditors)->first();
+        }
+
+        return view('dashboard', data: ['audits' => $audits]);
+    }
+
     public function index()
     {
 
@@ -331,8 +343,6 @@ class AuditController extends Controller
             return redirect()->back()->with('success', 'Problem removing audit. PLease try again.');
         }
     }
-
-
 
 
 
