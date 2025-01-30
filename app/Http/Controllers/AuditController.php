@@ -52,6 +52,18 @@ use Illuminate\Support\Facades\View;
 class AuditController extends Controller
 {
 
+
+    public function dashboard()
+    {
+        $audits = Audit::all()->sortByDesc('created_at');
+        foreach ($audits as $audit) {
+            $audit->client = Client::where('id', $audit->client_id)->first();
+            $audit->auditor = User::where('id', $audit->auditors)->first();
+        }
+
+        return view('dashboard', data: ['audits' => $audits]);
+    }
+
     public function index()
     {
 
@@ -334,8 +346,6 @@ class AuditController extends Controller
 
 
 
-
-
     public function resume_audit(Request $request)
     {
 
@@ -387,6 +397,8 @@ class AuditController extends Controller
             $start_time = '';
         }
 
+        // dd($auditfilled);
+
         // Parse the input date using Carbon
         $carbonDate = Carbon::parse($audit->start);
 
@@ -412,6 +424,20 @@ class AuditController extends Controller
         if ($auditDetail && $auditDetail->report_path) {
             $isSaved = true;
         }
+
+        // $template_ids = [];
+        // foreach ($tenplates_names_in_audit as $template) {
+        //     $template_ids[] = $template['id'];
+        // }
+        // foreach ($template_ids as $templateId) {
+        //     $response = $this->tempdetAjax(new Request(['tem_id' => $templateId]));  // Call the existing function
+        //     $templateResponse = $response->getData()->response;
+        //     // $res_g_data = ObjectiveResponse::where(['group_id' => $templateResponse->data->response_group])->get();
+        //     // $templateResponse->data->responses = $res_g_data;
+        //     $responses[] = $templateResponse;
+        // }
+
+        // dd($tenplates_names_in_audit);
 
         return view('audit.resume', ['isSaved' => $isSaved, 'client' => $client, 'emptyInputs' => $emptyInputs, 'clientId' => $request->cid, 'audit' => $audit, 'start_time' => $start_time, 'tenplates_names_in_audit' => $tenplates_names_in_audit, 'auditfilled' => $auditfilled, 'total_questions_in_audit' => $total_questions_in_audit, 'total_answers_in_audit' => $total_answers_in_audit, 'signDone' => $signDone]);
     }
@@ -1085,7 +1111,7 @@ class AuditController extends Controller
 
 
             if ($audit->auditing_for == 1) {
-               return view('industrial', [
+                return view('industrial', [
                     'templatecoll' => $templatecoll,
                     'audit' => $audit,
                     'client' => $client,
@@ -1478,7 +1504,7 @@ class AuditController extends Controller
                     // fro getting negative answers
                     // $negativeAnswers = [];
                     // $audit_details = AuditDetail::where('audit_id', $audit->id)->where('response_score', '<', 0)->get();
-            
+
                     // foreach ($audit_details as $detail) {
                     //     // Store the negative answers with their details (could also store `question_id`, etc.)
                     //     $negativeAnswers[] = [
@@ -1487,7 +1513,7 @@ class AuditController extends Controller
                     //         'created_at' => $detail->created_at,
                     //     ];
                     // }
-            
+
                     // // If you want to store negative answers inside a separate array
                     // $createdArrays['negative_answers'][$audit->id] = $negativeAnswers;
                 }
@@ -1562,7 +1588,7 @@ class AuditController extends Controller
                             $ques['q_no'] = $nwgAns->question_id;
                             $ques['q_name'] = $tempQues->question;
                             $ques['response_date'] = $nwgAns->created_at;
-        
+
                             $dates[] = $ques;
                             $addedQuestions[] = $nwgAns->question_id;  // Mark this question as added
                         }

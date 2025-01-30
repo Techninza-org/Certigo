@@ -102,6 +102,19 @@
                 {{-- {{ dd(Auth::user() && Auth::user()->hasPermission(4)) }} --}}
 
                 @if (Auth::user() && Auth::user()->role === 1 && Auth::user()->hasPermission(1))
+                    {{-- dashboard --}}
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('dashboard') }}" aria-expanded="false">
+                            <span>
+                                <i class="fa-solid fa-user"></i>
+                            </span>
+                            <span class="hide-menu">Dashboard</span>
+                        </a>
+                    </li>
+                @endif
+
+                @if (Auth::user() && Auth::user()->role === 1 && Auth::user()->hasPermission(1))
                     {{-- cliemts --}}
 
 
