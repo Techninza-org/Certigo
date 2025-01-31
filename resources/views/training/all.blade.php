@@ -334,7 +334,7 @@
 
 
 
-                        <div class="p-5 bg-white rounded shadow mb-5">
+                        <div class="p-1 bg-white rounded shadow mb-5">
 
 
 
