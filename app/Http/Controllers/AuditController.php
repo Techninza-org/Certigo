@@ -697,6 +697,70 @@ class AuditController extends Controller
         return redirect()->back()->with('error', 'Client not found');
     }
 
+    public function view_submitted_audit_details($id) {
+        // Fetch the audit record
+        $audit = Audit::where('id', $id)->first();
+
+        if (!$audit) {
+            return redirect()->back()->with('error', 'Audit not found.');
+        }
+
+        // Decode the questions and checklists
+        $all_ques = json_decode($audit->questions, true);
+        $audit_checklist = json_decode($audit->checklists, true);
+
+        // Flatten the all_ques array to get all question IDs
+        $questionIds = [];
+        foreach ($all_ques as $key => $ids) {
+            $questionIds = array_merge($questionIds, $ids);
+        }
+
+        // Fetch question details from the TemplateDetail table
+        $questionsDetails = TemplateDetail::whereIn('id', $questionIds)->get();
+
+        // Fetch response IDs from the auditDetail table
+        $auditDetails = AuditDetail::where('audit_id', $id)
+            ->whereIn('question_id', $questionIds)
+            ->get()
+            ->keyBy('question_id'); // Key by question_id for easy lookup
+
+            $templateNames = [];
+            foreach ($all_ques as $group => $ids) {
+                // Get the template_id for the first question in the group
+                $firstQuestion = $questionsDetails->firstWhere('id', $ids[0]);
+                if ($firstQuestion) {
+                    $templateNames[$group] = $firstQuestion->template_name;
+                }
+            }
+
+        // Map questions to their details and include response_id if available
+        $mappedQuestions = [];
+        foreach ($all_ques as $group => $ids) {
+            $mappedQuestions[$group] = [];
+            foreach ($ids as $questionId) {
+                $questionDetail = $questionsDetails->firstWhere('id', $questionId);
+                if ($questionDetail) {
+                    // Add response_id if available
+                    $questionDetail->response_id = $auditDetails->get($questionId)->response_id ?? null;
+                    $questionDetail->response_score = $auditDetails->get($questionId)->response_score ?? null;
+                    $questionDetail->evidences = $auditDetails->get($questionId)->evidences ?? null;
+                    $questionDetail->suggestions = $auditDetails->get($questionId)->suggestions ?? null;
+                    $questionDetail->objective_evidences = $auditDetails->get($questionId)->objective_evidences ?? null;
+                    $mappedQuestions[$group][] = $questionDetail;
+                }
+            }
+        }
+
+        // dd($mappedQuestions);
+
+        // Pass the data to the view
+        return view('audit-status', [
+            'audit' => $audit,
+            'mappedQuestions' => $mappedQuestions,
+            'templateNames' => $templateNames, 
+            'audit_checklist' => $audit_checklist,
+        ]);
+    }
 
     public function auditRepView(Request $request)
     {
@@ -709,7 +773,6 @@ class AuditController extends Controller
             'cid' => 'required',
 
         ]);
-        Log::info('Audit report view request', ['request' => $request->all()]);
         // Auth user 
 
         if ($request->auth_id != 'client') {
