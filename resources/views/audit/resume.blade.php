@@ -56,8 +56,8 @@
         }
 
         /*
-                            Set the color of the icon
-                            */
+                                    Set the color of the icon
+                                    */
         svg path,
         svg rect {
             fill: #FF6700;
@@ -156,6 +156,12 @@
                             <p style="font-size: 13px;color:red">Fill 'response', 'Objective evidences', 'Suggestion' and
                                 'upload evidences' together while filling negative response.
                             </p>
+                            <div class="d-flex justify-content-end">
+                                <a class="btn btn-primary btn-sm p-2 text-white"
+                                    href="{{ route('audit-status', ['id' => $audit->id]) }}">
+                                    Status
+                                </a>
+                            </div>
                             <div class="d-lg-flex d-md-flex align-items-start">
                                 <div class="nav flex-column nav-pills area_section_buttons me-3 mb-2" id="v-pills-tab"
                                     role="tablist" aria-orientation="vertical">
@@ -418,35 +424,35 @@
                                         .append(respContent);
                                     let inputFields =
                                         '<div class="mb-3 ">\
-                                                                                                        <label class="form-label">Objective evidences:</label>\
-                                                                                                        <input type="text" class="form-control"  name="objective_evidences">\
-                                                                                                    </div>\
-                                                                                                    <div class="mb-3 ">\
-                                                                                                        <label class="form-label">Give a Suggestion:</label>\
-                                                                                                        <textarea class="full-featured-non-premium form-control" name="suggestions" ></textarea>\
-                                                                                                    </div>\
-                                                                                                    <label class="form-label">Upload evidences:</label>\
-                                                                                                    <div class="mb-3 d-flex">\
-                                                                                                        <input type="file" id="fileInput" class="form-control" name="evidences[]" multiple >\
-                                                                                                        <button type="button" class="btn text-danger" onclick="clearFileInput()">x</button>\
-                                                                                                    </div>\
-                                                                                                    <div class="mb-3 ">\
-                                                                                                        <label class="form-label">Uploaded evidences:</label>\
-                                                                                                        <div class=" row image-container d-flex justify-content-evenly" ></div>\
-                                                                                                    </div>\
-                                                                                                    <div class="mb-3 ">\
-                                                                                                        <label class="form-label">Doc_ref:</label>\
-                                                                                                        <input type="text" class="form-control"  name="doc_ref">\
-                                                                                                    </div>\
-                                                                                                    <div class="mb-3 ">\
-                                                                                                        <label class="form-label">Personal Responsible:</label>\
-                                                                                                        <input type="text" class="form-control"  name="person_responsible">\
-                                                                                                    </div>\
-                                                                                                    <div class="mb-3 ">\
-                                                                                                        <label class="form-label">Timeline:</label>\
-                                                                                                        <input type="datetime-local" class="form-control"  name="timeline">\
-                                                                                                    </div>\
-                                                                                                    <button type="submit" class="btn btn-primary btn-sm submit-btn">Submit</button>';
+                                                                                                                <label class="form-label">Objective evidences:</label>\
+                                                                                                                <input type="text" class="form-control"  name="objective_evidences">\
+                                                                                                            </div>\
+                                                                                                            <div class="mb-3 ">\
+                                                                                                                <label class="form-label">Give a Suggestion:</label>\
+                                                                                                                <textarea class="full-featured-non-premium form-control" name="suggestions" ></textarea>\
+                                                                                                            </div>\
+                                                                                                            <label class="form-label">Upload evidences:</label>\
+                                                                                                            <div class="mb-3 d-flex">\
+                                                                                                                <input type="file" id="fileInput" class="form-control" name="evidences[]" multiple >\
+                                                                                                                <button type="button" class="btn text-danger" onclick="clearFileInput()">x</button>\
+                                                                                                            </div>\
+                                                                                                            <div class="mb-3 ">\
+                                                                                                                <label class="form-label">Uploaded evidences:</label>\
+                                                                                                                <div class=" row image-container d-flex justify-content-evenly" ></div>\
+                                                                                                            </div>\
+                                                                                                            <div class="mb-3 ">\
+                                                                                                                <label class="form-label">Doc_ref:</label>\
+                                                                                                                <input type="text" class="form-control"  name="doc_ref">\
+                                                                                                            </div>\
+                                                                                                            <div class="mb-3 ">\
+                                                                                                                <label class="form-label">Personal Responsible:</label>\
+                                                                                                                <input type="text" class="form-control"  name="person_responsible">\
+                                                                                                            </div>\
+                                                                                                            <div class="mb-3 ">\
+                                                                                                                <label class="form-label">Timeline:</label>\
+                                                                                                                <input type="datetime-local" class="form-control"  name="timeline">\
+                                                                                                            </div>\
+                                                                                                            <button type="submit" class="btn btn-primary btn-sm submit-btn">Submit</button>';
                                     $('#' + currentTabPaneId).find('form')
                                         .append(inputFields);
                                 }
