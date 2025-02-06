@@ -894,12 +894,6 @@ class AuditController extends Controller
 
                 }
 
-
-
-
-
-
-
             }
 
             $target__score = array_sum($target_score_array);

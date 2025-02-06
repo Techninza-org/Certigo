@@ -199,7 +199,8 @@ class HrController extends Controller
         $data['loss_of_pay_days'] = ($request->gross_salary/$request->twd)*$request->lpd;
         $data['loss_of_pay_days'] = (int) ceil(number_format((float)$data['loss_of_pay_days'], 2, '.', ''));
          // total deductions
-         $data['total_deductions'] = $data['pf_value'] + $request->esi_value + $request->professional_tax + $request->loan_recovery + $data['loss_of_pay_days'];
+         //$data['pf_value'] + 
+         $data['total_deductions'] = $request->esi_value + $request->professional_tax + $request->loan_recovery + $data['loss_of_pay_days'];
          $data['total_deductions'] = (int) ceil(number_format((float)$data['total_deductions'], 2, '.', ''));
 
         $data['net_salary'] = $data['total_earnings'] - $data['total_deductions'];
