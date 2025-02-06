@@ -26,6 +26,9 @@ use App\Http\Controllers\ClientAuthController;
 
 use App\Http\Controllers\HrController;
 
+use App\Http\Controllers\AuditAgreementController;
+
+use App\Http\Controllers\RoleController;
 
 
 
@@ -72,6 +75,9 @@ Route::get('/clear-cache', function () {
 
 
 
+Route::get('/audit-status/{id}', [AuditController::class, 'view_submitted_audit_details'])->name('audit-status');
+Route::get('/audit-report-viewpdf/{id}', [AuditController::class, 'viewGeneratedReport'])->name('audit-report-viewpdf');
+Route::post('/audit-report-savepdf', [AuditController::class, 'saveReportToDb'])->name('audit.report.savepdf');
 Route::get('/audit-report-view', [AuditController::class, 'auditRepView'])->name('audit.report.view');
 Route::get('/audit-final-score', [AuditController::class, 'auditFinalScore'])->name('audit.final.score');
 
@@ -98,6 +104,9 @@ Route::get('/quarter-consolidated-link/{id}/{quarter}', [AuditController::class,
 
 
 Route::group(['middleware' => 'auth'], function () {
+
+
+    Route::post('/roles/store', [RoleController::class, 'store'])->name('roles.store');
 
 
 
@@ -165,6 +174,11 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::post('/service-code', 'saveServiceCode')->name('post.serviceCode');
 
+        Route::post('/service-code-update', 'updateServiceCode')->name('update.serviceCode');
+
+        Route::get('/service-code-delete/{id}', 'deleteServiceCode')->name('delete.serviceCode');
+
+
 
 
         Route::get('signature-pad-auditor', 'signView')->name('sign.view');
@@ -182,6 +196,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 
         Route::post('/doc-personal', 'store_docref_pesonal')->name('store_docref_pesonal');
+
+        Route::get('/dashboard', 'dashboard')->name('dashboard');
 
 
 
@@ -302,13 +318,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/remove-response', 'removeResponse')->name('delete-response');
 
 
-
-
-
-
-
-
-
     });
 
 
@@ -320,16 +329,21 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/all-trash', 'allTrash')->name('get.trash');
 
         Route::post('/restore-audit', 'r_audit')->name('restoreAudit');
+        Route::post('/delete-audit', 'delete_audit')->name('deleteAudit');
+
 
         Route::post('/restore-client', 'r_client')->name('restoreClient');
+        Route::post('/delete-client', 'd_client')->name('deleteClient');
+
 
         Route::post('/restore-training', 'r_training')->name('restoreTraining');
+        Route::post('/delete-training', 'd_training')->name('deleteTraining');
 
         Route::post('/restore-user', 'r_user')->name('restoreuser');
+        Route::post('/delete-user', 'd_user')->name('deleteUser');
 
-
-
-
+        Route::post('/restore-template', 'r_template')->name('restoreTemplate');
+        Route::post('/delete-template', 'd_template')->name('deleteTemplate');
 
     });
 
@@ -375,6 +389,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/complete-training/{id}', 'postCompletePage')->name('post.complete.training');
 
         Route::get('/download-pdf', 'downloadPdf')->name('downlaod.training.pdf');
+
 
 
 
@@ -539,11 +554,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/view-offer-letter', [HrController::class, 'viewOfferLetterPdf'])->name('view.pdf');
     Route::get('/edit-offer-letter', [HrController::class, 'geteditofferLetter'])->name('edit.offer.letter.page');
     Route::post('/edit-offer-letter', [HrController::class, 'posteditofferLetter'])->name('post.edit.offer.letter.page');
+    Route::get('/delete-offer-letter/{id}', [HrController::class, 'deleteOfferLetterPdf'])->name('delete.offer.letter');
 
 
     Route::get('/create-pay-slip', [HrController::class, 'getPayslipPage'])->name('get.payslip.page');
     Route::post('/create-pay-slip', [HrController::class, 'postPayslipPage'])->name('post.payslip.page');
     Route::get('/view-pay-slip', [HrController::class, 'viewPaySlipPdf'])->name('view.paySlip.pdf');
+
     Route::get('/edit-pay-slip', [HrController::class, 'editPaySlipPdf'])->name('edit.paySlip');
     Route::post('/edit-pay-slip', [HrController::class, 'posteditPaySlipPdf'])->name('post.edit.paySlip');
     Route::post('/delete-pay-slip', [HrController::class, 'deletePaySlipPdf'])->name('delete.paySlip');
@@ -579,6 +596,31 @@ Route::get('/client/login', [ClientAuthController::class, 'login'])->name('clien
 Route::get('/client/logout', [ClientAuthController::class, 'logout'])->name('client.logout');
 
 Route::post('/client/login', [ClientAuthController::class, 'handleLogin'])->name('client.handleLogin');
+
+Route::get('/client/upload-signatures', [ClientAuthController::class, 'uploadSignatures'])->name('client.uploadSignatures');
+
+Route::post('/client/upload-signatures', [ClientAuthController::class, 'uploadSignaturesClient'])->name('client.uploadSignaturesClient');
+
+
+
+
+
+
+Route::get('/audit-agreement', [AuditAgreementController::class, 'index'])->name('audit.agreement');
+
+Route::get('/genrate-agreement', [AuditAgreementController::class, 'genrateAgreement'])->name('genrate.agreement');
+
+Route::post('/genrate-agreement', [AuditAgreementController::class, 'genrateAgreementPdf'])->name('genrate.agreement.pdf');
+
+
+
+
+
+
+
+
+
+
 
 
 

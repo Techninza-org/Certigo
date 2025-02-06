@@ -21,22 +21,22 @@ use Illuminate\Http\Request;
 
 
 class TrainingController extends Controller
-
 {
 
-    public function allTrainings(){
+    public function allTrainings()
+    {
 
-        $clients = Client::where(['status'=> 1])->get();
+        $clients = Client::where(['status' => 1])->get();
 
-        $users = User::where(['status'=>1])->get();
+        $users = User::where(['status' => 1])->get();
 
 
 
-        $uptrainings = Training::where(['status'=> 0])->get();
+        $uptrainings = Training::where(['status' => 0])->get();
 
-        $inptrainings = Training::where(['status'=> 1])->get();
+        $inptrainings = Training::where(['status' => 1])->get();
 
-        $comptrainings = Training::where(['status'=> 2])->get();
+        $comptrainings = Training::where(['status' => 2])->get();
 
 
 
@@ -46,13 +46,14 @@ class TrainingController extends Controller
 
         // dd($trainings);
 
-        return view('training.all',['clients'=>$clients,'uptrainings'=>$uptrainings,'users'=>$users,'attendees'=>$attendees,'inptrainings'=>$inptrainings,'comptrainings'=>$comptrainings]);
+        return view('training.all', ['clients' => $clients, 'uptrainings' => $uptrainings, 'users' => $users, 'attendees' => $attendees, 'inptrainings' => $inptrainings, 'comptrainings' => $comptrainings]);
 
     }
 
 
 
-    public function scheduleTraining(Request $request){
+    public function scheduleTraining(Request $request)
+    {
 
         $request->validate([
 
@@ -76,21 +77,21 @@ class TrainingController extends Controller
 
 
 
-        
+
 
 
 
         $client = Client::where(['id' => $request->client])->first('no_trainings_conduct');
 
-        $client_trainings = Training::where(['client' => $request->client ])->count();
+        $client_trainings = Training::where(['client' => $request->client])->count();
 
         // dd($client);
 
-        if($client_trainings >= $client->no_trainings_conduct){
+        if ($client_trainings >= $client->no_trainings_conduct) {
 
             // dd($client_trainings,$client->no_trainings_conduct);
 
-            return redirect()->back()->with('error',' Maximum number of trainigs scheduled');
+            return redirect()->back()->with('error', ' Maximum number of trainigs scheduled');
 
 
 
@@ -102,13 +103,13 @@ class TrainingController extends Controller
 
 
 
-        $membersArr = explode(',',$request->members);
+        $membersArr = explode(',', $request->members);
 
         $request['members'] = json_encode($membersArr);
 
 
 
-        $attendeesArr = explode(',',$request->attendees);
+        $attendeesArr = explode(',', $request->attendees);
 
         $request['attendees'] = json_encode($attendeesArr);
 
@@ -124,15 +125,15 @@ class TrainingController extends Controller
 
 
 
-        if($trainingStore){
+        if ($trainingStore) {
 
-            return redirect()->back()->with('success','Training Scheduled successfully');
+            return redirect()->back()->with('success', 'Training Scheduled successfully');
 
 
 
-        }else{
+        } else {
 
-            return redirect()->back()->with('error','Some error occured while scheduling training.');
+            return redirect()->back()->with('error', 'Some error occured while scheduling training.');
 
 
 
@@ -162,11 +163,12 @@ class TrainingController extends Controller
 
 
 
-    public function geteditTraining($id){
+    public function geteditTraining($id)
+    {
 
-        $training = Training::where(['id'=>$id])->first();
+        $training = Training::where(['id' => $id])->first();
 
-        $clients = Client::where(['status'=> 1])->get();
+        $clients = Client::where(['status' => 1])->get();
 
         $users = User::all();
 
@@ -178,41 +180,42 @@ class TrainingController extends Controller
 
         // dd($training);
 
-        return view('training.edit',['training'=>$training,'clients'=>$clients,'users'=>$users,'attendees'=>$attendees]);
+        return view('training.edit', ['training' => $training, 'clients' => $clients, 'users' => $users, 'attendees' => $attendees]);
 
     }
 
 
 
-    public function editTraining(Request $request){
+    public function editTraining(Request $request)
+    {
 
 
 
         $request->validate([
 
-            'trainingId'=> 'required',
+            'trainingId' => 'required',
 
-            'topic'=> 'required',
+            'topic' => 'required',
 
-            'audit_start_date'=> 'nullable',
+            'audit_start_date' => 'nullable',
 
-            'location'=> 'required',
+            'location' => 'required',
 
-            'client'=> 'required',
+            'client' => 'required',
 
-            'amount'=> 'required',
+            'amount' => 'required',
 
-            'members'=> 'required',
+            'members' => 'required',
 
-            'attendees'=> 'required',
-
-
+            'attendees' => 'required',
 
 
 
 
 
-        ]) ;
+
+
+        ]);
 
 
 
@@ -252,7 +255,7 @@ class TrainingController extends Controller
 
 
 
-        $attendeesArr = explode(',',$request->attendees);
+        $attendeesArr = explode(',', $request->attendees);
 
 
 
@@ -260,71 +263,73 @@ class TrainingController extends Controller
 
 
 
-        if($training->update($data)){
+        if ($training->update($data)) {
 
-            return redirect()->back()->with('success','Training Details updated');
+            return redirect()->back()->with('success', 'Training Details updated');
 
         }
 
-       
 
-       return  redirect()->back()->with('error','Training details not updated.');
+
+        return redirect()->back()->with('error', 'Training details not updated.');
 
     }
 
 
 
-    public function viewTraining(Request $request){
+    public function viewTraining(Request $request)
+    {
 
-        $training = Training::where(['id'=>$request->trainingId])->first();
+        $training = Training::where(['id' => $request->trainingId])->first();
 
         $train_attend = $training->attendees;
 
-        $attArray = json_decode($train_attend,true);
+        $attArray = json_decode($train_attend, true);
 
         $atendis = [];
 
-        foreach($attArray as $att){
+        foreach ($attArray as $att) {
 
-            $atten = Attendee::where(['id'=>$att])->first();
+            $atten = Attendee::where(['id' => $att])->first();
 
-            $atendis[]  = $atten;
+            $atendis[] = $atten;
 
         }
 
-        
+
 
         // dd($atendis);
 
-        $client = Client::where(['id'=>$training->client])->first('organisation_name');
+        $client = Client::where(['id' => $training->client])->first('organisation_name');
 
 
 
-       
 
-        return view('training.view',['training'=>$training,'client'=>$client,'atendis'=>$atendis]);
+
+        return view('training.view', ['training' => $training, 'client' => $client, 'atendis' => $atendis]);
 
     }
 
 
 
-    public function deleteTraining(Request $request){
+    public function deleteTraining(Request $request)
+    {
 
         // dd($request->all());
 
 
 
-        $training = Training::where(['id'=>$request->trainingId])->delete();
+        $training = Training::where(['id' => $request->trainingId])->delete();
 
-        if($training){
+        if ($training) {
 
 
 
             return to_route('get.trainings');
 
-        }else{
+        } else {
 
-            return  redirect()->back()->with('error','Problem deleting training! Please try again.');
+            return redirect()->back()->with('error', 'Problem deleting training! Please try again.');
 
         }
 
@@ -332,19 +337,20 @@ class TrainingController extends Controller
 
 
 
-    public function addAttendee(Request $request){
+    public function addAttendee(Request $request)
+    {
 
         $request->validate([
 
-            'fname' ,
+            'fname',
 
             'lname',
 
-            'email' ,
+            'email',
 
             'designation',
 
-            'contact'           
+            'contact'
 
 
 
@@ -354,7 +360,7 @@ class TrainingController extends Controller
 
 
 
-        
+
 
         $input = $request->all();
 
@@ -366,15 +372,15 @@ class TrainingController extends Controller
 
 
 
-        if($attendee){
+        if ($attendee) {
 
-            return redirect()->back()->with('success','Attendee added successfully');
+            return redirect()->back()->with('success', 'Attendee added successfully');
 
 
 
-        }else{
+        } else {
 
-            return redirect()->back()->with('error','Some error occured while adding attendee.');
+            return redirect()->back()->with('error', 'Some error occured while adding attendee.');
 
 
 
@@ -386,7 +392,8 @@ class TrainingController extends Controller
 
 
 
-    public function startTraining(Request $request){
+    public function startTraining(Request $request)
+    {
 
         $request->validate([
 
@@ -410,25 +417,26 @@ class TrainingController extends Controller
 
 
 
-   
 
-    public function getCompletePage(Request $request){
 
-        $training = Training::where(['id'=>$request->tId])->first();
+    public function getCompletePage(Request $request)
+    {
 
-        if($training->attendees !== null){
+        $training = Training::where(['id' => $request->tId])->first();
+
+        if ($training->attendees !== null) {
 
             $train_attend = $training->attendees;
 
-            $attArray = json_decode($train_attend,true);
+            $attArray = json_decode($train_attend, true);
 
             $atendis = [];
 
-            foreach($attArray as $att){
+            foreach ($attArray as $att) {
 
-                $atten = Attendee::where(['id'=>$att])->first();
+                $atten = Attendee::where(['id' => $att])->first();
 
-                $atendis[]  = $atten;
+                $atendis[] = $atten;
 
             }
 
@@ -436,53 +444,54 @@ class TrainingController extends Controller
 
 
 
-        if($training->key_points !== null){
+        if ($training->key_points !== null) {
 
             $key_points = $training->key_points;
 
-            $pointsArr = json_decode($key_points,true);
+            $pointsArr = json_decode($key_points, true);
 
             $training->points__array = $pointsArr;
 
-            
+
 
         }
 
 
 
-        if($training->evidences !== null){
+        if ($training->evidences !== null) {
 
             $evidences = $training->evidences;
 
-            $imgArr = json_decode($evidences,true);
+            $imgArr = json_decode($evidences, true);
 
             $training->img__array = $imgArr;
 
-            
+
 
         }
 
 
 
-        
 
-        
+
+
 
         // dd($atendis);
 
-        $client = Client::where(['id'=>$training->client])->first('organisation_name');
+        $client = Client::where(['id' => $training->client])->first('organisation_name');
 
 
 
-       
 
-        return view('training.view-complete',['training'=>$training,'client'=>$client,'atendis'=>$atendis]);
+
+        return view('training.view-complete', ['training' => $training, 'client' => $client, 'atendis' => $atendis]);
 
     }
 
 
 
-    public function postCompletePage($id){
+    public function postCompletePage($id)
+    {
 
         // $request->validate([
 
@@ -492,13 +501,13 @@ class TrainingController extends Controller
 
 
 
-        $training = Training::where(['id'=>$id])->first();
+        $training = Training::where(['id' => $id])->first();
 
 
 
-        $training->status  = 2;
+        $training->status = 2;
 
-        $training->completed_at  = Carbon::now();
+        $training->completed_at = Carbon::now();
 
         $training->save();
 
@@ -508,17 +517,17 @@ class TrainingController extends Controller
 
         $atendis = [];
 
-        if($training->attendees !== null){
+        if ($training->attendees !== null) {
 
             $train_attend = $training->attendees;
 
-            $attArray = json_decode($train_attend,true);
+            $attArray = json_decode($train_attend, true);
 
-            foreach($attArray as $att){
+            foreach ($attArray as $att) {
 
-                $atten = Attendee::where(['id'=>$att])->first();
+                $atten = Attendee::where(['id' => $att])->first();
 
-                $atendis[]  = $atten;
+                $atendis[] = $atten;
 
             }
 
@@ -526,145 +535,94 @@ class TrainingController extends Controller
 
 
 
-        if($training->key_points !== null){
+        if ($training->key_points !== null) {
 
             $key_points = $training->key_points;
 
-            $training->key_points = json_decode($key_points,true);            
+            $training->key_points = json_decode($key_points, true);
 
         }
 
 
 
-        if($training->evidences !== null){
+        if ($training->evidences !== null) {
 
             $evidences = $training->evidences;
 
-            $imgArr = json_decode($evidences,true);
+            $imgArr = json_decode($evidences, true);
 
             $training->img__array = $imgArr;
 
-            
+
 
         }
 
-        
+
 
         // dd($atendis);
 
-        $client = Client::where(['id'=>$training->client])->first('organisation_name');
+        $client = Client::where(['id' => $training->client])->first('organisation_name');
 
 
 
-        return view('pdfview',['training'=>$training,'client'=>$client,'atendis'=>$atendis]);
+        return view('pdfview', ['training' => $training, 'client' => $client, 'atendis' => $atendis]);
 
 
 
     }
 
-    public function downloadPdf(Request $request){
-
+    public function downloadPdf(Request $request)
+    {
+        // Validate the request
         $request->validate([
-
-            'trainingId'=> 'required'
-
+            'trainingId' => 'required',
         ]);
 
+        // Fetch training details
+        $training = Training::where(['id' => $request->trainingId])->first();
 
-
-        $training = Training::where(['id'=>$request->trainingId])->first();
-
-
-
+        // Initialize attendees array
         $atendis = [];
-
-        if($training->attendees !== null){
-
+        if ($training->attendees !== null) {
             $train_attend = $training->attendees;
+            $attArray = json_decode($train_attend, true);
 
-            $attArray = json_decode($train_attend,true);
-
-            foreach($attArray as $att){
-
-                $atten = Attendee::where(['id'=>$att])->first();
-
-                $atendis[]  = $atten;
-
+            foreach ($attArray as $att) {
+                $atten = Attendee::where(['id' => $att])->first();
+                $atendis[] = $atten;
             }
-
         }
 
-        
+        // Fetch client details
+        $client = Client::where(['id' => $training->client])->first();
 
-        // images
-
-
-
-        
-
-        // dd($atendis);
-
-        $client = Client::where(['id'=>$training->client])->first();
-
-
-
+        // Get current date and time
         $todaydate = Carbon::now();
-
         $todayDate = $todaydate->format('d/m/Y');
-
         $todayTime = $todaydate->format('H:i A');
 
-
-
-        
-
-        if($client){
-
-
-
+        if ($client) {
+            // Generate PDF
             $pdf = PDF::loadView('downpdf', [
-
-                'training'=>$training,
-
-                'atendis'=>$atendis,
-
-                'client'=>$client,
-
-                'todayDate'=>$todayDate,
-
-                'todayTime'=>$todayTime,
-
+                'training' => $training,
+                'atendis' => $atendis,
+                'client' => $client,
+                'todayDate' => $todayDate,
+                'todayTime' => $todayTime,
                 'images' => json_decode($training->evidences),
-
                 'points' => json_decode($training->key_points),
-
                 'trainerSign' => $training->trainer_sign,
-
                 'traineeSign' => $training->trainee_sign,
-
-                
-
-
-
             ]);
 
-
-
-        
-
-            // return $pdf->download('itsolutionstuff.pdf');
-
+            // Return PDF as stream
             return $pdf->stream('certigo-report.pdf');
-
-
-
         }
 
-        return redirect()->back()->with('error','Client not found');
-
-
-
+        // Redirect back with error if client not found
+        return redirect()->back()->with('error', 'Client not found');
     }
+
 
 
 
@@ -706,15 +664,16 @@ class TrainingController extends Controller
 
 
 
-    public function trainingImages(Request $request){
+    public function trainingImages(Request $request)
+    {
 
         $request->validate([
 
-            'trainingId'=> 'required',
+            'trainingId' => 'required',
 
-            'evidences'=> 'nullable',
+            'evidences' => 'nullable',
 
-            'input'=> 'nullable',
+            'input' => 'nullable',
 
 
 
@@ -722,7 +681,7 @@ class TrainingController extends Controller
 
 
 
-        $trainingDetail = Training::where(['id'=>$request->trainingId])->first();
+        $trainingDetail = Training::where(['id' => $request->trainingId])->first();
 
 
 
@@ -734,7 +693,7 @@ class TrainingController extends Controller
 
 
 
-       if($trainingDetail !== null){
+        if ($trainingDetail !== null) {
 
             $existingImages = json_decode($trainingDetail->evidences, true);
 
@@ -750,29 +709,29 @@ class TrainingController extends Controller
 
             }
 
-       }       
-
-       
+        }
 
 
 
 
 
-        if($files = $request->file('evidences')){
 
-            foreach( $files as $file){
 
-                $image_name = md5(rand(1000,10000));
+        if ($files = $request->file('evidences')) {
+
+            foreach ($files as $file) {
+
+                $image_name = md5(rand(1000, 10000));
 
                 $ext = strtolower($file->getClientOriginalExtension());
 
-                $image_full_name = $image_name.'.'.$ext;
+                $image_full_name = $image_name . '.' . $ext;
 
                 $upload_path = 'storage/training/';
 
-                $image_url = $upload_path.$image_full_name;
+                $image_url = $upload_path . $image_full_name;
 
-                $file->move($upload_path,$image_full_name);
+                $file->move($upload_path, $image_full_name);
 
                 $imgArr[] = $image_url;
 
@@ -782,15 +741,15 @@ class TrainingController extends Controller
 
 
 
-        foreach($request->input as $in){
+        foreach ($request->input as $in) {
 
             $pointsArr[] = $in;
 
         }
 
-        
 
-        $evidences = json_encode($imgArr);            
+
+        $evidences = json_encode($imgArr);
 
         $trainingDetail->evidences = $evidences;
 
@@ -800,7 +759,7 @@ class TrainingController extends Controller
 
         // POints 
 
-        $allInputs = json_encode($pointsArr);    
+        $allInputs = json_encode($pointsArr);
 
         $trainingDetail->key_points = $allInputs;
 
@@ -810,19 +769,19 @@ class TrainingController extends Controller
 
 
 
-       
 
-        if($trainingDetail->save()){           
 
-            return redirect()->back()->with('success','Images upload successfully');
+        if ($trainingDetail->save()) {
 
-        }else{
+            return redirect()->back()->with('success', 'Images upload successfully');
 
-            return redirect()->back()->with('error','Images upload failed. Try again.');
+        } else {
 
-        }       
+            return redirect()->back()->with('error', 'Images upload failed. Try again.');
 
-       
+        }
+
+
 
     }
 
@@ -830,11 +789,12 @@ class TrainingController extends Controller
 
 
 
-    public function remove_point(Request $request){
+    public function remove_point(Request $request)
+    {
 
         $request->validate([
 
-            
+
 
             'key' => 'required',
 
@@ -846,15 +806,15 @@ class TrainingController extends Controller
 
         ]);
 
-        $training = Training::where(['id'=>$request->trainingId])->first();
+        $training = Training::where(['id' => $request->trainingId])->first();
 
         $inputsArr = json_decode($training->key_points);
 
 
 
-        foreach( $inputsArr as $key => $in ){
+        foreach ($inputsArr as $key => $in) {
 
-            if($key == $request->key){
+            if ($key == $request->key) {
 
                 unset($inputsArr[$key]);
 
@@ -882,37 +842,39 @@ class TrainingController extends Controller
 
         // dd($auditDetail);
 
-        if($training->save()){
+        if ($training->save()) {
 
-            return redirect()->back()->with('success','Key point removed');
+            return redirect()->back()->with('success', 'Key point removed');
 
-        }else{
+        } else {
 
-            return redirect()->back()->with('error','Key point  not removed');
+            return redirect()->back()->with('error', 'Key point  not removed');
 
         }
 
-        
+
 
 
 
     }
 
-     
 
 
 
 
 
-    public function getUploadSign($trainingId){
 
-        return view('training.signature',['trainingId'=>$trainingId]);
+    public function getUploadSign($trainingId)
+    {
+
+        return view('training.signature', ['trainingId' => $trainingId]);
 
     }
 
 
 
-    public function trainingSignatures(Request $request){
+    public function trainingSignatures(Request $request)
+    {
 
         $request->validate([
 
@@ -928,13 +890,13 @@ class TrainingController extends Controller
 
 
 
-        
 
-        $training = Training::where(['id'=> $request->trainingId])->first();
 
-        if( $request->trainersign == null || $request->traineesign == null || $request->trainersign == '' || $request->traineesign == ''){
+        $training = Training::where(['id' => $request->trainingId])->first();
 
-            return redirect()->back()->with('error','Please upload signatures');
+        if ($request->trainersign == null || $request->traineesign == null || $request->trainersign == '' || $request->traineesign == '') {
+
+            return redirect()->back()->with('error', 'Please upload signatures');
 
 
 
@@ -942,11 +904,11 @@ class TrainingController extends Controller
 
 
 
-        if($request->file('trainersign') !== null){
+        if ($request->file('trainersign') !== null) {
 
-            $uploadedFileName  = $request->file('trainersign')->getClientOriginalName();
+            $uploadedFileName = $request->file('trainersign')->getClientOriginalName();
 
-            $image_name = date('YmdHis').$uploadedFileName ;
+            $image_name = date('YmdHis') . $uploadedFileName;
 
             $request->file('trainersign')->storeAs('public/signatures/', $image_name);
 
@@ -958,11 +920,11 @@ class TrainingController extends Controller
 
 
 
-        if($request->file('traineesign') !== null){
+        if ($request->file('traineesign') !== null) {
 
-            $uploadedFileName2  = $request->file('traineesign')->getClientOriginalName();
+            $uploadedFileName2 = $request->file('traineesign')->getClientOriginalName();
 
-            $image_name2 = date('YmdHis').$uploadedFileName2 ;
+            $image_name2 = date('YmdHis') . $uploadedFileName2;
 
             $request->file('traineesign')->storeAs('public/signatures/', $image_name2);
 
@@ -974,19 +936,19 @@ class TrainingController extends Controller
 
         // dd($request->all());
 
-     
-
-        $result = $training->update( $request->all() );
-
-        if($result){
 
 
+        $result = $training->update($request->all());
 
-            return redirect()->back()->with('success','Signatures Uploaded Successfully');
+        if ($result) {
 
-        }else{
 
-            return redirect()->back()->with('error','Please try again');
+
+            return redirect()->back()->with('success', 'Signatures Uploaded Successfully');
+
+        } else {
+
+            return redirect()->back()->with('error', 'Please try again');
 
 
 
@@ -1003,10 +965,9 @@ class TrainingController extends Controller
 
 
     public function signView($id)
-
     {
 
-        return view('training.signature-pad',['training_id'=>$id]);
+        return view('training.signature-pad', ['training_id' => $id]);
 
     }
 
@@ -1015,38 +976,36 @@ class TrainingController extends Controller
 
 
     public function sign_View($id)
-
     {
 
-        return view('training.sign-pad',['training_id'=>$id]);
+        return view('training.sign-pad', ['training_id' => $id]);
 
     }
 
 
 
     public function store(Request $request)
-
     {
 
-        $folderPath = public_path('images/');        
+        $folderPath = public_path('images/');
 
-        $image = explode(";base64,", $request->signed);              
+        $image = explode(";base64,", $request->signed);
 
-        $image_type = explode("image/", $image[0]);           
+        $image_type = explode("image/", $image[0]);
 
-        $image_type_png = $image_type[1];           
+        $image_type_png = $image_type[1];
 
-        $image_base64 = base64_decode($image[1]);           
+        $image_base64 = base64_decode($image[1]);
 
-        $file =  uniqid() . '.'.$image_type_png;      
+        $file = uniqid() . '.' . $image_type_png;
 
         file_put_contents($file, $image_base64);
 
 
 
-        $audit = Training::where(['id'=>$request->training_id])->first();
+        $audit = Training::where(['id' => $request->training_id])->first();
 
-        if($audit){
+        if ($audit) {
 
             $audit->trainer_sign = $file;
 
@@ -1056,37 +1015,36 @@ class TrainingController extends Controller
 
         }
 
-        return back()->with('error','Re-upload your signature');
+        return back()->with('error', 'Re-upload your signature');
 
-      
+
 
     }
 
 
 
     public function store_sign(Request $request)
-
     {
 
-        $folderPath = public_path('images/');        
+        $folderPath = public_path('images/');
 
-        $image = explode(";base64,", $request->signed);              
+        $image = explode(";base64,", $request->signed);
 
-        $image_type = explode("image/", $image[0]);           
+        $image_type = explode("image/", $image[0]);
 
-        $image_type_png = $image_type[1];           
+        $image_type_png = $image_type[1];
 
-        $image_base64 = base64_decode($image[1]);           
+        $image_base64 = base64_decode($image[1]);
 
-        $file =  uniqid() . '.'.$image_type_png;      
+        $file = uniqid() . '.' . $image_type_png;
 
         file_put_contents($file, $image_base64);
 
 
 
-        $audit = Training::where(['id'=>$request->training_id])->first();
+        $audit = Training::where(['id' => $request->training_id])->first();
 
-        if($audit){
+        if ($audit) {
 
             $audit->trainee_sign = $file;
 
@@ -1096,13 +1054,12 @@ class TrainingController extends Controller
 
         }
 
-        return back()->with('error','Re-upload your signature');
+        return back()->with('error', 'Re-upload your signature');
 
 
 
-      
+
 
     }
 
 }
-

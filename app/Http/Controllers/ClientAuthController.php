@@ -8,6 +8,8 @@ use App\Models\TempFolder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\AuditAgreement;
+use App\Models\Client;
 
 class ClientAuthController extends Controller
 {
@@ -26,32 +28,13 @@ class ClientAuthController extends Controller
 
     public function handleLogin(Request $req)
     {
-        if(Auth::guard('webclient')->attempt($req->only(['company_emailid', 'password']))) 
-        {
+        if (Auth::guard('webclient')->attempt($req->only(['company_emailid', 'password']))) {
             // dd("qwertyui");
             // dd(Auth::guard('webclient')->user());
-            $myaudits = Audit::where(['client_id'=> Auth::guard('webclient')->user()->id])->get();
-
-            foreach($myaudits as $audit){          
-                $auditor = User::where(['id'=>$audit->auditors])->first('name');
-                $audit->auditor = $auditor->name;
-    
-                $templatesArr = $audit->checklists;
-                $templatesjson = json_decode($templatesArr);
-                $tempNames = [];
-                foreach($templatesjson as $tArr){
-                    $template = Template::where(['id'=>$tArr])->first();
-                    $tempNames[] = $template;
-                }
-    
-                $audit->tempname = $tempNames;
-            }
-
-            $folders = TempFolder::all();
-
-        $employes = User::all();
+            $user = Auth::guard('webclient')->user();
+            $myaudits = Audit::where('client_id', Auth::guard('webclient')->user()->id)->whereNotNull('report_path')->get();
             // dd($myaudits);
-            return view('client.home',['myaudits'=>$myaudits,'folders'=>$folders,'employes'=>$employes]);
+            return view('client.home', ['myaudits' => $myaudits, 'user' => $user]);
         }
 
         return redirect()->back()->with('error', 'Invalid Credentials');
@@ -63,4 +46,54 @@ class ClientAuthController extends Controller
 
         return redirect()->route('client.login');
     }
+
+
+
+
+
+    public function uploadSignatures()
+    {
+        return view('client.uploadsignatures');
+    }
+
+
+    public function uploadSignaturesClient(Request $request)
+    {
+        // Get the currently authenticated user's ID
+        $userid = Auth::guard('webclient')->user()->id;
+
+        // Validate the request
+        $request->validate([
+            'client_signature' => 'required|file|mimes:jpeg,png,jpg,gif|max:2048', // Ensures it's a valid file type
+        ]);
+
+        // Get the uploaded file
+        $signature = $request->file('client_signature');
+
+        // Define the folder path for saving the file
+        $folderPath = public_path('images/');
+
+        // Generate a unique filename to avoid collisions
+        $fileName = uniqid() . '_' . $signature->getClientOriginalName();
+
+        // Move the file to the folder
+        $signature->move($folderPath, $fileName);
+
+        // Find the client in the database
+        $client = Client::where('id', $userid)->first();
+
+        if ($client) {
+            // Save the file path in the database
+            $client->signature = 'images/' . $fileName;
+            $client->save();
+
+            return back()->with('success', 'Signature uploaded successfully');
+        }
+
+        return back()->with('error', 'Client not found.');
+    }
+
+
+
+
 }
