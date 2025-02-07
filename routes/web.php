@@ -601,6 +601,10 @@ Route::get('/client/upload-signatures', [ClientAuthController::class, 'uploadSig
 
 Route::post('/client/upload-signatures', [ClientAuthController::class, 'uploadSignaturesClient'])->name('client.uploadSignaturesClient');
 
+Route::get('/client/myagreements', [ClientAuthController::class, 'myAgreements'])->name('client.myAgreements');
+
+Route::get('/client/getAgreementByClientId/{id}', [AuditAgreementController::class, 'getAgreementByClientId'])->name('client.myAgreementgetbyid');
+
 
 
 

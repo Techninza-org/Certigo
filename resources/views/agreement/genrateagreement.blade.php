@@ -6,9 +6,50 @@
 
 @section('content')
     <div class="container">
-        <h2 class="mb-4">Dynamic Form</h2>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card w-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2>Generated Agreements</h2>
+                        </div>
+                        {{-- {{ dd($agreement) }} --}}
+                        <div class="row">
+                            @foreach ($agreement as $ag)
+                                <div class="col-md-3 text-center mb-4">
+                                    <a href="{{ route('client.myAgreementgetbyid', ['id' => $ag->client_id]) }}">
+                                        <i class="fa-solid fa-folder"
+                                            style="color: #1d6d96; font-size: xx-large;"></i></a><br>
+                                    <p>{{ $ag->client_fname }} {{ $ag->client_lname }}</p>
+                                    <p>{{ $ag->created_at }}
+                                </div>
+                            @endforeach
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <h2 class="mb-4">Generate Agreement</h2>
         <form id="dynamicForm" method="post" action="{{ route('genrate.agreement.pdf') }}">
             @csrf
+
+
+            <div class="mb-3">
+                <label class="form-label">Select Client</label>
+                <select class="form-control" name="client_id" required>
+                    <option value="">Select a Client</option>
+                    @foreach (json_decode($clients) as $client)
+                        <option value="{{ $client->id }}">{{ $client->fname }} {{ $client->lname }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+
             <!-- Basic Fields -->
             <div class="mb-3">
                 <label class="form-label">Date</label>

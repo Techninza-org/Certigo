@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\AuditAgreement;
 use App\Models\Client;
+use DB;
 
 class ClientAuthController extends Controller
 {
@@ -28,16 +29,19 @@ class ClientAuthController extends Controller
 
     public function handleLogin(Request $req)
     {
-        if (Auth::guard('webclient')->attempt($req->only(['company_emailid', 'password']))) {
-            // dd("qwertyui");
-            // dd(Auth::guard('webclient')->user());
+        if (Auth::guard('webclient')->check()) {
             $user = Auth::guard('webclient')->user();
             $myaudits = Audit::where('client_id', Auth::guard('webclient')->user()->id)->whereNotNull('report_path')->get();
-            // dd($myaudits);
             return view('client.home', ['myaudits' => $myaudits, 'user' => $user]);
-        }
+        } else {
+            if (Auth::guard('webclient')->attempt($req->only(['company_emailid', 'password']))) {
+                $user = Auth::guard('webclient')->user();
+                $myaudits = Audit::where('client_id', Auth::guard('webclient')->user()->id)->whereNotNull('report_path')->get();
+                return view('client.home', ['myaudits' => $myaudits, 'user' => $user]);
+            }
 
-        return redirect()->back()->with('error', 'Invalid Credentials');
+            return redirect()->back()->with('error', 'Invalid Credentials');
+        }
     }
 
     public function logout()
@@ -46,9 +50,6 @@ class ClientAuthController extends Controller
 
         return redirect()->route('client.login');
     }
-
-
-
 
 
     public function uploadSignatures()
@@ -94,6 +95,16 @@ class ClientAuthController extends Controller
     }
 
 
+    public function myAgreements(Request $request)
+    {
+        // Get the currently authenticated user's ID
+        $userid = Auth::guard('webclient')->user()->id;
+
+        // Find the client in the database
+        $agreement = DB::table('agreements')->where('client_id', $userid)->get();
+
+        return view('client.myagreement', ['agreements' => $agreement]);
+    }
 
 
 }

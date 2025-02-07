@@ -55,10 +55,25 @@ class AuditController extends Controller
 
     public function dashboard()
     {
-        $audits = Audit::all()->sortByDesc('created_at');
-        foreach ($audits as $audit) {
-            $audit->client = Client::where('id', $audit->client_id)->first();
-            $audit->auditor = User::where('id', $audit->auditors)->first();
+
+        // get auth user role
+        $user = Auth::user()->role;
+        $id = Auth::user()->id;
+
+
+        if ($user == 1) {
+            $audits = Audit::all()->sortByDesc('created_at');
+            foreach ($audits as $audit) {
+                $audit->client = Client::where('id', $audit->client_id)->first();
+                $audit->auditor = User::where('id', $audit->auditors)->first();
+            }
+        }
+        if ($user == 0) {
+            $audits = Audit::where('auditors', $id)->get();
+            foreach ($audits as $audit) {
+                $audit->client = Client::where('id', $audit->client_id)->first();
+                $audit->auditor = User::where('id', $audit->auditors)->first();
+            }
         }
 
         return view('dashboard', data: ['audits' => $audits]);
@@ -697,7 +712,8 @@ class AuditController extends Controller
         return redirect()->back()->with('error', 'Client not found');
     }
 
-    public function view_submitted_audit_details($id) {
+    public function view_submitted_audit_details($id)
+    {
         // Fetch the audit record
         $audit = Audit::where('id', $id)->first();
 
@@ -724,14 +740,14 @@ class AuditController extends Controller
             ->get()
             ->keyBy('question_id'); // Key by question_id for easy lookup
 
-            $templateNames = [];
-            foreach ($all_ques as $group => $ids) {
-                // Get the template_id for the first question in the group
-                $firstQuestion = $questionsDetails->firstWhere('id', $ids[0]);
-                if ($firstQuestion) {
-                    $templateNames[$group] = $firstQuestion->template_name;
-                }
+        $templateNames = [];
+        foreach ($all_ques as $group => $ids) {
+            // Get the template_id for the first question in the group
+            $firstQuestion = $questionsDetails->firstWhere('id', $ids[0]);
+            if ($firstQuestion) {
+                $templateNames[$group] = $firstQuestion->template_name;
             }
+        }
 
         // Map questions to their details and include response_id if available
         $mappedQuestions = [];
@@ -757,7 +773,7 @@ class AuditController extends Controller
         return view('audit-status', [
             'audit' => $audit,
             'mappedQuestions' => $mappedQuestions,
-            'templateNames' => $templateNames, 
+            'templateNames' => $templateNames,
             'audit_checklist' => $audit_checklist,
         ]);
     }

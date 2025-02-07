@@ -101,7 +101,7 @@
 
                 {{-- {{ dd(Auth::user() && Auth::user()->hasPermission(4)) }} --}}
 
-                @if (Auth::user() && Auth::user()->role === 1 && Auth::user()->hasPermission(1))
+                @if ((Auth::user()->role === 1 || Auth::user()->role === 0) && Auth::user()->hasPermission(1))
                     {{-- dashboard --}}
 
                     <li class="sidebar-item">
@@ -116,9 +116,6 @@
 
                 @if (Auth::user() && Auth::user()->role === 1 && Auth::user()->hasPermission(1))
                     {{-- cliemts --}}
-
-
-
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ route('index') }}" aria-expanded="false">
                             <span>
@@ -311,7 +308,7 @@
 
                 @if (Auth::guard('webclient')->user())
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="#" aria-expanded="false">
+                        <a class="sidebar-link" href="{{ route('client.handleLogin') }}" aria-expanded="false">
                             <span>
                                 <i class="fa-solid fa-folder"></i>
                             </span>
@@ -322,7 +319,7 @@
                     {{-- my agreement --}}
 
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="#" aria-expanded="false">
+                        <a class="sidebar-link" href="{{ route('client.myAgreements') }}" aria-expanded="false">
                             <span>
                                 <i class="fa-solid fa-file"></i>
                             </span>
