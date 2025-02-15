@@ -683,11 +683,14 @@
                             </table>
                         </div>
                     @endforeach
+                    <div style="display: flex; justify-content: center;">
+                        <h2>NON - COMPLIANCES</h2>
+                    </div>
                     {{-- ////////////non compliance --}}
                     @foreach ($templatecoll as $tq)
-                        <div style="margin-top: 20px;">
+                        <div>
                             <div
-                                style="background-color:{{ $color_code }};display: flex; justify-content: space-between; align-items: center;">
+                                style="background-color: red;display: flex; justify-content: space-between; align-items: center;">
                                 <p style="color: white; margin: 0; padding-left: 10px; padding-top: 10px;">
                                     Non-Compliances {{ $tq['tempName'] }}</p>
 
@@ -800,8 +803,12 @@
                                     </p>
                                 </td>
                                 <td style="height: 150px;width:20%">
-                                    <img src="{{ url('') }}/{{ $audit->auditee_sign }}"
-                                        style="width: 10rem; padding-left: 18px;" alt="">
+                                    @if ($client->client_signature != null)
+                                        <img src="{{ $client->client_signature }}" alt="">
+                                    @else
+                                        <img src="{{ url('') }}/{{ $audit->auditee_sign }}"
+                                            style="width: 10rem; padding-left: 18px;" alt="">
+                                    @endif
                                 </td>
                                 <td style="height: 150px;">
                                     {{ $client->title }}. {{ $client->fname }}
@@ -916,8 +923,22 @@
                                 console.error('Error:', error);
                             });
                     });
-            }, 2000);
+            }, 5000);
         };
+    </script>
+
+    <script>
+        document.addEventListener('keydown', function(event) {
+            if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'p') {
+                event.preventDefault();
+            } else if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') {
+                event.preventDefault();
+            } else if (event.key === 'S' && event.shiftKey && event.metaKey) {
+                event.preventDefault();
+            } else if (event.code === 'PrintScreen') {
+                event.preventDefault();
+            }
+        });
     </script>
 
     <script>
@@ -964,11 +985,9 @@
 
 
         }
-        console.log(2);
     </script>
 
     <script>
-        console.log(3);
         // Data retrieved from: https://www.uefa.com/uefachampionsleague/history/
 
         @if ($type == 0)
@@ -1028,6 +1047,7 @@
                 },
                 plotOptions: {
                     series: {
+                        pointWidth: 25,
                         stacking: 'normal',
                         dataLabels: {
                             enabled: true

@@ -415,7 +415,7 @@ class AuditController extends Controller
 
         $signDone = ($audit->auditor_sign !== null && $audit->auditee_sign !== null) ? 1 : 0;
 
-        $auditDetail = AuditDetail::where(['audit_id' => $request->auditId])->first();
+        $auditDetail = Audit::where(['id' => $request->auditId])->first();
         $isSaved = ($auditDetail && $auditDetail->report_path) ? true : false;
 
         return view('audit.resume', [

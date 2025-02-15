@@ -231,13 +231,14 @@
                                                             href="{{ route('audit-report-viewpdf', ['id' => $audit->id]) }}">
                                                             View Report
                                                         </a>
-                                                    @endif
-                                                    {{-- @else --}}
+                                                    @else
                                                     <a class="btn btn-danger btn-sm p-2 text-white" target="_blank"
                                                         href="{{ route('audit.report.view') }}"
                                                         onclick="event.preventDefault(); document.getElementById('audit-report-view{{ $audit->id }}').submit();">
                                                         Save Report
                                                     </a>
+                                                    @endif
+                                                    
                                                     <form id="audit-report-view{{ $audit->id }}"
                                                         action="{{ route('audit.report.view') }}" method="get"
                                                         class="d-none">
@@ -310,6 +311,17 @@
 
 
     <script>
+        document.addEventListener('keydown', function(event) {
+        if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'p') {
+            event.preventDefault();
+        } else if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') {
+            event.preventDefault();
+        } else if (event.key === 'S' && event.shiftKey && event.metaKey) {
+            event.preventDefault();
+        } else if (event.code === 'PrintScreen') {
+            event.preventDefault();
+        }
+        });
         function clearFileInput() {
             document.getElementById('fileInput').value = ""; // Clears the file input
         }
