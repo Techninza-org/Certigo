@@ -193,6 +193,7 @@
                                 <tr>
                                     <th>Audit Index</th>
                                     <th>Audit name</th>
+                                    <th>Assigned On</th>
                                     {{-- 
                     <th>Start on</th>
                     --}}
@@ -234,6 +235,7 @@
                                                     <span style="font-size: 10px">Updated at:{{ $audit->start }}</span>
                                                 @endif
                                             </td>
+                                            <td>{{ $audit->start }}</td>
                                             {{-- 
                     <td>{{ $audit->start }}</td>
                     --}}

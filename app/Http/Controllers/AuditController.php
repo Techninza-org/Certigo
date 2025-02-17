@@ -381,16 +381,13 @@ class AuditController extends Controller
             $template = Template::where(['id' => $templateId])->first();
             $templateDetails = TemplateDetail::where(['template_id' => $templateId])->get();
             $auditDetails = AuditDetail::where(['audit_id' => $request->auditId, 'template_id' => $templateId])->get();
-
             $template['tot_que_answered'] = count($auditDetails);
             $template['tot_que'] = count($templateDetails);
             $total_questions_array[] = count($templateDetails);
             $total_questionsAnswered_array[] = count($auditDetails);
-
-            $tenplates_names_in_audit[] = $template;
-
             foreach ($auditDetails as $detail) {
                 if ($detail->response_score == 0) {
+                    $template['has_nonconformity'] = true;
                     if (
                         is_null($detail->objective_evidences) ||
                         is_null($detail->suggestions) ||
@@ -401,6 +398,7 @@ class AuditController extends Controller
                     }
                 }
             }
+            $tenplates_names_in_audit[] = $template;
         }
 
         $total_questions_in_audit = array_sum($total_questions_array);
@@ -1020,9 +1018,10 @@ class AuditController extends Controller
                         $p_resp_score = $previous_qResponse->response_score;
                         $q->pr_resp_text = $p_resp_text->name;
                         $q->pr_resp_score = $p_resp_score;
-                    } else {
-                        return redirect()->back()->with('error', "Your previous audit report is incomplete, please fill it completely to proceed further");
-                    }
+                    } 
+                    // else {
+                    //     return redirect()->back()->with('error', "Your previous audit report is incomplete, please fill it completely to proceed further");
+                    // }
                 }
 
                 // Getting base score               
@@ -1222,7 +1221,7 @@ class AuditController extends Controller
         // Check if the file is valid
         if ($pdf->isValid()) {
             // Define the folder path for saving the file
-            $folderPath = 'storage/completed_reports';
+            $folderPath = 'public/storage/completed_reports';
 
             $fileName = 'audit-report-' . $audit_id . '-' . now()->format('Y-m-d_H-i-s') . '.pdf';
 
@@ -2470,7 +2469,7 @@ class AuditController extends Controller
 
     public function viewGeneratedReport($id)
     {
-        $audit = AuditDetail::find($id);
+        $audit = Audit::find($id);
 
         if (!$audit) {
             abort(404, 'Audit not found.');

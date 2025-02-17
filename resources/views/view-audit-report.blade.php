@@ -692,7 +692,7 @@
                             <div
                                 style="background-color: red;display: flex; justify-content: space-between; align-items: center;">
                                 <p style="color: white; margin: 0; padding-left: 10px; padding-top: 10px;">
-                                    Non-Compliances {{ $tq['tempName'] }}</p>
+                                 {{ $tq['tempName'] }}</p>
 
                             </div>
                             <table style="border-collapse: collapse;width:100%;">
@@ -803,8 +803,8 @@
                                     </p>
                                 </td>
                                 <td style="height: 150px;width:20%">
-                                    @if ($client->client_signature != null)
-                                        <img src="{{ $client->client_signature }}" alt="">
+                                    @if ($client->signature != null)
+                                        <img src="{{ url("") }}/public/{{ $client->signature }}" alt="client signature" style="width: 10rem; padding-left: 18px;" alt="">
                                     @else
                                         <img src="{{ url('') }}/{{ $audit->auditee_sign }}"
                                             style="width: 10rem; padding-left: 18px;" alt="">
