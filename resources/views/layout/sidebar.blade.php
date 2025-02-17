@@ -310,7 +310,7 @@
                 @endif
                 @if (Auth::guard('webclient')->user())
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ route('client.handleLogin') }}" aria-expanded="false">
+                        <a class="sidebar-link" href="{{ route('client.clientaudits') }}" aria-expanded="false">
                             <span>
                                 <i class="fa-solid fa-folder"></i>
                             </span>

@@ -173,7 +173,7 @@
                                             role="tab" aria-controls="v-pills-home" aria-selected="true">
                                             {{ $tem_in_aud->template_name }}
                                             {{ $tem_in_aud['tot_que_answered'] }}/{{ $tem_in_aud['tot_que'] }}
-                                            @if ($tem_in_aud['tot_que_answered'] != $tem_in_aud['tot_que'])
+                                            @if ($tem_in_aud['tot_que_answered'] != $tem_in_aud['tot_que'] || $tem_in_aud['has_nonconformity'] === true)
                                                 <i class="fa-regular fa-circle-check ms-2"
                                                     style="color: white; background-color: red; border-radius: 50%;"
                                                     aria-hidden="true"></i>
@@ -209,12 +209,16 @@
                                     @if ($emptyInputs == 0 && $audit->completion == 100)
                                         <!-- Button trigger modal -->
                                         <div class="d-flex justify-content-evenly align-items-center mb-3 mt-3">
+                                            @if($audit->auditor_sign != null)
+                                            <img src="{{ url('') }}/{{ $audit->auditor_sign }}" style="width: 10rem; padding-left: 18px;" alt="">
+                                            @else
                                             <a
                                                 href="{{ route('sign.view', ['audit_id' => $audit->id, 'client_id' => $client->id]) }}"><i
                                                     class="fa-solid fa-file-signature"></i> Auditor's Signature here</a>
+                                                    @endif
 
-                                            @if ($client->client_signature != null)
-                                                <img src="{{ $client->client_signature }}" alt="">
+                                            @if ($client->signature != null)
+                                                <img src="{{ url("") }}/public/{{ $client->signature }}" alt="client signature" style="width: 120px;display:inline-block">
                                             @else
                                                 <a
                                                     href="{{ route('auditee.sign.view', ['audit_id' => $audit->id, 'client_id' => $client->id]) }}"><i
@@ -231,13 +235,14 @@
                                                             href="{{ route('audit-report-viewpdf', ['id' => $audit->id]) }}">
                                                             View Report
                                                         </a>
-                                                    @else
+                                                    @endif
+                                                    {{-- @else --}}
                                                     <a class="btn btn-danger btn-sm p-2 text-white" target="_blank"
                                                         href="{{ route('audit.report.view') }}"
                                                         onclick="event.preventDefault(); document.getElementById('audit-report-view{{ $audit->id }}').submit();">
                                                         Save Report
                                                     </a>
-                                                    @endif
+                                                    
                                                     
                                                     <form id="audit-report-view{{ $audit->id }}"
                                                         action="{{ route('audit.report.view') }}" method="get"

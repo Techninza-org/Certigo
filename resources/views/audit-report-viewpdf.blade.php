@@ -16,16 +16,15 @@
 </style>
 
 <body>
-    {{-- <h1>Report {{ $audit->report_path }}</h1> --}}
-    {{-- <embed src={{$audit->report_path}} type="application/pdf" width="100%" height="600px" /> --}}
+    {{-- <embed src="{{ url("") }}/{{$audit->report_path}}" type="application/pdf" width="100%" height="600px" /> --}}
     <div id="pdf-viewer" style="width: 100%; height: 95vh; overflow: auto; display: grid; justify-content: center;"></div>
-
 </body>
 
 </html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 <script>
-    const pdfUrl = "{{ $audit->report_path }}";
+    const pdfUrl = `{{ url("") }}/{{$audit->report_path}}`;
+    console.log(pdfUrl);
     const pdfViewer = document.getElementById('pdf-viewer');
 
     const pdfjsLib = window['pdfjs-dist/build/pdf'];

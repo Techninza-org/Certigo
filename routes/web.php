@@ -596,6 +596,8 @@ Route::get('/client/login', [ClientAuthController::class, 'login'])->name('clien
 
 Route::get('/client/logout', [ClientAuthController::class, 'logout'])->name('client.logout');
 
+Route::get('/client/monthaudits', [ClientAuthController::class, 'monthlyaudits'])->name('client.monthlyaudits');
+Route::get('/client/myaudits', [ClientAuthController::class, 'clientaudits'])->name('client.clientaudits');
 Route::post('/client/login', [ClientAuthController::class, 'handleLogin'])->name('client.handleLogin');
 
 Route::get('/client/upload-signatures', [ClientAuthController::class, 'uploadSignatures'])->name('client.uploadSignatures');
