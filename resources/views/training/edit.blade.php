@@ -367,8 +367,8 @@
 
 
 
-                                    <select id="select-members" multiple name="members" placeholder=" Select"
-                                        data-search="true" data-silent-initial-value-set="true">
+                                    <select id="select-members" name="members" placeholder="Select" data-search="true"
+                                        data-silent-initial-value-set="true">
 
 
 

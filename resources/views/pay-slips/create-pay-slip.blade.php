@@ -36,7 +36,7 @@
                         <p class="text-red">{!! \Session::get('error') !!}</p>
                     @endif
 
-                    @if (Auth::user()->role == 5 || Auth::user()->role == 1)
+                    @if (Auth::user()->role == 3 || Auth::user()->role == 1 || Auth::user()->role == 2)
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary mb-5" data-bs-toggle="modal"
                             data-bs-target="#staticBackdrop">
@@ -59,13 +59,13 @@
                                     <td>{{ $one->employee_name }}</td>
                                     <td>{{ $one->designation }}</td>
                                     <td>
-                                        @if (Auth::user()->role == 0 || Auth::user()->role == 1 || Auth::user()->role == 3)
+                                        @if (Auth::user()->role == 0 || Auth::user()->role == 1 || Auth::user()->role == 3 || Auth::user()->role == 2)
                                             <!-- Button to Open the Modal -->
                                             <a class="view-btn" href="javascript:void(0)"
                                                 data-id="{{ $one->id }}">View</a>
                                         @endif
 
-                                        @if (Auth::user()->role == 1 || Auth::user()->role == 3)
+                                        @if (Auth::user()->role == 1 || Auth::user()->role == 3 || Auth::user()->role == 2)
                                             <a class="download-btn"
                                                 href="{{ route('view.paySlip.pdf', ['id' => $one->id]) }}">Download</a>
 
@@ -110,7 +110,7 @@
     </div>
 @endsection
 
-@if (Auth::user()->role == 5 || Auth::user()->role == 1)
+@if (Auth::user()->role == 5 || Auth::user()->role == 1 || Auth::user()->role == 2)
 
     <!-- Modal -->
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -311,8 +311,8 @@
                                     <input id="medical_allowance" type="text" class="form-control @error('medical_allowance') is-invalid @enderror" name="medical_allowance" value="{{ old('medical_allowance') }}" required autocomplete="medical_allowance">
                                     @error('medical_allowance')
     <span class="invalid-feedback" role="alert">
-                                                                                                    <strong>{{ $message }}</strong>
-                                                                                                </span>
+                                                                                                                    <strong>{{ $message }}</strong>
+                                                                                                                </span>
 @enderror
                                 </div> -->
 
@@ -321,8 +321,8 @@
                                     <input id="apd" type="text" class="form-control @error('apd') is-invalid @enderror" name="apd" value="{{ old('apd') }}" required autocomplete="apd">
                                     @error('apd')
     <span class="invalid-feedback" role="alert">
-                                                                                                    <strong>{{ $message }}</strong>
-                                                                                                </span>
+                                                                                                                    <strong>{{ $message }}</strong>
+                                                                                                                </span>
 @enderror
                                 </div> -->
 
@@ -382,8 +382,8 @@
                                     <input id="basic" type="text" class="form-control @error('basic') is-invalid @enderror" name="basic" value="{{ old('basic') }}" required autocomplete="basic">
                                     @error('basic')
     <span class="invalid-feedback" role="alert">
-                                                                                                    <strong>{{ $message }}</strong>
-                                                                                                </span>
+                                                                                                                    <strong>{{ $message }}</strong>
+                                                                                                                </span>
 @enderror
                                 </div> -->
 
@@ -392,8 +392,8 @@
                                     <input id="hra" type="text" class="form-control @error('hra') is-invalid @enderror" name="hra" value="{{ old('hra') }}" required autocomplete="hra">
                                     @error('hra')
     <span class="invalid-feedback" role="alert">
-                                                                                                    <strong>{{ $message }}</strong>
-                                                                                                </span>
+                                                                                                                    <strong>{{ $message }}</strong>
+                                                                                                                </span>
 @enderror
                                 </div> -->
 
@@ -402,8 +402,8 @@
                                     <input id="conveyance_allowance" type="text" class="form-control @error('conveyance_allowance') is-invalid @enderror" name="conveyance_allowance" value="{{ old('conveyance_allowance') }}" required autocomplete="conveyance_allowance">
                                     @error('conveyance_allowance')
     <span class="invalid-feedback" role="alert">
-                                                                                                    <strong>{{ $message }}</strong>
-                                                                                                </span>
+                                                                                                                    <strong>{{ $message }}</strong>
+                                                                                                                </span>
 @enderror
                                 </div> -->
 
@@ -414,8 +414,8 @@
                                     <input id="adhoc_allowance" type="text" class="form-control @error('adhoc_allowance') is-invalid @enderror" name="adhoc_allowance" value="{{ old('adhoc_allowance') }}" required autocomplete="adhoc_allowance">
                                     @error('adhoc_allowance')
     <span class="invalid-feedback" role="alert">
-                                                                                                    <strong>{{ $message }}</strong>
-                                                                                                </span>
+                                                                                                                    <strong>{{ $message }}</strong>
+                                                                                                                </span>
 @enderror
                                 </div> -->
 
@@ -424,8 +424,8 @@
                                     <input id="pf_value" type="text" class="form-control @error('pf_value') is-invalid @enderror" name="pf_value" value="{{ old('pf_value') }}" required autocomplete="pf_value">
                                     @error('pf_value')
     <span class="invalid-feedback" role="alert">
-                                                                                                    <strong>{{ $message }}</strong>
-                                                                                                </span>
+                                                                                                                    <strong>{{ $message }}</strong>
+                                                                                                                </span>
 @enderror
                                 </div> -->
 
@@ -434,8 +434,8 @@
                                     <input id="esi_value" type="text" class="form-control @error('esi_value') is-invalid @enderror" name="esi_value" value="{{ old('esi_value') }}" required autocomplete="esi_value">
                                     @error('esi_value')
     <span class="invalid-feedback" role="alert">
-                                                                                                    <strong>{{ $message }}</strong>
-                                                                                                </span>
+                                                                                                                    <strong>{{ $message }}</strong>
+                                                                                                                </span>
 @enderror
                                 </div> -->
 
@@ -470,8 +470,8 @@
                                     <input id="total_earnings" type="text" class="form-control @error('total_earnings') is-invalid @enderror" name="total_earnings" value="{{ old('total_earnings') }}" required autocomplete="total_earnings">
                                     @error('total_earnings')
     <span class="invalid-feedback" role="alert">
-                                                                                                    <strong>{{ $message }}</strong>
-                                                                                                </span>
+                                                                                                                    <strong>{{ $message }}</strong>
+                                                                                                                </span>
 @enderror
                                 </div> -->
 
@@ -480,8 +480,8 @@
                                     <input id="total_deductions" type="text" class="form-control @error('total_deductions') is-invalid @enderror" name="total_deductions" value="{{ old('total_deductions') }}" required autocomplete="total_deductions">
                                     @error('total_deductions')
     <span class="invalid-feedback" role="alert">
-                                                                                                    <strong>{{ $message }}</strong>
-                                                                                                </span>
+                                                                                                                    <strong>{{ $message }}</strong>
+                                                                                                                </span>
 @enderror
                                 </div> -->
 
@@ -490,8 +490,8 @@
                                     <input id="net_salary" type="text" class="form-control @error('net_salary') is-invalid @enderror" name="net_salary" value="{{ old('net_salary') }}" required autocomplete="net_salary">
                                     @error('net_salary')
     <span class="invalid-feedback" role="alert">
-                                                                                                    <strong>{{ $message }}</strong>
-                                                                                                </span>
+                                                                                                                    <strong>{{ $message }}</strong>
+                                                                                                                </span>
 @enderror
                                 </div> -->
 

@@ -18,6 +18,9 @@ use PDF;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Support\Facades\DB;
 
 
 class TrainingController extends Controller
@@ -26,29 +29,51 @@ class TrainingController extends Controller
     public function allTrainings()
     {
 
-        $clients = Client::where(['status' => 1])->get();
+        // get auth user role
+        $user = Auth::user()->role;
+        $id = Auth::user()->id;
+        // dd($id);
 
-        $users = User::where(['status' => 1])->get();
+        if ($user === 0) {
+            $clients = Client::where(['status' => 1])->get();
 
+            $users = User::where(['status' => 1, 'id' => $id])->get();
 
-
-        $uptrainings = Training::where(['status' => 0])->get();
-
-        $inptrainings = Training::where(['status' => 1])->get();
-
-        $comptrainings = Training::where(['status' => 2])->get();
-
-
-
-        $attendees = Attendee::all();
+            $uptrainings = Training::where(['status' => 0, 'members' => $id])->get();
 
 
+            $inptrainings = Training::where(['status' => 1, 'members' => $id])->get();
 
-        // dd($trainings);
 
-        return view('training.all', ['clients' => $clients, 'uptrainings' => $uptrainings, 'users' => $users, 'attendees' => $attendees, 'inptrainings' => $inptrainings, 'comptrainings' => $comptrainings]);
+            $comptrainings = Training::where(['status' => 2, 'members' => $id])->get();
 
+            $attendees = Attendee::all();
+            return view('training.all', ['clients' => $clients, 'uptrainings' => $uptrainings, 'users' => $users, 'attendees' => $attendees, 'inptrainings' => $inptrainings, 'comptrainings' => $comptrainings]);
+
+        } else {
+
+            $clients = Client::where(['status' => 1])->get();
+
+            $users = User::where(['status' => 1])->get();
+
+            $uptrainings = Training::where(['status' => 0])->get();
+
+
+            $inptrainings = Training::where(['status' => 1])->get();
+
+            $comptrainings = Training::where(['status' => 2])->get();
+
+            $attendees = Attendee::all();
+
+            // dd($trainings);
+
+            return view('training.all', ['clients' => $clients, 'uptrainings' => $uptrainings, 'users' => $users, 'attendees' => $attendees, 'inptrainings' => $inptrainings, 'comptrainings' => $comptrainings]);
+        }
     }
+
+
+
+
 
 
 
@@ -97,33 +122,15 @@ class TrainingController extends Controller
 
         }
 
-
-
-
-
-
-
-        $membersArr = explode(',', $request->members);
-
-        $request['members'] = json_encode($membersArr);
-
-
-
         $attendeesArr = explode(',', $request->attendees);
 
         $request['attendees'] = json_encode($attendeesArr);
 
-
-
         $input = $request->all();
-
-
 
         // dd($input);
 
         $trainingStore = Training::create($input);
-
-
 
         if ($trainingStore) {
 
@@ -188,91 +195,27 @@ class TrainingController extends Controller
 
     public function editTraining(Request $request)
     {
-
-
-
         $request->validate([
-
             'trainingId' => 'required',
-
             'topic' => 'required',
-
             'audit_start_date' => 'nullable',
-
             'location' => 'required',
-
             'client' => 'required',
-
             'amount' => 'required',
-
             'members' => 'required',
-
             'attendees' => 'required',
-
-
-
-
-
-
-
         ]);
 
+        $training = Training::findOrFail($request->trainingId);
 
+        $attendeesArr = array_unique(explode(',', $request->attendees));
+        $request->merge(['attendees' => json_encode($attendeesArr)]);
 
-        $data = $request->all();
-
-        $training = Training::find($request->trainingId);
-
-
-
-        // $attendees__array = [];
-
-        // $savedAttendees = explode(',',$training->attendees);  // array of attendees
-
-        //     foreach($savedAttendees as $sAttend){
-
-
-
-        //     }
-
-
-
-        // foreach(explode(',',$request->attendees) as $attend){
-
-        //     if(!in_array($attend, $savedAttendees)){
-
-        //         array_push($savedAttendees,$attend);
-
-        //     }
-
-        // }
-
-
-
-
-
-        $training->update(['attendees' => null]);
-
-
-
-        $attendeesArr = explode(',', $request->attendees);
-
-
-
-        $data["attendees"] = json_encode($attendeesArr);
-
-
-
-        if ($training->update($data)) {
-
+        if ($training->update($request->all())) {
             return redirect()->back()->with('success', 'Training Details updated');
-
         }
 
-
-
         return redirect()->back()->with('error', 'Training details not updated.');
-
     }
 
 
@@ -386,6 +329,19 @@ class TrainingController extends Controller
 
         }
 
+    }
+
+    public function deleteAttendee($id)
+    {
+        $attendee = Attendee::find($id);
+
+        if (!$attendee) {
+            return response()->json(['success' => false, 'message' => 'Attendee not found!']);
+        }
+
+        $attendee->delete();
+
+        return response()->json(['success' => true, 'message' => 'Attendee deleted successfully!']);
     }
 
 

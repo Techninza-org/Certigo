@@ -88,7 +88,7 @@
 
 
 
-        table {
+        .tablee {
 
 
 
@@ -262,20 +262,32 @@
 
 
                             </button>
-
-
-
-                            <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal"
-                                data-bs-target="#attendeeModal">
-
-
-
-                                <i class="fa-solid fa-circle-plus" style="color: #f9f9f9"></i>&nbsp; Add new attendee
-
-
-
-                            </button>
                         @endif
+
+
+
+                        <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal"
+                            data-bs-target="#attendeeModal">
+
+
+
+                            <i class="fa-solid fa-circle-plus" style="color: #f9f9f9"></i>&nbsp; Add new attendee
+
+
+
+                        </button>
+                        {{-- {{ dd($attendees) }} --}}
+                        <button type="button" class="btn btn-danger m-2" data-bs-toggle="modal"
+                            data-bs-target="#deleteModal">
+
+
+
+                            <i class="fa-solid fa-trash" style="color: #f9f9f9"></i>&nbsp; Delete attendee
+
+
+
+                        </button>
+
 
 
                     </div>
@@ -430,7 +442,7 @@
 
 
 
-                                    <table id="myTable" class="display">
+                                    <table id="myTable" class="display tablee">
 
 
 
@@ -740,7 +752,7 @@
 
 
 
-                                    <table id="inpTable" class="display">
+                                    <table id="inpTable" class="display tablee">
 
 
 
@@ -1050,7 +1062,7 @@
 
 
 
-                                    <table id="compTable" class="display">
+                                    <table id="compTable" class="display tablee">
 
 
 
@@ -1622,17 +1634,12 @@
 
 
 
-                                <select id="select-members" multiple name="members" placeholder=" Select"
-                                    data-search="true" data-silent-initial-value-set="true" required>
-
-
-
+                                <select id="select-members" name="members" data-search="true"
+                                    data-silent-initial-value-set="true" required>
+                                    <option value="">Select</option>
                                     @foreach ($users as $u)
                                         <option value="{{ $u->id }}">{{ $u->name }}</option>
                                     @endforeach
-
-
-
                                 </select>
 
 
@@ -2015,6 +2022,78 @@
             </div>
         </div>
     </div>
+
+    <!-- Delete Modal -->
+    <!-- Delete Attendee Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Delete Attendee</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped ">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($attendees as $attendee)
+                                    <tr>
+                                        <td>{{ $attendee->fname }} {{ $attendee->lname }}</td>
+                                        <td>{{ $attendee->email }}</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-danger delete-attendee w-100"
+                                                data-id="{{ $attendee->id }}">
+                                                <i class="fa-solid fa-trash"></i> Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll(".delete-attendee").forEach(button => {
+                button.addEventListener("click", function() {
+                    let attendeeId = this.getAttribute("data-id");
+
+                    if (confirm("Are you sure you want to delete this attendee?")) {
+                        fetch("{{ route('delete.attendees', ['id' => '__ID__']) }}".replace(
+                                '__ID__', attendeeId), {
+                                method: "DELETE",
+                                headers: {
+                                    "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                                    "Content-Type": "application/json"
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    alert("Attendee deleted successfully!");
+                                    location.reload();
+                                } else {
+                                    alert("Error deleting attendee!");
+                                }
+                            })
+                            .catch(error => console.error("Error:", error));
+                    }
+                });
+            });
+        });
+    </script>
+
 
     <script>
         $(document).ready(function() {

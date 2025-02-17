@@ -52,7 +52,7 @@
             <p class="mt-6 text-justify">
                 <span class="font-bold"> CERTIGO QAS® PRIVATE LIMITED</span> a business incorporated in India with its
                 registered office at <span class="font-bold">FLAT No.FF-2, FIRST FLOOR, DOOR No- 12-1-20/2,
-                    SRINIVASA” KANNAYAAPETA, ABOVE SBI LIFE INSURANCE, NEAR GREEN PARK
+                    SRINIVASA” KANNAYYAPETA, ABOVE SBI LIFE INSURANCE, NEAR GREEN PARK
                     HOTEL, OPP LANE TO HDRC BANK, VISAKHAPATNAM-530002, ANDHRA PRADESH
                     (“Provider”); </span>
                 <br>
@@ -69,7 +69,7 @@
             <div class="absolute bottom-0 left-2 right-2 p-4 text-center text-sm">
                 <p>
                 <div class="font-bold "> CERTIGO QAS® PRIVATE LIMITED </div>
-                Registered Office Address-Flat No.FF-2, First floor, Door No- 12-1-20/2, Srinivasa” Kannayaapeta, Above
+                Registered Office Address-Flat No.FF-2, First floor, Door No- 12-1-20/2, Srinivasa” Kannayyapeta, Above
                 SBI Life
                 Insurance, Near Green Park Hotel, Opp Lane to HDFC bank, Visakhapatnam-530002, Andhra Pradesh.<br>
                 Email: admin@certigoqa.com, Website address: www.certigoqa.com, Contact No: +91 8074937006.<br>
@@ -100,11 +100,14 @@
             </div>
 
 
-            <ol class="mt-6 mb-6 text-justify">
-                <li> 3.3. Provider will invoice s of Phase II to Client for the service fees per calendar month (on
-                    on or before of 31st of month) given in Schedule I. Client agrees to remit full payment to
-                    accounts payable promptly upon its receipt of the invoice within 30 days.</li>
+
+            <h1 class="mt-6 text-lg font-semibold">3. SERVICES AND FEES AND EXPENSES</h1>
+            <ol class="mt-6 flex flex-col gap-5 mb-6 text-justify">
+                @foreach ($data['service'] as $index => $service)
+                    <li>{{ '3.' . ($index + 1) }}. {{ $service }}</li>
+                @endforeach
             </ol>
+
 
             <h1 class="mt-6 text-lg font-semibold">4. TERM AND TERMINATION</h1>
             <ol class="mt-6 flex flex-col gap-5 mb-6 text-justify">
@@ -145,7 +148,8 @@
             <div class="absolute bottom-0 left-0 right-0 p-4 text-center text-xs">
                 <p>
                 <div class="font-bold "> CERTIGO QAS® PRIVATE LIMITED </div>
-                Registered Office Address-Flat No.FF-2, First floor, Door No- 12-1-20/2, Srinivasa” Kannayaapeta, Above
+                Registered Office Address-Flat No.FF-2, First floor, Door No- 12-1-20/2, Srinivasa” Kannayyapeta,
+                Above
                 SBI Life
                 Insurance, Near Green Park Hotel, Opp Lane to HDFC bank, Visakhapatnam-530002, Andhra Pradesh.<br>
                 Email: admin@certigoqa.com, Website address: www.certigoqa.com, Contact No: +91 8074937006.<br>
@@ -228,7 +232,7 @@
             <div class="absolute bottom-0 left-0 right-0 p-4 text-center text-xs">
                 <p>
                 <div class="font-bold "> CERTIGO QAS® PRIVATE LIMITED </div>
-                Registered Office Address-Flat No.FF-2, First floor, Door No- 12-1-20/2, Srinivasa” Kannayaapeta, Above
+                Registered Office Address-Flat No.FF-2, First floor, Door No- 12-1-20/2, Srinivasa” Kannayyapeta, Above
                 SBI Life
                 Insurance, Near Green Park Hotel, Opp Lane to HDFC bank, Visakhapatnam-530002, Andhra Pradesh.<br>
                 Email: admin@certigoqa.com, Website address: www.certigoqa.com, Contact No: +91 8074937006.<br>
@@ -308,7 +312,7 @@
             <div class="absolute bottom-0 left-0 right-0 p-4 text-center text-xs">
                 <p>
                 <div class="font-bold "> CERTIGO QAS® PRIVATE LIMITED </div>
-                Registered Office Address-Flat No.FF-2, First floor, Door No- 12-1-20/2, Srinivasa” Kannayaapeta, Above
+                Registered Office Address-Flat No.FF-2, First floor, Door No- 12-1-20/2, Srinivasa” Kannayyapeta, Above
                 SBI Life
                 Insurance, Near Green Park Hotel, Opp Lane to HDFC bank, Visakhapatnam-530002, Andhra Pradesh.<br>
                 Email: admin@certigoqa.com, Website address: www.certigoqa.com, Contact No: +91 8074937006.<br>
@@ -383,7 +387,7 @@
             <div class="absolute bottom-0 left-0 right-0 p-4 text-center text-xs">
                 <p>
                 <div class="font-bold "> CERTIGO QAS® PRIVATE LIMITED </div>
-                Registered Office Address-Flat No.FF-2, First floor, Door No- 12-1-20/2, Srinivasa” Kannayaapeta, Above
+                Registered Office Address-Flat No.FF-2, First floor, Door No- 12-1-20/2, Srinivasa” Kannayyapeta, Above
                 SBI Life
                 Insurance, Near Green Park Hotel, Opp Lane to HDFC bank, Visakhapatnam-530002, Andhra Pradesh.<br>
                 Email: admin@certigoqa.com, Website address: www.certigoqa.com, Contact No: +91 8074937006.<br>
@@ -461,7 +465,7 @@
             <div class="absolute bottom-0 left-0 right-0 p-4 text-center text-xs">
                 <p>
                 <div class="font-bold "> CERTIGO QAS® PRIVATE LIMITED </div>
-                Registered Office Address-Flat No.FF-2, First floor, Door No- 12-1-20/2, Srinivasa” Kannayaapeta, Above
+                Registered Office Address-Flat No.FF-2, First floor, Door No- 12-1-20/2, Srinivasa” Kannayyapeta, Above
                 SBI Life
                 Insurance, Near Green Park Hotel, Opp Lane to HDFC bank, Visakhapatnam-530002, Andhra Pradesh.<br>
                 Email: admin@certigoqa.com, Website address: www.certigoqa.com, Contact No: +91 8074937006.<br>
@@ -558,7 +562,7 @@
             <div class="absolute bottom-0 left-0 right-0 p-4 text-center text-xs">
                 <p>
                 <div class="font-bold "> CERTIGO QAS® PRIVATE LIMITED </div>
-                Registered Office Address-Flat No.FF-2, First floor, Door No- 12-1-20/2, Srinivasa” Kannayaapeta, Above
+                Registered Office Address-Flat No.FF-2, First floor, Door No- 12-1-20/2, Srinivasa” Kannayyapeta, Above
                 SBI Life
                 Insurance, Near Green Park Hotel, Opp Lane to HDFC bank, Visakhapatnam-530002, Andhra Pradesh.<br>
                 Email: admin@certigoqa.com, Website address: www.certigoqa.com, Contact No: +91 8074937006.<br>
@@ -615,7 +619,7 @@
             <div class="absolute bottom-0 left-0 right-0 p-4 text-center text-xs">
                 <p>
                 <div class="font-bold "> CERTIGO QAS® PRIVATE LIMITED </div>
-                Registered Office Address-Flat No.FF-2, First floor, Door No- 12-1-20/2, Srinivasa” Kannayaapeta, Above
+                Registered Office Address-Flat No.FF-2, First floor, Door No- 12-1-20/2, Srinivasa” Kannayyapeta, Above
                 SBI Life
                 Insurance, Near Green Park Hotel, Opp Lane to HDFC bank, Visakhapatnam-530002, Andhra Pradesh.<br>
                 Email: admin@certigoqa.com, Website address: www.certigoqa.com, Contact No: +91 8074937006.<br>
@@ -646,8 +650,8 @@
 
             <h1 class="text-md font-semibold text-center">Schedule 1</h1>
             <h1 class="mt-4  text-md font-semibold text-center">Scope of Services</h1>
-            <p>This statement of work is made effective [1
-                st Dec 2023] by and between the Provider and the
+            <p>This statement of work is made effective [ {{ \Carbon\Carbon::parse($data['date'])->format('jS') }} day
+                of {{ \Carbon\Carbon::parse($data['date'])->format('F Y') }}] by and between the Provider and the
                 Client.</p>
             <ol class=" flex flex-col gap-5 mb-6 text-justify">
                 <li>1. The Client has agreed to carry on the suggestions as advised by the consultant in food
@@ -690,7 +694,7 @@
             <div class="absolute bottom-0 left-0 right-0 p-4 text-center text-xs">
                 <p>
                 <div class="font-bold "> CERTIGO QAS® PRIVATE LIMITED </div>
-                Registered Office Address-Flat No.FF-2, First floor, Door No- 12-1-20/2, Srinivasa” Kannayaapeta, Above
+                Registered Office Address-Flat No.FF-2, First floor, Door No- 12-1-20/2, Srinivasa” Kannayyapeta, Above
                 SBI Life
                 Insurance, Near Green Park Hotel, Opp Lane to HDFC bank, Visakhapatnam-530002, Andhra Pradesh.<br>
                 Email: admin@certigoqa.com, Website address: www.certigoqa.com, Contact No: +91 8074937006.<br>
@@ -781,7 +785,7 @@
             <div class="absolute bottom-0 left-0 right-0 p-4 text-center text-xs">
                 <p>
                 <div class="font-bold "> CERTIGO QAS® PRIVATE LIMITED </div>
-                Registered Office Address-Flat No.FF-2, First floor, Door No- 12-1-20/2, Srinivasa” Kannayaapeta, Above
+                Registered Office Address-Flat No.FF-2, First floor, Door No- 12-1-20/2, Srinivasa” Kannayyapeta, Above
                 SBI Life
                 Insurance, Near Green Park Hotel, Opp Lane to HDFC bank, Visakhapatnam-530002, Andhra Pradesh.<br>
                 Email: admin@certigoqa.com, Website address: www.certigoqa.com, Contact No: +91 8074937006.<br>
@@ -816,16 +820,7 @@
                 content: `2.1. Client shall provide other support services as both the Client and Provider subsequently
 agree.`
             },
-            {
-                heading: " SERVICES AND FEES AND EXPENSES",
-                content: `
-          <ol>
-            <li>3.1. Client shall be responsible for all service fees as identified in the applicable statement(s)
-            of work Schedule 1 (and change orders, as applicable) as those services are provided.</li>
-            <li>3.2. Payment Terms: The client is required to make a 65% payment of PHASE I in advance
-            before the project commences, with the remaining 35% to be settled before the completion.</li>
-          </ol>`
-            },
+
         ];
         const container = document.querySelector(".description");
 

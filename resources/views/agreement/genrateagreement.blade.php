@@ -64,6 +64,19 @@
                 <input type="text" class="form-control" name="company_address" required>
             </div>
 
+            {{-- SERVICES AND FEES AND EXPENSES --}}
+
+            <div class="mb-3">
+                <label class="form-label">SERVICES AND FEES AND EXPENSES</label>
+                <div id="serviceFields">
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control" name="service[]" required>
+                        <button type="button" class="btn btn-danger remove-service">Remove</button>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="addServiceField()">Add</button>
+            </div>
+
             <!-- TERM AND TERMINATION -->
             <div class="mb-3">
                 <label class="form-label">TERM AND TERMINATION</label>
@@ -109,8 +122,8 @@
                 <h5>Delivery Details</h5>
                 <div id="deliveryFields">
                     <div class="input-group mb-2">
-                        <input type="text" class="form-control" name="delivery_method[]" placeholder="Delivery Method"
-                            required>
+                        <input type="text" class="form-control" name="delivery_method[]"
+                            placeholder="Delivery Method" required>
                         <input type="text" class="form-control" name="deemed_delivery[]"
                             placeholder="Deemed delivery date and time" required>
                         <button type="button" class="btn btn-danger remove-delivery">Remove</button>
@@ -218,6 +231,15 @@ frequency per year" required>
                             <button type="button" class="btn btn-danger remove-term-rate">Remove</button>`;
             document.getElementById("termRateFields").appendChild(div);
             div.querySelector(".remove-term-rate").addEventListener("click", () => div.remove());
+        }
+
+        function addServiceField() {
+            let div = document.createElement("div");
+            div.classList.add("input-group", "mb-2");
+            div.innerHTML = `<input type="text" class="form-control" name="service[]" required>
+                            <button type="button" class="btn btn-danger remove-service">Remove</button>`;
+            document.getElementById("serviceFields").appendChild(div);
+            div.querySelector(".remove-service").addEventListener("click", () => div.remove());
         }
     </script>
 @endpush

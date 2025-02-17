@@ -96,12 +96,12 @@
 
 
 
-
+                {{-- {{ dd(Auth::user()->hasPermission(1)) }} --}}
 
                 @if (Auth::check())
                     {{-- {{ dd(Auth::user() && Auth::user()->hasPermission(4)) }} --}}
 
-                    @if ((Auth::user()->role === 1 || Auth::user()->role === 0) && Auth::user()->hasPermission(1))
+                    @if (Auth::user()->hasPermission(0))
                         {{-- dashboard --}}
 
                         <li class="sidebar-item">
@@ -114,7 +114,7 @@
                         </li>
                     @endif
 
-                    @if (Auth::user() && Auth::user()->role === 1 && Auth::user()->hasPermission(1))
+                    @if (Auth::user()->hasPermission(1))
                         {{-- cliemts --}}
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="{{ route('index') }}" aria-expanded="false">
@@ -126,7 +126,7 @@
                         </li>
                     @endif
 
-                    @if (Auth::user() && Auth::user()->role === 1 && Auth::user()->hasPermission(2))
+                    @if (Auth::user()->hasPermission(2))
                         {{-- audits --}}
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="{{ route('genrate.agreement') }}" aria-expanded="false">
@@ -139,7 +139,7 @@
                     @endif
 
 
-                    @if (Auth::user() && Auth::user()->role === 1 && Auth::user()->hasPermission(3))
+                    @if (Auth::user()->hasPermission(3))
                         {{-- templates --}}
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="{{ route('get.templates') }}" aria-expanded="false">
@@ -151,7 +151,7 @@
                         </li>
                     @endif
 
-                    @if (Auth::user() && Auth::user()->role === 1 && Auth::user()->hasPermission(4))
+                    @if (Auth::user()->hasPermission(4))
                         {{-- reports --}}
                         {{-- responses --}}
                         <li class="sidebar-item">
@@ -164,7 +164,7 @@
                         </li>
                     @endif
 
-                    @if (Auth::user() && Auth::user()->role === 1 && Auth::user()->hasPermission(5))
+                    @if (Auth::user()->hasPermission(5))
                         {{-- service code --}}
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="{{ route('get.serviceCode') }}" aria-expanded="false">
@@ -176,7 +176,7 @@
                         </li>
                     @endif
 
-                    @if (Auth::user() && Auth::user()->role === 1 && Auth::user()->hasPermission(6))
+                    @if (Auth::user()->hasPermission(6))
                         {{-- trainings --}}
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="{{ route('get.trainings') }}">
@@ -188,7 +188,7 @@
                         </li>
                     @endif
 
-                    @if (Auth::user() && Auth::user()->role === 1 && Auth::user()->hasPermission(7))
+                    @if (Auth::user()->hasPermission(7))
                         {{-- samples --}}
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="{{ route('get.samples') }}">
@@ -201,7 +201,7 @@
                     @endif
                     @if (Auth::check())
 
-                        @if ((Auth::user()->role === 1 || Auth::user()->role === 2) && Auth::user()->hasPermission(8))
+                        @if (Auth::user()->hasPermission(8))
                             {{-- trash --}}
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="{{ route('get.trash') }}">
@@ -214,7 +214,7 @@
                         @endif
 
 
-                        @if ((Auth::user()->role === 1 || Auth::user()->role === 2) && Auth::user()->hasPermission(9))
+                        @if (Auth::user()->hasPermission(9))
                             {{-- users --}}
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="{{ route('get.users') }}">
@@ -239,7 +239,7 @@
                         </li>
                     @endif
 
-                    @if (Auth::user() && Auth::user()->role === 1 && Auth::user()->hasPermission(11))
+                    @if (Auth::user()->hasPermission(11))
                         <!-- graph orientation  -->
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="{{ route('get.graph.page') }}">
@@ -251,7 +251,7 @@
                         </li>
                     @endif
 
-                    @if (Auth::user() && (Auth::user()->role === 1 || Auth::user()->role === 3 || Auth::user()->role === 0))
+                    @if (Auth::user()->hasPermission(12))
                         <!-- HR  -->
                         <div class="accordion accordion-flush" id="accordionFlushExample">
                             <div class="accordion-item">
@@ -266,7 +266,7 @@
                                     data-bs-parent="#accordionFlushExample">
                                     <div class="accordion-body">
                                         <ul>
-                                            @if ((Auth::user() && Auth::user()->role === 1) || Auth::user()->role === 3)
+                                            @if ((Auth::user() && Auth::user()->role === 1) || Auth::user()->role === 3 || Auth::user()->role === 2)
                                                 <li class="sidebar-item">
                                                     <a class="sidebar-link"
                                                         href="{{ route('get.offer.letter.page') }}">
@@ -277,7 +277,8 @@
                                                     </a>
                                                 </li>
                                             @endif
-                                            @if (Auth::user() && (Auth::user()->role === 1 || Auth::user()->role === 0 || Auth::user()->role === 3))
+                                            @if (Auth::user() &&
+                                                    (Auth::user()->role === 1 || Auth::user()->role === 0 || Auth::user()->role === 3 || Auth::user()->role === 2))
                                                 <li class="sidebar-item">
                                                     <a class="sidebar-link" href="{{ route('get.payslip.page') }}">
                                                         <span>
@@ -287,7 +288,7 @@
                                                     </a>
                                                 </li>
                                             @endif
-                                            @if ((Auth::user() && Auth::user()->role === 1) || Auth::user()->role === 3)
+                                            @if ((Auth::user() && Auth::user()->role === 1) || Auth::user()->role === 3 || Auth::user()->role === 2)
                                                 <li class="sidebar-item">
                                                     <a class="sidebar-link"
                                                         href="{{ route('get.appointment.letter.page') }}">

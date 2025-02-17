@@ -49,6 +49,7 @@ class AuditAgreementController extends Controller
             $quantities = isset($data['quantity']) ? implode('||', $data['quantity']) : null;
             $fees = isset($data['fees']) ? implode('||', $data['fees']) : null;
             $termRates = isset($data['term_rate']) ? implode('||', $data['term_rate']) : null;
+            $service = isset($data['service']) ? implode('||', $data['service']) : null;
 
             // Save data in the agreements table
             DB::table('agreements')->insert([
@@ -69,6 +70,7 @@ class AuditAgreementController extends Controller
                 'fees' => $fees,
                 'term_rates' => $termRates,
                 'signed_by' => $data['signed_by'],
+                'service' => $service,
                 'created_at' => now(),
             ]);
 
@@ -101,6 +103,7 @@ class AuditAgreementController extends Controller
             $agreement['quantity'] = explode('||', $agreement['quantities']);
             $agreement['fees'] = explode('||', $agreement['fees']);
             $agreement['term_rate'] = explode('||', $agreement['term_rates']);
+            $agreement['service'] = explode('||', $agreement['service']);
 
             // $pdf = PDF::loadView('agreement.agreement', ['data' => $agreement]);
 

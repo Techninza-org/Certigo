@@ -357,6 +357,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/view-training', 'viewTraining')->name('view.training');
         Route::post('/add-attendee-in-training', 'addAttendeeInTraining')->name('add.attendees.training');
+        Route::delete('/delete-attendee/{id}', 'deleteAttendee')->name('delete.attendees');
 
 
 
