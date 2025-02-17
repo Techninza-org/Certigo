@@ -59,17 +59,15 @@ class AuditController extends Controller
         // get auth user role
         $user = Auth::user()->role;
         $id = Auth::user()->id;
-
-
-        if ($user == 1) {
-            $audits = Audit::all()->sortByDesc('created_at');
+        if ($user == 0) {
+            $audits = Audit::where('auditors', $id)->get();
             foreach ($audits as $audit) {
                 $audit->client = Client::where('id', $audit->client_id)->first();
                 $audit->auditor = User::where('id', $audit->auditors)->first();
             }
-        }
-        if ($user == 0) {
-            $audits = Audit::where('auditors', $id)->get();
+        } else {
+
+            $audits = Audit::all()->sortByDesc('created_at');
             foreach ($audits as $audit) {
                 $audit->client = Client::where('id', $audit->client_id)->first();
                 $audit->auditor = User::where('id', $audit->auditors)->first();
@@ -1018,7 +1016,7 @@ class AuditController extends Controller
                         $p_resp_score = $previous_qResponse->response_score;
                         $q->pr_resp_text = $p_resp_text->name;
                         $q->pr_resp_score = $p_resp_score;
-                    } 
+                    }
                     // else {
                     //     return redirect()->back()->with('error', "Your previous audit report is incomplete, please fill it completely to proceed further");
                     // }

@@ -462,12 +462,16 @@
 
 
 
+
+
             <div class="absolute bottom-0 left-0 right-0 p-4 text-center text-xs">
                 <p>
                 <div class="font-bold "> CERTIGO QAS® PRIVATE LIMITED </div>
-                Registered Office Address-Flat No.FF-2, First floor, Door No- 12-1-20/2, Srinivasa” Kannayyapeta, Above
+                Registered Office Address-Flat No.FF-2, First floor, Door No- 12-1-20/2, Srinivasa”
+                Kannayyapeta, Above
                 SBI Life
-                Insurance, Near Green Park Hotel, Opp Lane to HDFC bank, Visakhapatnam-530002, Andhra Pradesh.<br>
+                Insurance, Near Green Park Hotel, Opp Lane to HDFC bank, Visakhapatnam-530002, Andhra
+                Pradesh.<br>
                 Email: admin@certigoqa.com, Website address: www.certigoqa.com, Contact No: +91 8074937006.<br>
                 “Your Trusted Partner-Ensuring Sustainability in Every Solution”
                 </p>
@@ -536,39 +540,39 @@
                             starts in the place of receipt.</li>
                     </ul>
                 </li>
-                <li>IN WITNESS WHEREOF this Agreement has been entered into on the date stated at the
-                    beginning.
-                </li>
-                <div class="flex justify-between items-end">
-                    <div class="flex flex-col  items-start">
-                        <div class="mb-2">Signed by</div>
-                        <div>for and on behalf of</div>
-                        <div class="font-bold">{{ $data['company_name'] }}</div>
-                        <div>in the presence of</div>
-                        <div>
-                            --------------------
-                            <p> Name: <b>{{ $data['signed_by'] }}</b>
-                            </p>
-                        </div>
-                    </div>
-                    <div>
-                        -------------------------------------
-                    </div>
+
+                <h1 class="mt-6 text-lg font-semibold">13. Early Termination for Convenience Clause</h1>
+                <ol class="mt-6 flex flex-col gap-5 mb-6 text-justify">
+                    <li>13.1. In the event that the Client elects to terminate services without cause—that is, without
+                        any
+                        valid or justifiable reason as set forth herein—prior to the completion of the agreed
+                        contractual
+                        term, the Client shall be liable to pay all pending charges that would have accrued for the
+                        remainder of the contract period. This provision is intended to compensate the Service Provider
+                        for
+                        the loss of anticipated revenue resulting from early termination. The Client acknowledges and
+                        agrees
+                        that such termination shall not be deemed a breach of contract only if terminating for valid
+                        reasons
+                        as defined under this Agreement; any termination without cause shall invoke the payment
+                        obligations
+                        specified herein.</li>
+                </ol>
+
+
+
+
+                <div class="absolute bottom-0 left-0 right-0 p-4 text-center text-xs">
+                    <p>
+                    <div class="font-bold "> CERTIGO QAS® PRIVATE LIMITED </div>
+                    Registered Office Address-Flat No.FF-2, First floor, Door No- 12-1-20/2, Srinivasa” Kannayyapeta,
+                    Above
+                    SBI Life
+                    Insurance, Near Green Park Hotel, Opp Lane to HDFC bank, Visakhapatnam-530002, Andhra Pradesh.<br>
+                    Email: admin@certigoqa.com, Website address: www.certigoqa.com, Contact No: +91 8074937006.<br>
+                    “Your Trusted Partner-Ensuring Sustainability in Every Solution”
+                    </p>
                 </div>
-            </ol>
-
-
-
-            <div class="absolute bottom-0 left-0 right-0 p-4 text-center text-xs">
-                <p>
-                <div class="font-bold "> CERTIGO QAS® PRIVATE LIMITED </div>
-                Registered Office Address-Flat No.FF-2, First floor, Door No- 12-1-20/2, Srinivasa” Kannayyapeta, Above
-                SBI Life
-                Insurance, Near Green Park Hotel, Opp Lane to HDFC bank, Visakhapatnam-530002, Andhra Pradesh.<br>
-                Email: admin@certigoqa.com, Website address: www.certigoqa.com, Contact No: +91 8074937006.<br>
-                “Your Trusted Partner-Ensuring Sustainability in Every Solution”
-                </p>
-            </div>
         </div>
     </div>
     <div class="relative w-[210mm] h-[297mm] bg-white shadow-md border mb-5">
@@ -590,6 +594,38 @@
                 </div>
             </div>
 
+            <h1 class="mt-6 text-lg font-semibold">14. Termination for Cause Clause</h1>
+            <ol class="mt-6 flex flex-col gap-5 mb-6 text-justify">
+                <li>
+                    Either Party may dissolve this Agreement for cause by providing the other Party with written
+                    notice at least three (3) months in advance of the intended termination date. "For cause" shall
+                    include, but is not limited to, any material breach of this Agreement, violation of applicable
+                    laws or regulations, or any other condition that reasonably justifies termination. The
+                    terminating Party must specify in the notice the grounds for termination and, if applicable,
+                    allow the other Party a reasonable opportunity to remedy the breach within the notice period.
+                </li>
+            </ol>
+
+            <li>IN WITNESS WHEREOF this Agreement has been entered into on the date stated at the
+                beginning.
+            </li>
+            <div class="flex justify-between items-end mt-6">
+                <div class="flex flex-col  items-start">
+                    <div class="mb-2">Signed by</div>
+                    <div>for and on behalf of</div>
+                    <div class="font-bold">{{ $data['company_name'] }}</div>
+                    <div>in the presence of</div>
+                    <div>
+                        --------------------
+                        <p> Name: <b>{{ $data['signed_by'] }}</b>
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    -------------------------------------
+                </div>
+            </div>
+            </ol>
 
 
 

@@ -1,11 +1,7 @@
 @extends('layout.layout')
 
 @push('css')
-
     <style>
-
-      
-
         /* Styling for the popup */
 
         .popup {
@@ -24,7 +20,7 @@
 
             z-index: 1;
 
-            border-radius: 8px;            
+            border-radius: 8px;
 
             width: 9rem;
 
@@ -48,7 +44,7 @@
 
             border: 1px solid #aaa;
 
-            border-radius: 30px!important;
+            border-radius: 30px !important;
 
             padding: 5px;
 
@@ -110,20 +106,23 @@
 
         @keyframes spin {
 
-            0% { transform: rotate(0deg); }
+            0% {
+                transform: rotate(0deg);
+            }
 
-            100% { transform: rotate(360deg); }
+            100% {
+                transform: rotate(360deg);
+            }
 
         }
 
-        .pac-container { z-index: 100000; }
-
+        .pac-container {
+            z-index: 100000;
+        }
     </style>
-
 @endpush
 
 @section('content')
-
     <div class="row">
 
         <div class="col-lg-12 d-flex align-items-strech">
@@ -132,7 +131,7 @@
 
 
 
-            
+
 
 
 
@@ -142,11 +141,12 @@
 
                     <button type="button" class="btn btn-primary m-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
 
-                      <i class="fa-solid fa-circle-plus" style="color: #f9f9f9"></i>&nbsp; Add New Client
+                        <i class="fa-solid fa-circle-plus" style="color: #f9f9f9"></i>&nbsp; Add New Client
 
                     </button>
 
-                    <div class=" d-block align-items-center justify-content-between mb-9" style="overflow-x: auto;height: 60vh;">
+                    <div class=" d-block align-items-center justify-content-between mb-9"
+                        style="overflow-x: auto;height: 60vh;">
 
                         {{-- <table id="myTable" class="display">
 
@@ -314,7 +314,7 @@
 
                                 <tr>
 
-                                    <th >Id</th>
+                                    <th>Id</th>
 
                                     <th data-sortable="false">Name</th>
 
@@ -328,19 +328,19 @@
 
                                     <th data-sortable="false">Number of Audits</th>
 
-                                    
+
 
                                     <th data-sortable="false">Number of Samples</th>
 
-                                    {{-- @if(Auth::user()->role ==1) --}}
+                                    {{-- @if (Auth::user()->role == 1) --}}
 
-                                    <th data-sortable="false">Amount of Contract</th>
+                                    <th data-sortable="false">Action</th>
 
                                     {{-- @endif --}}
 
                                     <th data-sortable="false"></th>
 
-                                  
+
 
                                 </tr>
 
@@ -367,17 +367,11 @@
 
 
     </div>
-
 @endsection
 
 
 
 @push('js')
-
-
-
-
-
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
         <div class="modal-dialog">
@@ -398,7 +392,7 @@
 
                         <div id="loader"></div>
 
-                      </div>
+                    </div>
 
                     <form action="{{ route('client.store') }}" method="post" enctype="multipart/form-data">
 
@@ -482,7 +476,8 @@
 
                                 <label class="form-label">Organization Location <span class="text-danger">*</span></label>
 
-                                <input type="text" class="form-control" id="organisation_location" name="organisation_location" required>
+                                <input type="text" class="form-control" id="organisation_location"
+                                    name="organisation_location" required>
 
                             </div>
 
@@ -522,7 +517,7 @@
 
                                 <label class="form-label">Company Website <span class="text-danger">*</span></label>
 
-                                <input type="text" class="form-control" name="company_website" >
+                                <input type="text" class="form-control" name="company_website">
 
                             </div>
 
@@ -650,63 +645,68 @@
 
                             </div> --}}
 
-    
+
 
                             <label class="form-label"> Director/ CEO </label>
 
-                            <div class="mb-3 col-md-4" id="director" >
+                            <div class="mb-3 col-md-4" id="director">
 
-                                <input type="text" class="form-control" name="director" placeholder="Director's name">
+                                <input type="text" class="form-control" name="director"
+                                    placeholder="Director's name">
 
                             </div>
 
-    
 
-                            <div class=" mb-3 col-md-4" id="director_email_mob" >
+
+                            <div class=" mb-3 col-md-4" id="director_email_mob">
 
                                 {{-- <span class="input-group-text"> Director's Email & Mobile</span> --}}
 
-                                <input type="email" aria-label="Email" class="form-control mb-3" name="director_email" placeholder="Director's email">
+                                <input type="email" aria-label="Email" class="form-control mb-3" name="director_email"
+                                    placeholder="Director's email">
 
-                               
+
 
                             </div>
 
-                            <div class=" mb-3 col-md-4"  >
+                            <div class=" mb-3 col-md-4">
 
                                 {{-- <span class="input-group-text"> Director's Email & Mobile</span> --}}
 
-                                <input type="number" aria-label="Mobile" class="form-control" name="director_mobile" placeholder="Director's mobile">
+                                <input type="number" aria-label="Mobile" class="form-control" name="director_mobile"
+                                    placeholder="Director's mobile">
 
                             </div>
 
-    
 
-                            
 
-    
+
+
+
 
                             <label class="form-label"> Food Safety Team Leader </label>
 
-                            <div class="mb-3 col-md-4" id="fstl" >
+                            <div class="mb-3 col-md-4" id="fstl">
 
-                                <input type="text" class="form-control" name="fstl" placeholder="FSTL's name"> 
-
-                            </div>
-
-                            <div class="mb-3 col-md-4" id="food_email_mob" >
-
-                                {{-- <span class="input-group-text"> Director's Email & Mobile</span> --}}
-
-                                <input type="email" aria-label="Email" class="form-control mb-3" name="food_email" placeholder="FSTL's email">
+                                <input type="text" class="form-control" name="fstl" placeholder="FSTL's name">
 
                             </div>
 
-                            <div class="mb-3 col-md-4"  >
+                            <div class="mb-3 col-md-4" id="food_email_mob">
 
                                 {{-- <span class="input-group-text"> Director's Email & Mobile</span> --}}
 
-                                <input type="number" aria-label="Mobile" class="form-control" name="food_mobile" placeholder="FSTL's mobile">
+                                <input type="email" aria-label="Email" class="form-control mb-3" name="food_email"
+                                    placeholder="FSTL's email">
+
+                            </div>
+
+                            <div class="mb-3 col-md-4">
+
+                                {{-- <span class="input-group-text"> Director's Email & Mobile</span> --}}
+
+                                <input type="number" aria-label="Mobile" class="form-control" name="food_mobile"
+                                    placeholder="FSTL's mobile">
 
                             </div>
 
@@ -716,7 +716,7 @@
 
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 
-                                <button type="submit" id="formSubmission" class="btn btn-primary" >ADD</button>
+                                <button type="submit" id="formSubmission" class="btn btn-primary">ADD</button>
 
                             </div>
 
@@ -737,28 +737,26 @@
         </div>
 
     </div>
-    <script  type='text/javascript' src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcaKZuOunzgmgbSf7E_Bmh4v0Do-rDw6E&libraries=places">
-            
-    </script>
+    <script type='text/javascript'
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcaKZuOunzgmgbSf7E_Bmh4v0Do-rDw6E&libraries=places"></script>
 
     <script>
-            $(document).ready(function() {
-               
-                
-                var organisation_location = document.getElementById('organisation_location');
-                new google.maps.places.Autocomplete(organisation_location);
-                
-             });
+        $(document).ready(function() {
+
+
+            var organisation_location = document.getElementById('organisation_location');
+            new google.maps.places.Autocomplete(organisation_location);
+
+        });
     </script>
 
 
     <script>
-
         $(document).ready(function() {
 
 
 
-           
+
 
 
 
@@ -774,19 +772,23 @@
 
                 serverSide: true,
 
-                order: [[ 0, "desc" ]],
+                order: [
+                    [0, "desc"]
+                ],
 
                 ajax: "{{ route('dataindex') }}",
 
-                
+
 
                 columns: [
 
-                    { data: 'id' },                    
+                    {
+                        data: 'id'
+                    },
 
 
 
-                    { 
+                    {
 
                         data: null,
 
@@ -798,78 +800,101 @@
 
                     },
 
-                    
 
-                    { data: 'client_id' },
 
-                    { data: 'organisation_name' },
+                    {
+                        data: 'client_id'
+                    },
 
-                    { data: 'organisation_location' }   ,
+                    {
+                        data: 'organisation_name'
+                    },
 
-                    { data: 'no_audit_conduct' }  ,
+                    {
+                        data: 'organisation_location'
+                    },
 
-                    { data: 'no_samples_collect' }  ,
+                    {
+                        data: 'no_audit_conduct'
+                    },
 
-                    { data: 'contract_amount' }  ,
+                    {
+                        data: 'no_samples_collect'
+                    },
 
-                    
 
-                    { 
+                    // {
+                    //     data: 'contract_amount'
+                    // },
+
+
+
+                    {
 
                         data: null,
 
                         render: function(data, type, row) {
 
-                        // Replace the code below with your own HTML markup for the action buttons
-                                
-                        return '<div style="position: relative;">\
-                            <i class="fa-solid fa-ellipsis-vertical btn popupButton" ></i>\
-                            <div id="popup" class="popup">\
-                                ' + (data.status === 2 ?
-                                '<div class="option d-flex p-2 iAmInactive" >\
-                                    <a class="btn pt-0 pb-0" href="{{ route("active.client") }}" onclick="event.preventDefault(); document.getElementById(\'active-client'+data.id+'\').submit();toastr.success(\'Client made Active!\', \'Success\');">\
-                                        <i class="fa-solid fa-pen-to-square"></i>Active Client</a>\
-                                        <form id="active-client'+data.id+'" action="{{ route("active.client") }}" method="get" class="d-none">\
-                                        <input type="hidden" value="'+data.id+'" name="clientId">\
-                                    </form>\
-                                </div>':
-                                '<div class="option d-flex p-2">\
-                                    <a class="btn pt-0 pb-0" href="{{ route("view.client") }}" onclick="event.preventDefault();document.getElementById(\'view-client'+data.id+'\').submit();">\
-                                        <i class="fa-solid fa-book" style="color: rgb(255, 136, 0)"></i> view </a>\
-                                    <form id="view-client'+data.id+'" action="{{ route("view.client") }}" method="get" class="d-none">\
-                                        <input type="hidden" value="'+data.id+'" name="id">\
-                                    </form>\
-                                </div>\
-                                <div class="option d-flex p-2">\
-                                    <a class="btn pt-0 pb-0" href="{{ route("client.audit") }}" onclick="event.preventDefault();document.getElementById(\'client-audits'+data.id+'\').submit();">\
-                                    <i class="fa-solid fa-book" style="color: rgb(0, 94, 255)"></i> Audits </a>\
-                                    <form id="client-audits'+data.id+'" action="{{ route("client.audit") }}" method="get" class="d-none">\
-                                        <input type="hidden" value="'+data.id+'" name="cid">\
-                                    </form>\
-                                </div>\
-                                <div class="option d-flex p-2">\
-                                    <a class="btn pt-0 pb-0" href="{{ route("edit.client") }}" onclick="event.preventDefault();document.getElementById(\'client-edit'+data.id+'\').submit();">\
-                                    <i class="fa-solid fa-pen-to-square"></i> Edit </a>\
-                                    <form id="client-edit'+data.id+'" action="{{ route("edit.client") }}" method="get" class="d-none">\
-                                        <input type="hidden" value="'+data.id+'" name="clid">\
-                                    </form>\
-                                </div>\
-                                <div class="option d-flex p-2">\
-                                    <a class="btn pt-0 pb-0" href="{{ route("inactive.client") }}" onclick="event.preventDefault(); document.getElementById(\'inactive-client'+data.id+'\').submit();toastr.success(\'Client made In-active!\', \'Success\');">\
-                                        <i class="fa-solid fa-eye-slash" style="color: rgb(255, 136, 0)"></i> In-active </a>\
-                                    <form id="inactive-client'+data.id+'" action="{{ route("inactive.client") }}" method="post" class="d-none">@csrf\
-                                        <input type="hidden" value="'+data.id+'" name="clientId">\
-                                    </form>\
-                                </div>\
-                                <div class="option d-flex p-2">\
-                                    <a class="btn pt-0 pb-0" href="{{ route("delete.client") }}" onclick="event.preventDefault(); document.getElementById(\'delete-client'+data.id+'\').submit();toastr.success(\'Client removed successfully!\', \'Success\');">\
-                                    <i class="fa-solid fa-trash-can" style="color: red"></i> Delete </a>\
-                                    <form id="delete-client'+data.id+'" action="{{ route("delete.client") }}" method="get" class="d-none">\
-                                        <input type="hidden" value="'+data.id+'" name="dclId">\
-                                    </form>\
-                                </div>')+
-                            '</div>\
-                            </div>';
+                            // Replace the code below with your own HTML markup for the action buttons
+
+                            return '<div style="position: relative;">\
+                                        <i class="fa-solid fa-ellipsis-vertical btn popupButton" ></i>\
+                                        <div id="popup" class="popup">\
+                                            ' + (data.status === 2 ?
+                                    '<div class="option d-flex p-2 iAmInactive" >\
+                                                <a class="btn pt-0 pb-0" href="{{ route('active.client') }}" onclick="event.preventDefault(); document.getElementById(\'active-client' +
+                                    data.id + '\').submit();toastr.success(\'Client made Active!\', \'Success\');">\
+                                                    <i class="fa-solid fa-pen-to-square"></i>Active Client</a>\
+                                                    <form id="active-client' + data.id + '" action="{{ route('active.client') }}" method="get" class="d-none">\
+                                                    <input type="hidden" value="' + data.id + '" name="clientId">\
+                                                </form>\
+                                            </div>' :
+                                    '<div class="option d-flex p-2">\
+                                                <a class="btn pt-0 pb-0" href="{{ route('view.client') }}" onclick="event.preventDefault();document.getElementById(\'view-client' +
+                                    data.id + '\').submit();">\
+                                                    <i class="fa-solid fa-book" style="color: rgb(255, 136, 0)"></i> view </a>\
+                                                <form id="view-client' + data.id + '" action="{{ route('view.client') }}" method="get" class="d-none">\
+                                                    <input type="hidden" value="' + data.id +
+                                    '" name="id">\
+                                                </form>\
+                                            </div>\
+                                            <div class="option d-flex p-2">\
+                                                <a class="btn pt-0 pb-0" href="{{ route('client.audit') }}" onclick="event.preventDefault();document.getElementById(\'client-audits' +
+                                    data.id + '\').submit();">\
+                                                <i class="fa-solid fa-book" style="color: rgb(0, 94, 255)"></i> Audits </a>\
+                                                <form id="client-audits' + data.id + '" action="{{ route('client.audit') }}" method="get" class="d-none">\
+                                                    <input type="hidden" value="' + data.id +
+                                    '" name="cid">\
+                                                </form>\
+                                            </div>\
+                                            <div class="option d-flex p-2">\
+                                                <a class="btn pt-0 pb-0" href="{{ route('edit.client') }}" onclick="event.preventDefault();document.getElementById(\'client-edit' +
+                                    data.id + '\').submit();">\
+                                                <i class="fa-solid fa-pen-to-square"></i> Edit </a>\
+                                                <form id="client-edit' + data.id + '" action="{{ route('edit.client') }}" method="get" class="d-none">\
+                                                    <input type="hidden" value="' + data.id +
+                                    '" name="clid">\
+                                                </form>\
+                                            </div>\
+                                            <div class="option d-flex p-2">\
+                                                <a class="btn pt-0 pb-0" href="{{ route('inactive.client') }}" onclick="event.preventDefault(); document.getElementById(\'inactive-client' +
+                                    data.id + '\').submit();toastr.success(\'Client made In-active!\', \'Success\');">\
+                                                    <i class="fa-solid fa-eye-slash" style="color: rgb(255, 136, 0)"></i> In-active </a>\
+                                                <form id="inactive-client' + data.id + '" action="{{ route('inactive.client') }}" method="post" class="d-none">@csrf\
+                                                    <input type="hidden" value="' + data.id +
+                                    '" name="clientId">\
+                                                </form>\
+                                            </div>\
+                                            <div class="option d-flex p-2">\
+                                                <a class="btn pt-0 pb-0" href="{{ route('delete.client') }}" onclick="event.preventDefault(); document.getElementById(\'delete-client' +
+                                    data.id + '\').submit();toastr.success(\'Client removed successfully!\', \'Success\');">\
+                                                <i class="fa-solid fa-trash-can" style="color: red"></i> Delete </a>\
+                                                <form id="delete-client' + data.id + '" action="{{ route('delete.client') }}" method="get" class="d-none">\
+                                                    <input type="hidden" value="' + data.id + '" name="dclId">\
+                                                </form>\
+                                            </div>') +
+                                '</div>\
+                                        </div>';
                         }
 
                     }
@@ -886,7 +911,10 @@
 
 
 
-            $('table.dataTable tbody tr td:nth-child(2)').css({'white-space':'nowrap','font-weight':'600'});
+            $('table.dataTable tbody tr td:nth-child(2)').css({
+                'white-space': 'nowrap',
+                'font-weight': '600'
+            });
 
 
 
@@ -896,15 +924,15 @@
 
             $(document).on('click', '.popupButton', function() {
 
-            var popup = $(this).next('.popup');
+                var popup = $(this).next('.popup');
 
-            // Hide all other popups
+                // Hide all other popups
 
-            $('.popup').not(popup).hide();
+                $('.popup').not(popup).hide();
 
-            // Toggle the display of the corresponding popup
+                // Toggle the display of the corresponding popup
 
-            popup.toggle();
+                popup.toggle();
 
             });
 
@@ -914,11 +942,11 @@
 
             $(document).on('click', function(event) {
 
-            if (!$(event.target).hasClass('popupButton') && !$(event.target).hasClass('popup')) {
+                if (!$(event.target).hasClass('popupButton') && !$(event.target).hasClass('popup')) {
 
-                $('.popup').hide();
+                    $('.popup').hide();
 
-            }
+                }
 
             });
 
@@ -926,13 +954,13 @@
 
 
 
-           
-
-                
 
 
 
-            
+
+
+
+
 
         });
 
@@ -944,7 +972,7 @@
 
             // console.log("domready");
 
-        
+
 
             let inactiveElements = document.querySelectorAll(".iAmInactive");
 
@@ -952,9 +980,9 @@
 
                 console.log("elements found");
 
-        
 
-                Array.from(inactiveElements).forEach(function(inactiveElement){
+
+                Array.from(inactiveElements).forEach(function(inactiveElement) {
 
                     let trElement = inactiveElement.closest('tr');
 
@@ -975,20 +1003,5 @@
             }
 
         });
-
-
-
-
-
-
-
-
-
-
-
-        
-
     </script>
-
 @endpush
-

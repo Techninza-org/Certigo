@@ -53,32 +53,18 @@ class ClientController extends Controller
 
     public function index()
     {
-        // get auth user role
-        // $user = Auth::user()->role;
-        // $id = Auth::user()->id;
 
+        $id = Auth::user()->id;
 
-        // if ($user == 1) {
-        //     $audits = Audit::all()->sortByDesc('created_at');
-        //     foreach ($audits as $audit) {
-        //         $audit->client = Client::where('id', $audit->client_id)->first();
-        //         $audit->auditor = User::where('id', $audit->auditors)->first();
-        //     }
-        // }
-        // if ($user == 0) {
-        //     $audits = Audit::where('auditors', $id)->get();
-        //     foreach ($audits as $audit) {
-        //         $audit->client = Client::where('id', $audit->client_id)->first();
-        //         $audit->auditor = User::where('id', $audit->auditors)->first();
-        //     }
-        // }
-
-        // return view('dashboard', data: ['audits' => $audits]);
-        if (Auth::user()->role == 1) {
+        if (Auth::user()->role == 1 || Auth::user()->role == 2) {
             return view('index');
         }
-        return view('index2');
-
+        $audits = Audit::where('auditors', $id)->get();
+        foreach ($audits as $audit) {
+            $audit->client = Client::where('id', $audit->client_id)->first();
+            $audit->auditor = User::where('id', $audit->auditors)->first();
+        }
+        return view('dashboard', data: ['audits' => $audits]);
     }
 
 
