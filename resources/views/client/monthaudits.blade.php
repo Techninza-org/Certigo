@@ -39,21 +39,28 @@
             <div class="card w-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h2>View Audit Report</h2>
+                        <h2>Audit Reports for  {{date('F', mktime(0, 0, 0, $month, 1))}}</h2>
                     </div>
 
                     <div class="row">
-                        @foreach ($months as $month)
-                            <div class="col-md-3 text-center mb-4">
-                                <a href="{{ route('client.monthlyaudits', ['month' => $month]) }}">
-                                    <i class="fa-solid fa-folder" style="color: #1d6d96; font-size: xx-large; cursor: pointer;"></i><br>
-                                    <p>{{date('F', mktime(0, 0, 0, $month, 1))}}</p>
-                                </a>
-                            </div>
+                        @foreach ($audits as $audit)
+                            @if ($audit->report_path != null)
+                                <div class="col-md-3 text-center mb-4">
+                                    <div class="position-relative">
+                                        <i class="fa-solid fa-file-pdf btn popupButton" aria-hidden="true"></i>
+                                        <div class="popup">
+                                            <div class="option"
+                                                onclick="openpdfinmodal('{{ asset($audit->report_path) }}')">
+                                                <i class="fa-solid fa-file-pdf"></i> View Report
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p>{{ $audit->audit_name }}</p>
+                                    <p>{{ $audit->start }}</p>
+                                </div>
+                            @endif
                         @endforeach
                     </div>
-
-                    
 
                 </div>
             </div>

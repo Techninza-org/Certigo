@@ -32,16 +32,34 @@ class ClientAuthController extends Controller
         if (Auth::guard('webclient')->check()) {
             $user = Auth::guard('webclient')->user();
             $myaudits = Audit::where('client_id', Auth::guard('webclient')->user()->id)->whereNotNull('report_path')->get();
-            return view('client.home', ['myaudits' => $myaudits, 'user' => $user]);
+            $months = $myaudits->pluck('month')->unique();
+            return view('client.home', ['myaudits' => $myaudits, 'user' => $user, 'months' => $months]);
         } else {
             if (Auth::guard('webclient')->attempt($req->only(['company_emailid', 'password']))) {
                 $user = Auth::guard('webclient')->user();
                 $myaudits = Audit::where('client_id', Auth::guard('webclient')->user()->id)->whereNotNull('report_path')->get();
-                return view('client.home', ['myaudits' => $myaudits, 'user' => $user]);
+                $months = $myaudits->pluck('month')->unique();
+                return view('client.home', ['myaudits' => $myaudits, 'user' => $user, 'months' => $months]);
             }
 
             return redirect()->back()->with('error', 'Invalid Credentials');
         }
+    }
+    public function clientaudits(Request $req)
+    {
+        $user = Auth::guard('webclient')->user();
+        $myaudits = Audit::where('client_id', Auth::guard('webclient')->user()->id)->whereNotNull('report_path')->get();
+        $months = $myaudits->pluck('month')->unique();
+        return view('client.home', ['user' => $user, 'months' => $months]);
+    }
+
+    public function monthlyaudits(Request $req){
+        $month = $req->month;
+        $monthAudits = Audit::where('client_id', Auth::guard('webclient')->user()->id)
+                            ->whereNotNull('report_path')
+                            ->where('month',  $month)
+                            ->get();
+        return view('client.monthaudits', ['month' => $month, 'audits' => $monthAudits]);
     }
 
     public function logout()

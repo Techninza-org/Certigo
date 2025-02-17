@@ -546,14 +546,14 @@
                         <div class="col-lg-6">
                             @if ($type == 0)
                                 <div>
-                                    <figure style="min-width: 310px; max-width: 800px; margin: 1em auto;">
+                                    <figure style="min-width: 310px; max-width: 600px; margin: 1em auto;">
                                         <div id="container"
                                             style="height: 300px; display: flex; justify-content: center;"></div>
                                     </figure>
                                 </div>
                             @else
                                 <div>
-                                    <figure style="min-width: 310px; max-width: 800px; margin: 1em auto;">
+                                    <figure style="min-width: 310px; max-width: 600px; margin: 1em auto;">
                                         <div id="container"
                                             style="height: 300px; display: flex; justify-content: center;"></div>
                                     </figure>
@@ -562,7 +562,7 @@
                         </div>
                         <div class="col-lg-5">
                             <div>
-                                <figure style="min-width: 310px; max-width: 800px; margin: 1em auto;">
+                                <figure style="min-width: 310px; max-width: 600px; margin: 1em auto;">
                                     <div id="container-pie"
                                         style="height: 300px; display: flex; justify-content: center;"></div>
                                 </figure>
@@ -905,7 +905,6 @@
                             'content');
 
                         const id = {{ $audit->id }};
-                        console.log(id, 'id');
 
                         formData.append('_token', csrfToken);
                         formData.append('audit_id', id);
@@ -923,7 +922,7 @@
                                 console.error('Error:', error);
                             });
                     });
-            }, 5000);
+            }, 3000);
         };
     </script>
 
