@@ -46,11 +46,11 @@
 
         /* table {
 
-                        display: grid;
+                                    display: grid;
 
-                        overflow: auto;
+                                    overflow: auto;
 
-                    } */
+                                } */
 
 
 
@@ -201,7 +201,8 @@
 
 
 
-                                    <input type="file" class="form-control mb-3" name="evidences[]" multiple="">
+                                    <input type="file" class="form-control mb-3" name="evidences[]" multiple=""
+                                        accept="image/jpeg, image/jpg, image/png" id="fileInput">
 
 
 
@@ -332,6 +333,25 @@
 
 
     @push('js')
+        <script>
+            document.getElementById("fileInput").addEventListener("change", function() {
+                const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+                const files = this.files;
+                let invalidFiles = [];
+
+                for (let i = 0; i < files.length; i++) {
+                    if (!allowedTypes.includes(files[i].type)) {
+                        invalidFiles.push(files[i].name);
+                    }
+                }
+
+                if (invalidFiles.length > 0) {
+                    alert("Invalid file(s) detected: " + invalidFiles.join(", ") +
+                        "\nOnly JPG, JPEG, and PNG files are allowed.");
+                    this.value = ""; // Clear the invalid file selection
+                }
+            });
+        </script>
         <script>
             $(document).ready(function() {
 

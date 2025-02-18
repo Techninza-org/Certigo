@@ -1576,7 +1576,7 @@
 
 
 
-                                <input type="text" class="form-control" name="amount" required>
+                                <input type="number" class="form-control" name="amount" required>
 
 
 
@@ -1865,7 +1865,7 @@
 
 
 
-                                <input type="test" class="form-control" name="lname">
+                                <input type="text" class="form-control" name="lname">
 
 
 
@@ -1885,7 +1885,7 @@
 
 
 
-                                <input type="text" class="form-control" name="email" required>
+                                <input type="email" class="form-control" name="email" required>
 
 
 
@@ -1925,7 +1925,7 @@
 
 
 
-                                <input type="text" class="form-control" name="contact">
+                                <input type="number" class="form-control" name="contact">
 
 
 
