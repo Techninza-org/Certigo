@@ -23,7 +23,7 @@
 </html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 <script>
-    const pdfUrl = `{{ url("") }}/{{$audit->report_path}}`;
+    const pdfUrl = `{{ url("") }}/storage/app/{{$audit->report_path}}`;
     console.log(pdfUrl);
     const pdfViewer = document.getElementById('pdf-viewer');
 

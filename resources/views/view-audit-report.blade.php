@@ -909,7 +909,7 @@
                         formData.append('_token', csrfToken);
                         formData.append('audit_id', id);
 
-                        fetch('/certigo/audit-report-savepdf', {
+                        fetch('/audit-report-savepdf', {
                                 method: 'POST',
                                 body: formData,
 

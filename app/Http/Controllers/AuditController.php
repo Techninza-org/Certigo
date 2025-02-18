@@ -1203,30 +1203,25 @@ class AuditController extends Controller
 
     public function saveReportToDb(Request $request)
     {
-        // Get the currently authenticated user's ID
-        // $userid = Auth::guard('webclient')->user()->id;
-
-        // Validate the request
         $request->validate([
-            'report_pdf' => 'required|file|mimes:pdf|max:2048', // Ensures it's a valid file type
+            'report_pdf' => 'required|file|mimes:pdf', 
             'audit_id' => 'required',
         ]);
 
-        // Get the uploaded file
         $pdf = $request->file('report_pdf');
         $audit_id = $request->input('audit_id');
 
-        // Check if the file is valid
         if ($pdf->isValid()) {
-            // Define the folder path for saving the file
-            $folderPath = 'public/storage/completed_reports';
+            $filename = 'audit-report-' . $audit_id . '-' . now()->format('Y-m-d_H-i-s') . '.pdf';
+            if (!file_exists(storage_path('app/public/completed_reports'))) {
+                mkdir(storage_path('app/public/completed_reports'), 0777, true);
+            }
+            $pdfPath = $pdf->storeAs('public/completed_reports', $filename);
 
-            $fileName = 'audit-report-' . $audit_id . '-' . now()->format('Y-m-d_H-i-s') . '.pdf';
+            if ($pdfPath === false) {
+                return response()->json(['message' => 'File storage failed'], 500);
+            }
 
-            // Move the file to the folder
-            $pdf->move($folderPath, $fileName);
-
-            $pdfPath = $folderPath . '/' . $fileName;
             $audit = Audit::where('id', $audit_id)->first();
             if ($audit) {
                 $audit->report_path = $pdfPath;
@@ -1236,7 +1231,6 @@ class AuditController extends Controller
         } else {
             return response()->json(['message' => 'File upload failed'], 500);
         }
-
     }
 
     public function auditRepSave(Request $request)
