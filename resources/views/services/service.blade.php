@@ -58,7 +58,7 @@
 
                       <label class="form-label">Enter Service-Code Name</label>
 
-                      <input type="text" class="form-control" name="service_code">
+                      <input type="text" class="form-control" name="service_code" maxlength="45">
 
                     </div>
 

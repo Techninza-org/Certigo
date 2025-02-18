@@ -890,7 +890,7 @@
                                 <label class="form-label">Upload client logo:</label>
 
 
-                                <input type="file" class="form-control" name="client_logo">
+                                <input type="file" accept="image/*"  class="form-control" name="client_logo">
 
 
                             </div>

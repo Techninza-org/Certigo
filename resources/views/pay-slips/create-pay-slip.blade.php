@@ -296,7 +296,7 @@
                                         </div>
                                         <div class="mb-4 col-md-4">
                                             <label for="esi_value" class="form-label">ESI/Health Insurance </label>
-                                            <input id="esi_value" type="text"
+                                            <input id="esi_value" type="number"
                                                 class="form-control @error('esi_value') is-invalid @enderror"
                                                 name="esi_value" value="{{ old('esi_value') }}" required
                                                 autocomplete="esi_value">
@@ -328,7 +328,7 @@
 
                                         <div class="mb-4 col-md-4">
                                             <label for="twd" class="form-label">Total working days</label>
-                                            <input id="twd" type="text"
+                                            <input id="twd" type="number"
                                                 class="form-control @error('twd') is-invalid @enderror"
                                                 name="twd" value="{{ old('twd') }}" required
                                                 autocomplete="twd">
@@ -341,7 +341,7 @@
 
                                         <div class="mb-4 col-md-4">
                                             <label for="lpd" class="form-label">Loss of pay days </label>
-                                            <input id="lpd" type="text"
+                                            <input id="lpd" type="number"
                                                 class="form-control @error('lpd') is-invalid @enderror"
                                                 name="lpd" value="{{ old('lpd') }}" required
                                                 autocomplete="lpd">
@@ -354,7 +354,7 @@
 
                                         <div class="mb-4 col-md-4">
                                             <label for="dp" class="form-label">Leaves Taken </label>
-                                            <input id="dp" type="text"
+                                            <input id="dp" type="number"
                                                 class="form-control @error('dp') is-invalid @enderror" name="dp"
                                                 value="{{ old('dp') }}" required autocomplete="dp">
                                             @error('dp')
@@ -366,7 +366,7 @@
 
                                         <div class="mb-4 col-md-4">
                                             <label for="gross_salary" class="form-label">Gross Salary</label>
-                                            <input id="gross_salary" type="text"
+                                            <input id="gross_salary" type="number"
                                                 class="form-control @error('gross_salary') is-invalid @enderror"
                                                 name="gross_salary" value="{{ old('gross_salary') }}" required
                                                 autocomplete="gross_salary">
@@ -441,7 +441,7 @@
 
                                         <div class="mb-4 col-md-4">
                                             <label for="professional_tax" class="form-label">Professional Tax</label>
-                                            <input id="professional_tax" type="text"
+                                            <input id="professional_tax" type="number"
                                                 class="form-control @error('professional_tax') is-invalid @enderror"
                                                 name="professional_tax" value="{{ old('professional_tax') }}"
                                                 required autocomplete="professional_tax">
@@ -454,7 +454,7 @@
 
                                         <div class="mb-4 col-md-4">
                                             <label for="loan_recovery" class="form-label">Loan Recovery</label>
-                                            <input id="loan_recovery" type="text"
+                                            <input id="loan_recovery" type="number"
                                                 class="form-control @error('loan_recovery') is-invalid @enderror"
                                                 name="loan_recovery" value="{{ old('loan_recovery') }}" required
                                                 autocomplete="loan_recovery">

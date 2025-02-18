@@ -46,11 +46,10 @@ class SampleController extends Controller
 
         $client = Client::where(['id' => $request->client])->first('no_samples_collect');
         $client_samples = Sample::where(['client' => $request->client ])->count();
-        if($client_samples >= $client->no_samples_collect){
-            // dd($client_trainings,$client->no_trainings_conduct);
-            return redirect()->back()->with('error',' Maximum number of samples scheduled');
-
-        }
+        // if($client_samples >= $client->no_samples_collect){
+        //     // dd($client_trainings,$client->no_trainings_conduct);
+        //     return redirect()->back()->with('error',' Maximum number of samples scheduled');
+        // }
 
 
         $membersArr = explode(',',$request->members);        

@@ -175,8 +175,7 @@ class UserController extends Controller
 
                     return redirect()->back()->with('success', 'User created successfully')->withInput(['allUsers' => $allUsers]);
                 } catch (\Exception $e) {
-                    // Log the exception or handle it accordingly
-                    return redirect()->back()->with('error', 'User created but failed to send email: ' . $e->getMessage())->withInput(['allUsers' => $allUsers]);
+                    return redirect()->back()->with('error', 'User created but failed to send email ');
                 }
             } else {
                 return redirect()->back()->with('error', 'Confirm password does not match!')->withInput(['allUsers' => $allUsers]);

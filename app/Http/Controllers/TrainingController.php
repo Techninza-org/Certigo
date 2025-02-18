@@ -112,15 +112,15 @@ class TrainingController extends Controller
 
         // dd($client);
 
-        if ($client_trainings >= $client->no_trainings_conduct) {
+        // if ($client_trainings >= $client->no_trainings_conduct) {
 
-            // dd($client_trainings,$client->no_trainings_conduct);
+        //     // dd($client_trainings,$client->no_trainings_conduct);
 
-            return redirect()->back()->with('error', ' Maximum number of trainigs scheduled');
+        //     return redirect()->back()->with('error', ' Maximum number of trainigs scheduled');
 
 
 
-        }
+        // }
 
         $attendeesArr = explode(',', $request->attendees);
 

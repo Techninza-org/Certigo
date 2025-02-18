@@ -219,6 +219,8 @@
 
                                             @if ($client->signature != null)
                                                 <img src="{{ url("") }}/public/{{ $client->signature }}" alt="client signature" style="width: 120px;display:inline-block">
+                                            @elseif($audit->auditee_sign != null)
+                                                <img src="{{ url('') }}/{{ $audit->auditee_sign }}" style="width: 10rem; padding-left: 18px;" alt="">
                                             @else
                                                 <a
                                                     href="{{ route('auditee.sign.view', ['audit_id' => $audit->id, 'client_id' => $client->id]) }}"><i
@@ -459,7 +461,7 @@
                                                                                                             </div>\
                                                                                                             <div class="mb-3 ">\
                                                                                                                 <label class="form-label">Doc_ref:</label>\
-                                                                                                                <input type="text" class="form-control"  name="doc_ref">\
+                                                                                                                <input type="text" class="form-control"  name="doc_ref" maxlength="200">\
                                                                                                             </div>\
                                                                                                             <div class="mb-3 ">\
                                                                                                                 <label class="form-label">Personal Responsible:</label>\
