@@ -118,31 +118,39 @@
                         <p style="width: 55px;height:20px;background-color:#ffc900">Major</p>
                         <p style="width: 55px;height:20px;background-color:yellow">Minor</p>
                     </div>
-                    <table style="border-collapse: collapse;width:100%;"> 
+                    <table style="border-collapse: collapse;width:100%;">
                         <thead>
                             <tr>
-                                <th style="padding: 5px;border: 1px solid #000000;text-align: left;font-size:13px;background-color:blue;color:white;">
+                                <th
+                                    style="padding: 5px;border: 1px solid #000000;text-align: left;font-size:13px;background-color:blue;color:white;">
                                     Sr No.
                                 </th>
-                                <th style="padding: 5px;border: 1px solid #000000;text-align: left;font-size:13px;background-color:blue;color:white;">
+                                <th
+                                    style="padding: 5px;border: 1px solid #000000;text-align: left;font-size:13px;background-color:blue;color:white;">
                                     Area/Location
                                 </th>
-                                <th style="padding: 5px;border: 1px solid #000000;text-align: left;font-size:13px;background-color:blue;color:white;">
+                                <th
+                                    style="padding: 5px;border: 1px solid #000000;text-align: left;font-size:13px;background-color:blue;color:white;">
                                     Observation
                                 </th>
-                                <th style="padding: 5px;border: 1px solid #000000;text-align: left;font-size:13px;background-color:blue;color:white;">
+                                <th
+                                    style="padding: 5px;border: 1px solid #000000;text-align: left;font-size:13px;background-color:blue;color:white;">
                                     Suggestion
                                 </th>
-                                <th style="padding: 5px;border: 1px solid #000000;text-align: left;font-size:13px;background-color:blue;color:white;">
+                                <th
+                                    style="padding: 5px;border: 1px solid #000000;text-align: left;font-size:13px;background-color:blue;color:white;">
                                     NC
                                 </th>
-                                <th style="padding: 5px;border: 1px solid #000000;text-align: left;font-size:13px;background-color:blue;color:white;">
+                                <th
+                                    style="padding: 5px;border: 1px solid #000000;text-align: left;font-size:13px;background-color:blue;color:white;">
                                     Status
                                 </th>
-                                <th style="padding: 5px;border: 1px solid #000000;text-align: left;font-size:13px;background-color:blue;color:white;">
+                                <th
+                                    style="padding: 5px;border: 1px solid #000000;text-align: left;font-size:13px;background-color:blue;color:white;">
                                     Question / Opening timeline
                                 </th>
-                                <th style="padding: 5px;border: 1px solid #000000;text-align: left;font-size:13px;background-color:blue;color:white;">
+                                <th
+                                    style="padding: 5px;border: 1px solid #000000;text-align: left;font-size:13px;background-color:blue;color:white;">
                                     Closure time line
                                 </th>
                             </tr>
@@ -161,22 +169,25 @@
                                         <td style="border: 1px solid #0c0c0c;font-size:12px;padding:5px;">
                                             <p>{!! $onee->suggestions !!}</p>
                                         </td>
-                                        <td style="border: 1px solid #0c0c0c;font-size:13px;@if ($onee->nc == 0) background-color:yellow;@elseif($onee->nc == 1) background-color:#ffc900; @else background-color:red; @endif">
+                                        <td
+                                            style="border: 1px solid #0c0c0c;font-size:13px;@if ($onee->nc == 0) background-color:yellow;@elseif($onee->nc == 1) background-color:#ffc900; @else background-color:red; @endif">
                                         </td>
                                         <td style="border: 1px solid #0c0c0c;font-size:11px;padding:5px;">Pending</td>
                                         <td style="border: 1px solid #0c0c0c;font-size:11px;padding:5px;">
                                             @foreach ($onee->datess as $dt)
                                                 <p><strong>{{ $dt['q_name'] }}</strong></p>
-                                                <p>{{ \Carbon\Carbon::parse($dt['response_date'])->format('d-m-Y') }}</p>
+                                                <p>{{ \Carbon\Carbon::parse($dt['response_date'])->format('d-m-Y') }}
+                                                </p>
                                             @endforeach
                                         </td>
-                                        <td style="border: 1px solid #0c0c0c;font-size:11px;padding:5px;">Not Closed</td>
+                                        <td style="border: 1px solid #0c0c0c;font-size:11px;padding:5px;">Not Closed
+                                        </td>
                                     </tr>
                                 @endforeach
                             @endforeach
                         </tbody>
                     </table>
-                    
+
                 </div>
             </div>
         </div>
@@ -222,6 +233,19 @@
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
     <script>
+        document.addEventListener('keydown', function(event) {
+            if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'p') {
+                event.preventDefault();
+            } else if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') {
+                event.preventDefault();
+            } else if (event.key === 'S' && event.shiftKey && event.metaKey) {
+                event.preventDefault();
+            } else if (event.code === 'PrintScreen') {
+                event.preventDefault();
+            }
+        });
+
+
         let data = JSON.parse({!! json_encode($formattedData) !!});
 
 

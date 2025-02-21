@@ -716,13 +716,18 @@ class AuditController extends Controller
         if (!$audit) {
             return redirect()->back()->with('error', 'Audit not found.');
         }
+        // dd($audit);
 
         // Decode the questions and checklists
         $all_ques = json_decode($audit->questions, true);
+        // dd($all_ques);
         $audit_checklist = json_decode($audit->checklists, true);
 
         // Flatten the all_ques array to get all question IDs
         $questionIds = [];
+        if($all_ques == null){
+            return redirect()->back()->with('error', 'No questions found.');
+        }
         foreach ($all_ques as $key => $ids) {
             $questionIds = array_merge($questionIds, $ids);
         }
@@ -1542,6 +1547,13 @@ class AuditController extends Controller
                         $templatesName[$single] = $template->template_name;
 
                         $deptResult = DepartmentScore::where(['audit_id' => $audit->id, 'template_id' => $single])->first();
+                        if($deptResult == null){
+                            $deptResult = new DepartmentScore;
+                            $deptResult->audit_id = $audit->id;
+                            $deptResult->template_id = $single;
+                            $deptResult->score = 0;
+                            $deptResult->save();
+                        }
                         if (array_key_exists($single, $createdArrays)) {
                             $createdArrays[$single][] = $deptResult->score;
                         } else {
@@ -1577,7 +1589,7 @@ class AuditController extends Controller
 
         $myaudits = Audit::whereIn('month', $qFound)->where(['client_id' => $id, 'auditing_for' => 0])->get();
         foreach ($myaudits as $audit) {
-            $nwgAns = AuditDetail::where(['audit_id' => $audit->id, 'response_score' => 0])->get();
+            $nwgAns = AuditDetail::where(['audit_id' => $audit->id])->whereIn('response_score', [0, 2])->get();
             $negAnsArr[] = $nwgAns;
         }
 
@@ -1803,7 +1815,7 @@ class AuditController extends Controller
         // for getting final negative answers from last audit  
         $myaudits = Audit::whereIn('month', $qFound)->where(['client_id' => $id, 'auditing_for' => 0])->get();
         foreach ($myaudits as $audit) {
-            $nwgAns = AuditDetail::where(['audit_id' => $audit->id, 'response_score' => 0])->get();
+            $nwgAns = AuditDetail::where(['audit_id' => $audit->id])->whereIn('response_score', [0, 2])->get();
             $negAnsArr[] = $nwgAns;
         }
 
@@ -2109,7 +2121,7 @@ class AuditController extends Controller
         // for getting final negative answers from last audit  
         $myaudits = Audit::whereIn('month', $qFound)->where(['client_id' => $id, 'auditing_for' => 0])->get();
         foreach ($myaudits as $audit) {
-            $nwgAns = AuditDetail::where(['audit_id' => $audit->id, 'response_score' => 0])->get();
+            $nwgAns = AuditDetail::where(['audit_id' => $audit->id])->whereIn('response_score', [0, 2])->get();
             $negAnsArr[] = $nwgAns;
         }
 

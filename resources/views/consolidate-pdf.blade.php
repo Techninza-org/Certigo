@@ -444,6 +444,18 @@
 
 
     <script>
+        document.addEventListener('keydown', function(event) {
+            if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'p') {
+                event.preventDefault();
+            } else if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') {
+                event.preventDefault();
+            } else if (event.key === 'S' && event.shiftKey && event.metaKey) {
+                event.preventDefault();
+            } else if (event.code === 'PrintScreen') {
+                event.preventDefault();
+            }
+        });
+        
         let data = JSON.parse({!! json_encode($formattedData) !!});
 
 

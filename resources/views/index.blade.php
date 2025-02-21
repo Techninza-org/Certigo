@@ -331,6 +331,7 @@
 
 
                                     <th data-sortable="false">Number of Samples</th>
+                                    <th data-sortable="false">Number of Trainings</th>
 
                                     {{-- @if (Auth::user()->role == 1) --}}
 
@@ -820,6 +821,9 @@
 
                     {
                         data: 'no_samples_collect'
+                    },
+                    {
+                        data: 'no_trainings_conduct'
                     },
 
 

@@ -20,6 +20,8 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\Response;
+
 use Illuminate\Support\Facades\DB;
 
 
@@ -571,8 +573,13 @@ class TrainingController extends Controller
                 'traineeSign' => $training->trainee_sign,
             ]);
 
+            $base64Pdf = base64_encode($pdf->output());
+
+            return view('pdfviewer', ['base64Pdf' => $base64Pdf]);
+
             // Return PDF as stream
-            return $pdf->stream('certigo-report.pdf');
+            // return $pdf->stream('certigo-report.pdf');
+            
         }
 
         // Redirect back with error if client not found

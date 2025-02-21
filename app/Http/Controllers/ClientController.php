@@ -107,7 +107,7 @@ class ClientController extends Controller
                 $arrData = $arrData->where('fname', 'like', '%' . $searchValue . '%')
                     ->orWhere('client_id', 'like', '%' . $searchValue . '%');
             }
-            $arrData = $arrData->get(['id', 'title', 'fname', 'lname', 'organisation_name', 'organisation_location', 'no_audit_conduct', 'no_samples_collect', 'contract_amount', 'client_id', 'status']);
+            $arrData = $arrData->get(['id', 'title', 'fname', 'lname', 'organisation_name', 'organisation_location', 'no_audit_conduct', 'no_samples_collect', 'no_trainings_conduct', 'contract_amount', 'client_id', 'status']);
             // $arrData = $arrData->get(['id','title','fname','lname','organisation_name','organisation_location','no_audit_conduct','no_samples_collect','client_id','status']);
             $response = array(
                 "draw" => intval($draw),
@@ -163,7 +163,7 @@ class ClientController extends Controller
             }
 
             //     $arrData = $arrData->get(['id','title','fname','lname','organisation_name','organisation_location','no_audit_conduct','no_samples_collect','client_id','status']); 
-            $arrData = $arrData->get(['id', 'title', 'fname', 'lname', 'organisation_name', 'organisation_location', 'no_audit_conduct', 'no_samples_collect', 'client_id', 'status']);
+            $arrData = $arrData->get(['id', 'title', 'fname', 'lname', 'organisation_name', 'organisation_location', 'no_audit_conduct', 'no_samples_collect', 'no_trainings_conduct', 'client_id', 'status']);
 
             $response = array(
                 "draw" => intval($draw),

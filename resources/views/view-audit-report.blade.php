@@ -726,7 +726,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($tq['tempQues'] as $index => $q)
-                                        @if ($q->res->response_score === '0')
+                                        @if ($q->res->response_score === '0' || $q->res->response_score === '2')
                                             <tr class="templates-questions">
                                                 <td class="no-index">{{ $index + 1 }}</td>
                                                 <td>
