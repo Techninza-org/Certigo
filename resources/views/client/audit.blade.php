@@ -537,7 +537,7 @@
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label class="form-label"> Audit Number (e.g 1,2,3...)</label>
-                                <input type="text" class="form-control" name="audit_number"
+                                <input type="number" class="form-control" name="audit_number"
                                     placeholder="Enter audit number" required>
                             </div>
                             <div class="mb-3 col-md-6">
@@ -589,7 +589,7 @@
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label class="form-label">Amount</label>
-                                <input type="text" class="form-control" name="amount" required>
+                                <input type="number" class="form-control" name="amount" required>
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label class="form-label">Auditing for</label>
@@ -1722,13 +1722,13 @@
 
                         var listItem = $(
                             `<li class='nav-item' role='presentation'><button class='nav-link ${index == 0 ? 'active' : ''}' id='pills-${item.id}-tab' data-bs-toggle='pill' data-bs-target='#pills-${item.id}' type='button' role='tab' aria-controls='pills-${item.id}' aria-selected='true'>${firstLetter}${letterAfterSpace}-${index+1}</button></li>`
-                            );
+                        );
 
 
 
                         var tabPane = $(
                             `<div class='tab-pane fade show ${index == 0 ? 'active' : ''}' id='pills-${item.id}' role='tabpanel' aria-labelledby='pills-${item.id}-tab' tabindex='0'>${firstLetter}${letterAfterSpace}-${index+1} : ${item.question}</div>`
-                            );
+                        );
 
 
 

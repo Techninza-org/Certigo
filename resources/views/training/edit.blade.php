@@ -308,7 +308,7 @@
 
 
 
-                                    <input type="text" class="form-control" name="amount"
+                                    <input type="number" class="form-control" name="amount"
                                         value="{{ $training->amount }}" required>
 
 
