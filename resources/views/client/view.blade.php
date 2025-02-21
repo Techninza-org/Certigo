@@ -1850,7 +1850,7 @@
           </div>
           
           
-          <div>
+          {{-- <div>
           
           
           
@@ -1858,9 +1858,9 @@
           
           
           
-          </div>
+          </div> --}}
 
-          <div>
+          <div class="mt-8">
 
 
 
@@ -1888,7 +1888,7 @@
                 <td>
                   <a class="btn" href="{{ route('consolidated_quarter', [$viewCl->id,$one->quarter]) }}" >View Report</a>
 
-                    <a class="btn" href="{{ route('send_consolidated_quarter_link', [$viewCl->id,$one->quarter]) }}" >Send Report</a>
+                    {{-- <a class="btn" href="{{ route('send_consolidated_quarter_link', [$viewCl->id,$one->quarter]) }}" >Send Report</a> --}}
                 </td>
               </tr>
               @endforeach
