@@ -3,13 +3,7 @@
 
 
 @push('css')
-
-
-
     <style>
-
-
-
         /* Styling for the popup */
 
 
@@ -122,7 +116,7 @@
 
 
 
-    
+
 
 
 
@@ -130,11 +124,11 @@
 
 
 
-    border-radius:0px;
+            border-radius: 0px;
 
 
 
-            
+
 
 
 
@@ -150,15 +144,16 @@
 
 
 
-        .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+        .nav-tabs .nav-item.show .nav-link,
+        .nav-tabs .nav-link.active {
 
 
 
-            color: #fff!important;
+            color: #fff !important;
 
 
 
-            background-color: #5d87ff!important;
+            background-color: #5d87ff !important;
 
 
 
@@ -182,7 +177,7 @@
 
 
 
-             width: -webkit-fill-available;
+                width: -webkit-fill-available;
 
 
 
@@ -204,90 +199,79 @@
 
         /* Modal container */
 
-.modal {
+        .modal {
 
-    display: none;
+            display: none;
 
-    position: fixed;
+            position: fixed;
 
-    top: 0;
+            top: 0;
 
-    left: 0;
+            left: 0;
 
-    width: 100%;
+            width: 100%;
 
-    height: 100%;
+            height: 100%;
 
-    background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.5);
 
-}
-
-
-
-/* Modal content */
-
-.modal-content {
-
-    background-color: #fff;
-
-    margin: 15% auto;
-
-    padding: 20px;
-
-    border: 1px solid #888;
-
-    /* width: 24%; */
-
-    position: relative;
-
-}
+        }
 
 
 
-/* Close button */
+        /* Modal content */
 
-.close {
+        .modal-content {
 
-    color: #aaa;
+            background-color: #fff;
 
-    position: absolute;
+            margin: 15% auto;
 
-    top: 0;
+            padding: 20px;
 
-    right: 0;
+            border: 1px solid #888;
 
-    font-size: 20px;
+            /* width: 24%; */
 
-    padding: 10px;
+            position: relative;
 
-    cursor: pointer;
-
-}
+        }
 
 
 
-.close:hover {
+        /* Close button */
 
-    color: red;
+        .close {
 
-}
+            color: #aaa;
+
+            position: absolute;
+
+            top: 0;
+
+            right: 0;
+
+            font-size: 20px;
+
+            padding: 10px;
+
+            cursor: pointer;
+
+        }
 
 
 
+        .close:hover {
 
+            color: red;
 
+        }
     </style>
-
-
-
 @endpush
 
 
 
 @section('content')
-
-
-
     <div class="row">
 
 
@@ -304,104 +288,94 @@
 
 
 
-                    @if (\Session::has('success')) 
+                    @if (\Session::has('success'))
+                        <div class="alert alert-success">
 
 
 
-                        <div class="alert alert-success"> 
+                            <ul>
 
 
 
-                        <ul> 
+                                <li>{!! \Session::get('success') !!}
 
 
 
-                            <li>{!! \Session::get('success') !!}
+                                </li>
 
 
 
-                            </li> 
+                            </ul>
 
 
 
-                        </ul>
+                        </div>
+                    @endif
 
 
 
-                        </div> 
+                    @if (\Session::has('error'))
+                        <div class="alert alert-danger">
 
 
 
-                        @endif
+                            <ul>
 
 
 
-                        @if (\Session::has('error')) 
+                                <li>{!! \Session::get('error') !!}
 
 
 
-                        <div class="alert alert-danger"> 
+                                </li>
 
 
 
-                        <ul> 
+                            </ul>
 
 
 
-                            <li>{!! \Session::get('error') !!}
-
-
-
-                            </li> 
-
-
-
-                        </ul>
-
-
-
-                        </div> 
-
-
-
-                        @endif
+                        </div>
+                    @endif
 
 
 
                     <div>
 
 
-                    @if(Auth::user()->role == 1 || Auth::user()->role == 2)
-
-                        <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#sampleModal">
-
-
-
-                            <i class="fa-solid fa-circle-plus" style="color: #f9f9f9"></i>&nbsp; Schedule sample
+                        @if (Auth::user()->role == 1 || Auth::user()->role == 2)
+                            <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal"
+                                data-bs-target="#sampleModal">
 
 
 
-                        </button>
+                                <i class="fa-solid fa-circle-plus" style="color: #f9f9f9"></i>&nbsp; Schedule sample
 
 
 
-                        <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#paraModal">
+                            </button>
 
 
 
-                            <i class="fa-solid fa-circle-plus" style="color: #f9f9f9"></i>&nbsp; Add Parameter
+                            <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal"
+                                data-bs-target="#paraModal">
 
 
 
-                        </button>
-    @endif
+                                <i class="fa-solid fa-circle-plus" style="color: #f9f9f9"></i>&nbsp; Add Parameter
+
+
+
+                            </button>
+                        @endif
 
 
                     </div>
 
 
 
-                    <div class=" d-block align-items-center justify-content-between mb-9" style="overflow-x: auto;height: 60vh;">
+                    <div class=" d-block align-items-center justify-content-between mb-9"
+                        style="overflow-x: auto;height: 60vh;">
 
 
 
@@ -417,15 +391,16 @@
 
 
 
-                            <div class="row d-flex">                
+                            <div class="row d-flex">
 
 
 
-                                <ul class="nav nav-tabs nav-justified mb-3 justify-content-center" id="ex1" role="tablist">
+                                <ul class="nav nav-tabs nav-justified mb-3 justify-content-center" id="ex1"
+                                    role="tablist">
 
 
 
-                                    <div class="col-md-4 col-sm-12">                        
+                                    <div class="col-md-4 col-sm-12">
 
 
 
@@ -433,43 +408,9 @@
 
 
 
-                                        <a
-
-
-
-                                            class="nav-link active"
-
-
-
-                                            id="ex3-tab-1"
-
-
-
-                                            data-bs-toggle="tab"
-
-
-
-                                            href="#ex3-tabs-1"
-
-
-
-                                            role="tab"
-
-
-
-                                            aria-controls="ex3-tabs-1"
-
-
-
-                                            aria-selected="true"
-
-
-
-                                            >Upcoming</a
-
-
-
-                                        >
+                                            <a class="nav-link active" id="ex3-tab-1" data-bs-toggle="tab"
+                                                href="#ex3-tabs-1" role="tab" aria-controls="ex3-tabs-1"
+                                                aria-selected="true">Upcoming</a>
 
 
 
@@ -481,115 +422,47 @@
 
 
 
-                                    <div class="col-md-4 col-sm-12">  
+                                    <div class="col-md-4 col-sm-12">
 
 
 
-                                    <li class="nav-item" role="presentation">
+                                        <li class="nav-item" role="presentation">
 
 
 
-                                    <a
+                                            <a class="nav-link" id="ex3-tab-2" data-bs-toggle="tab" href="#ex3-tabs-2"
+                                                role="tab" aria-controls="ex3-tabs-2" aria-selected="false">In Progress
+                                            </a>
 
 
 
-                                        class="nav-link"
+                                        </li>
 
 
 
-                                        id="ex3-tab-2"
+                                    </div>
 
 
 
-                                        data-bs-toggle="tab"
+                                    <div class="col-md-4 col-sm-12">
 
 
 
-                                        href="#ex3-tabs-2"
+                                        <li class="nav-item" role="presentation">
 
 
 
-                                        role="tab"
+                                            <a class="nav-link" id="ex3-tab-3" data-bs-toggle="tab" href="#ex3-tabs-3"
+                                                role="tab" aria-controls="ex3-tabs-3"
+                                                aria-selected="false">Completed</a>
 
 
 
-                                        aria-controls="ex3-tabs-2"
+                                        </li>
 
 
 
-                                        aria-selected="false"
-
-
-
-                                        >In Progress </a
-
-
-
-                                    >
-
-
-
-                                    </li>
-
-
-
-                                </div>
-
-
-
-                                <div class="col-md-4 col-sm-12">  
-
-
-
-                                    <li class="nav-item" role="presentation">
-
-
-
-                                    <a
-
-
-
-                                        class="nav-link"
-
-
-
-                                        id="ex3-tab-3"
-
-
-
-                                        data-bs-toggle="tab"
-
-
-
-                                        href="#ex3-tabs-3"
-
-
-
-                                        role="tab"
-
-
-
-                                        aria-controls="ex3-tabs-3"
-
-
-
-                                        aria-selected="false"
-
-
-
-                                        >Completed</a
-
-
-
-                                    >
-
-
-
-                                    </li>
-
-
-
-                                </div>
+                                    </div>
 
 
 
@@ -601,7 +474,7 @@
 
 
 
-                              <div class="tab-content" id="ex2-content">
+                            <div class="tab-content" id="ex2-content">
 
 
 
@@ -609,7 +482,8 @@
 
 
 
-                                <div class="tab-pane fade show active" id="ex3-tabs-1" role="tabpanel" aria-labelledby="ex3-tab-1" >
+                                <div class="tab-pane fade show active" id="ex3-tabs-1" role="tabpanel"
+                                    aria-labelledby="ex3-tab-1">
 
 
 
@@ -645,7 +519,7 @@
 
 
 
-            
+
 
 
 
@@ -653,7 +527,7 @@
 
 
 
-            
+
 
 
 
@@ -670,116 +544,105 @@
 
 
                                             @foreach ($upsamples as $train)
+                                                <tr>
 
 
 
-                                                    <tr>
+                                                    <td style="display: none">{{ $train->id }}</td>
 
 
 
-                                                        <td style="display: none">{{ $train->id }}</td>
+                                                    <td>{{ $train->name }} </td>
 
 
 
-                                                        <td>{{ $train->name }} </td>
+                                                    <td>@php
 
+                                                        $date = date('F j, Y  H:i A', strtotime($train->date));
 
+                                                    @endphp
 
-                                                        <td>@php
 
 
+                                                        {{ $date }}
 
-                                                            $date = date('F j, Y  H:i A', strtotime($train->date));
 
 
+                                                    </td>
 
-                                                            @endphp
 
 
+                                                    <td>{{ $train->location }}</td>
 
-                                                            {{ $date }}
 
 
+                                                    <td class=" ">
+                                                        @if (Auth::user()->role == 1)
+                                                            ₹ {{ $train->amount }}
+                                                    </td>
+                                            @endif
 
-                                                        </td>
 
 
 
-                                                        <td>{{ $train->location }}</td>
 
+                                            <td>
 
 
-                                                        <td class=" "> 
-                                                            @if(Auth::user()->role == 1)
-                                                            ₹ {{ $train->amount }}</td>
 
-                                                        @endif
+                                                <div style="    position: relative;">
 
 
 
+                                                    <i class="fa-solid fa-ellipsis-vertical btn popupButton"></i>
 
 
-                                                        <td>
 
+                                                    <div id="popup" class="popup">
 
 
-                                                        <div style="    position: relative;">
 
+                                                        <div class="option d-flex p-1">
 
 
-                                                            <i class="fa-solid fa-ellipsis-vertical btn popupButton" ></i>
 
+                                                            <a class="btn pt-0 pb-0" href="{{ route('view.sample') }}"
+                                                                onclick = "event.preventDefault(); document.getElementById('view-sample{{ $train->id }}').submit();">
 
 
-                                                            <div id="popup" class="popup">
 
+                                                                <i class="fa-regular fa-file-lines"></i> View </a>
 
 
-                                                                <div class="option d-flex p-1">
 
+                                                            <form id="view-sample{{ $train->id }}"
+                                                                action="{{ route('view.sample') }}" method="get"
+                                                                class="d-none">
 
 
-                                                                    <a class="btn pt-0 pb-0" href="{{ route('view.sample') }}" 
 
+                                                                @csrf
 
 
-                                                                    onclick = "event.preventDefault(); document.getElementById('view-sample{{ $train->id }}').submit();"
 
+                                                                <input type="hidden" name="sampleId"
+                                                                    value="{{ $train->id }}">
 
 
-                                                                    >
 
+                                                            </form>
 
 
-                                                                    <i class="fa-regular fa-file-lines"></i> View </a>
 
+                                                        </div>
 
 
-                                                                    <form id="view-sample{{ $train->id }}" action="{{ route('view.sample') }}" method="get" class="d-none">
 
 
 
-                                                                        @csrf
 
 
-
-                                                                        <input type="hidden" name="sampleId" value="{{ $train->id }}">
-
-
-
-                                                                    </form>
-
-
-
-                                                                </div>
-
-
-
-
-
-
-
-                                                                {{-- <div class="option d-flex p-1">
+                                                        {{-- <div class="option d-flex p-1">
 
 
 
@@ -795,59 +658,43 @@
 
 
 
-                                                                
 
 
 
-                                                                
 
 
 
-                                                                <div class="option d-flex p-1">
+
+
+                                                        <div class="option d-flex p-1">
 
 
 
-                                                                    <a class="btn pt-0 pb-0" href="{{ route('delete.sample') }}" 
+                                                            <a class="btn pt-0 pb-0" href="{{ route('delete.sample') }}"
+                                                                onclick = "event.preventDefault(); document.getElementById('delete-sample{{ $train->id }}').submit();">
 
 
 
-                                                                    onclick = "event.preventDefault(); document.getElementById('delete-sample{{ $train->id }}').submit();"
+                                                                <i class="fa-solid fa-pen-to-square"></i> Delete </a>
 
 
 
-                                                                    >
+                                                            <form id="delete-sample{{ $train->id }}"
+                                                                action="{{ route('delete.sample') }}" method="get"
+                                                                class="d-none">
 
 
 
-                                                                    <i class="fa-solid fa-pen-to-square"></i> Delete </a>
+                                                                @csrf
 
 
 
-                                                                    <form id="delete-sample{{ $train->id }}" action="{{ route('delete.sample') }}" method="get" class="d-none">
+                                                                <input type="hidden" name="sampleId"
+                                                                    value="{{ $train->id }}">
 
 
 
-                                                                        @csrf
-
-
-
-                                                                        <input type="hidden" name="sampleId" value="{{ $train->id }}">
-
-
-
-                                                                    </form>
-
-
-
-                                                                </div>
-
-
-
-                                                                
-
-
-
-                                                            </div>
+                                                            </form>
 
 
 
@@ -855,7 +702,15 @@
 
 
 
-                                                            
+
+
+
+
+                                                    </div>
+
+
+
+                                                </div>
 
 
 
@@ -867,7 +722,11 @@
 
 
 
-                                                        </td>
+
+
+
+
+                                            </td>
 
 
 
@@ -875,10 +734,7 @@
 
 
 
-                                                    </tr>
-
-
-
+                                            </tr>
                                             @endforeach
 
 
@@ -943,7 +799,7 @@
 
 
 
-            
+
 
 
 
@@ -951,7 +807,7 @@
 
 
 
-            
+
 
 
 
@@ -968,57 +824,50 @@
 
 
                                             @foreach ($insamples as $train)
+                                                <tr>
 
 
 
-                                                    <tr>
+                                                    <td style="display: none">{{ $train->id }}</td>
 
 
 
-                                                        <td style="display: none">{{ $train->id }}</td>
+                                                    <td>{{ $train->name }} </td>
 
 
 
-                                                        <td>{{ $train->name }} </td>
+                                                    <td>@php
+
+                                                        $date = date('F j, Y  H:i A', strtotime($train->date));
+
+                                                    @endphp
 
 
 
-                                                        <td>@php
+                                                        {{ $date }}
 
 
 
-                                                            $date = date('F j, Y  H:i A', strtotime($train->date));
+                                                    </td>
 
 
 
-                                                            @endphp
+                                                    <td>{{ $train->location }}</td>
 
 
 
-                                                            {{ $date }}
-
-
-
-                                                        </td>
-
-
-
-                                                        <td>{{ $train->location }}</td>
-
-
-
-                                                        <td> 
-                                                            @if(Auth::user()->role == 1)
+                                                    <td>
+                                                        @if (Auth::user()->role == 1)
                                                             ₹ {{ $train->amount }}
-                                                            @endif
-                                                        </td>
+                                                        @endif
+                                                    </td>
 
 
 
 
 
 
-                                                        <td>
+                                                    <td>
 
 
 
@@ -1026,7 +875,7 @@
 
 
 
-                                                            <i class="fa-solid fa-ellipsis-vertical btn popupButton" ></i>
+                                                            <i class="fa-solid fa-ellipsis-vertical btn popupButton"></i>
 
 
 
@@ -1038,23 +887,19 @@
 
 
 
-                                                                    <a class="btn pt-0 pb-0" href="{{ route('complete.sample.get') }}" 
+                                                                    <a class="btn pt-0 pb-0"
+                                                                        href="{{ route('complete.sample.get') }}"
+                                                                        onclick = "event.preventDefault(); document.getElementById('complete-sample{{ $train->id }}').submit();">
 
 
 
-                                                                    onclick = "event.preventDefault(); document.getElementById('complete-sample{{ $train->id }}').submit();"
+                                                                        <i class="fa-regular fa-file-lines"></i> View </a>
 
 
 
-                                                                    >
-
-
-
-                                                                    <i class="fa-regular fa-file-lines"></i> View </a>
-
-
-
-                                                                    <form id="complete-sample{{ $train->id }}" action="{{ route('complete.sample.get') }}" method="get" class="d-none">
+                                                                    <form id="complete-sample{{ $train->id }}"
+                                                                        action="{{ route('complete.sample.get') }}"
+                                                                        method="get" class="d-none">
 
 
 
@@ -1062,7 +907,8 @@
 
 
 
-                                                                        <input type="hidden" name="sampleId" value="{{ $train->id }}">
+                                                                        <input type="hidden" name="sampleId"
+                                                                            value="{{ $train->id }}">
 
 
 
@@ -1094,11 +940,11 @@
 
 
 
-                                                                
 
 
 
-                                                                
+
+
 
 
 
@@ -1106,23 +952,20 @@
 
 
 
-                                                                    <a class="btn pt-0 pb-0" href="{{ route('delete.sample') }}" 
+                                                                    <a class="btn pt-0 pb-0"
+                                                                        href="{{ route('delete.sample') }}"
+                                                                        onclick = "event.preventDefault(); document.getElementById('delete-sample{{ $train->id }}').submit();">
 
 
 
-                                                                    onclick = "event.preventDefault(); document.getElementById('delete-sample{{ $train->id }}').submit();"
+                                                                        <i class="fa-solid fa-pen-to-square"></i> Delete
+                                                                    </a>
 
 
 
-                                                                    >
-
-
-
-                                                                    <i class="fa-solid fa-pen-to-square"></i> Delete </a>
-
-
-
-                                                                    <form id="delete-sample{{ $train->id }}" action="{{ route('delete.sample') }}" method="get" class="d-none">
+                                                                    <form id="delete-sample{{ $train->id }}"
+                                                                        action="{{ route('delete.sample') }}"
+                                                                        method="get" class="d-none">
 
 
 
@@ -1130,7 +973,8 @@
 
 
 
-                                                                        <input type="hidden" name="sampleId" value="{{ $train->id }}">
+                                                                        <input type="hidden" name="sampleId"
+                                                                            value="{{ $train->id }}">
 
 
 
@@ -1142,7 +986,7 @@
 
 
 
-                                                                
+
 
 
 
@@ -1154,7 +998,6 @@
 
 
 
-                                                            
 
 
 
@@ -1166,7 +1009,8 @@
 
 
 
-                                                        </td>
+
+                                                    </td>
 
 
 
@@ -1174,10 +1018,7 @@
 
 
 
-                                                    </tr>
-
-
-
+                                                </tr>
                                             @endforeach
 
 
@@ -1242,7 +1083,7 @@
 
 
 
-            
+
 
 
 
@@ -1250,7 +1091,7 @@
 
 
 
-            
+
 
 
 
@@ -1267,50 +1108,43 @@
 
 
                                             @foreach ($cmsamples as $train)
+                                                <tr>
 
 
 
-                                                    <tr>
+                                                    <td style="display: none">{{ $train->id }}</td>
 
 
 
-                                                        <td style="display: none">{{ $train->id }}</td>
+                                                    <td>{{ $train->name }} </td>
 
 
 
-                                                        <td>{{ $train->name }} </td>
+                                                    <td>@php
+
+                                                        $date = date('F j, Y  H:i A', strtotime($train->date));
+
+                                                    @endphp
 
 
 
-                                                        <td>@php
+                                                        {{ $date }}
 
 
 
-                                                            $date = date('F j, Y  H:i A', strtotime($train->date));
+                                                    </td>
 
 
 
-                                                            @endphp
+                                                    <td>{{ $train->location }}</td>
 
 
 
-                                                            {{ $date }}
-
-
-
-                                                        </td>
-
-
-
-                                                        <td>{{ $train->location }}</td>
-
-
-
-                                                        <td> 
-                                                            @if(Auth::user()->role == 1)
+                                                    <td>
+                                                        @if (Auth::user()->role == 1)
                                                             ₹ {{ $train->amount }}
                                                         @endif
-                                                        </td>
+                                                    </td>
 
 
 
@@ -1318,7 +1152,7 @@
 
 
 
-                                                        <td>
+                                                    <td>
 
 
 
@@ -1326,7 +1160,7 @@
 
 
 
-                                                            <i class="fa-solid fa-ellipsis-vertical btn popupButton" ></i>
+                                                            <i class="fa-solid fa-ellipsis-vertical btn popupButton"></i>
 
 
 
@@ -1338,31 +1172,29 @@
 
 
 
-                                                                    <a class="btn pt-0 pb-0" href="{{ route('downlaod.sample.pdf') }}" 
+                                                                    <a class="btn pt-0 pb-0"
+                                                                        href="{{ route('downlaod.sample.pdf') }}"
+                                                                        onclick = "event.preventDefault(); document.getElementById('view-sample{{ $train->id }}').submit();showCustomModal();">
 
 
 
-                                                                    onclick = "event.preventDefault(); document.getElementById('view-sample{{ $train->id }}').submit();showCustomModal();"
+                                                                        <i class="fa-regular fa-file-lines"></i> Report
+                                                                    </a>
 
 
 
-                                                                    >
+                                                                    <form id="view-sample{{ $train->id }}"
+                                                                        action="{{ route('downlaod.sample.pdf') }}"
+                                                                        method="get" class="d-none">
 
 
 
-                                                                    <i class="fa-regular fa-file-lines"></i> Report </a>
 
 
 
-                                                                    <form id="view-sample{{ $train->id }}" action="{{ route('downlaod.sample.pdf') }}" method="get" class="d-none">
 
-
-
-                                                                       
-
-
-
-                                                                        <input type="hidden" name="sampleId" value="{{ $train->id }}">
+                                                                        <input type="hidden" name="sampleId"
+                                                                            value="{{ $train->id }}">
 
 
 
@@ -1394,11 +1226,11 @@
 
 
 
-                                                                
 
 
 
-                                                                
+
+
 
 
 
@@ -1406,23 +1238,20 @@
 
 
 
-                                                                    <a class="btn pt-0 pb-0" href="{{ route('delete.sample') }}" 
+                                                                    <a class="btn pt-0 pb-0"
+                                                                        href="{{ route('delete.sample') }}"
+                                                                        onclick = "event.preventDefault(); document.getElementById('delete-sample{{ $train->id }}').submit();">
 
 
 
-                                                                    onclick = "event.preventDefault(); document.getElementById('delete-sample{{ $train->id }}').submit();"
+                                                                        <i class="fa-solid fa-pen-to-square"></i> Delete
+                                                                    </a>
 
 
 
-                                                                    >
-
-
-
-                                                                    <i class="fa-solid fa-pen-to-square"></i> Delete </a>
-
-
-
-                                                                    <form id="delete-sample{{ $train->id }}" action="{{ route('delete.sample') }}" method="get" class="d-none">
+                                                                    <form id="delete-sample{{ $train->id }}"
+                                                                        action="{{ route('delete.sample') }}"
+                                                                        method="get" class="d-none">
 
 
 
@@ -1430,7 +1259,8 @@
 
 
 
-                                                                        <input type="hidden" name="sampleId" value="{{ $train->id }}">
+                                                                        <input type="hidden" name="sampleId"
+                                                                            value="{{ $train->id }}">
 
 
 
@@ -1442,7 +1272,7 @@
 
 
 
-                                                                
+
 
 
 
@@ -1454,7 +1284,6 @@
 
 
 
-                                                            
 
 
 
@@ -1466,7 +1295,8 @@
 
 
 
-                                                        </td>
+
+                                                    </td>
 
 
 
@@ -1474,10 +1304,7 @@
 
 
 
-                                                    </tr>
-
-
-
+                                                </tr>
                                             @endforeach
 
 
@@ -1502,15 +1329,11 @@
 
 
 
-                              </div>
+                            </div>
 
 
 
-                          </div>
-
-
-
-
+                        </div>
 
 
 
@@ -1534,7 +1357,11 @@
 
 
 
-                        
+
+
+
+
+
 
 
 
@@ -1542,7 +1369,7 @@
 
 
 
-                    
+
 
 
 
@@ -1559,17 +1386,6 @@
 
 
     </div>
-
-
-
-
-
-
-
-
-
-
-
 @endsection
 
 
@@ -1602,63 +1418,62 @@
 
 
 
-<div class="modal fade" id="sampleModal" tabindex="-1" aria-labelledby="sampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="sampleModal" tabindex="-1" aria-labelledby="sampleModalLabel" aria-hidden="true">
 
 
 
-    <div class="modal-dialog">
+        <div class="modal-dialog">
 
 
 
-        <div class="modal-content">
+            <div class="modal-content">
 
 
 
-            <div class="modal-header">
+                <div class="modal-header">
 
 
 
-                <h1 class="modal-title fs-5" id="sampleModalLabel">Add new sample</h1>
+                    <h1 class="modal-title fs-5" id="sampleModalLabel">Add new sample</h1>
 
 
 
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
 
 
-            </div>
+                </div>
 
 
 
-            <div class="modal-body">
+                <div class="modal-body">
 
 
 
-                <div id="overlay" style="display: none;">
+                    <div id="overlay" style="display: none;">
 
 
 
-                    <div id="loader"></div>
+                        <div id="loader"></div>
 
 
 
-                  </div>
+                    </div>
 
 
 
-                <form action="{{ route('store.sample') }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('store.sample') }}" method="post" enctype="multipart/form-data">
 
 
 
-                    @csrf
+                        @csrf
 
 
 
-                    <div class="row">
+                        <div class="row">
 
 
 
-                        
 
 
 
@@ -1666,27 +1481,26 @@
 
 
 
-                        <div class="mb-3 col-md-4">
 
+                            <div class="mb-3 col-md-4">
 
 
-                            <label class="form-label">Name of the sample <span class="text-danger">*</span></label>
 
+                                <label class="form-label">Name of the sample <span class="text-danger">*</span></label>
 
 
-                            <input type="text" class="form-control" name="name" required>
 
+                                <input type="text" class="form-control" name="name" required>
 
 
-                        </div>
 
+                            </div>
 
 
 
 
 
 
-                        
 
 
 
@@ -1698,47 +1512,49 @@
 
 
 
-                        <div class="mb-3 col-md-4">
 
 
+                            <div class="mb-3 col-md-4">
 
-                            <label class="form-label">Sample selection date<span class="text-danger">*</span></label>
 
 
+                                <label class="form-label">Sample selection date<span class="text-danger">*</span></label>
 
-                            <input type="datetime-local" class="form-control" name="date" required>
 
 
+                                <input type="datetime-local" class="form-control" name="date" required>
 
-                        </div>
 
 
+                            </div>
 
 
 
 
 
-                        <div class="mb-3 col-md-4">
 
 
+                            <div class="mb-3 col-md-4">
 
-                            <label class="form-label">Location <span class="text-danger">*</span></label>
 
 
+                                <label class="form-label">Location <span class="text-danger">*</span></label>
 
-                            <input type="text" class="form-control" name="location" required>
 
 
+                                <input type="text" class="form-control" name="location" required>
 
-                        </div>
 
 
+                            </div>
 
 
 
 
 
-                        {{-- <div class="mb-3 col-md-4">
+
+
+                            {{-- <div class="mb-3 col-md-4">
 
 
 
@@ -1758,31 +1574,11 @@
 
 
 
-                        <div class=" mb-3 col-md-4">
+                            <div class=" mb-3 col-md-4">
 
 
 
-                            <label class="form-label" >Sample type</label>
-
-
-
-
-
-
-
-                            <select class="form-select" name="type" id="">
-
-
-
-                                <option value="1">Food</option>
-
-
-
-                                <option value="2">Water</option>
-
-
-
-                                <option value="3">Swad</option>
+                                <label class="form-label">Sample type</label>
 
 
 
@@ -1790,7 +1586,248 @@
 
 
 
-                            </select>
+                                <select class="form-select" name="type" id="">
+
+
+
+                                    <option value="1">Food</option>
+
+
+
+                                    <option value="2">Water</option>
+
+
+
+                                    <option value="3">Swad</option>
+
+
+
+
+
+
+
+                                </select>
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="mb-3 col-md-4">
+
+
+
+                                <label class="form-label">Sample temperature (°C)<span
+                                        class="text-danger">*</span></label>
+
+
+
+                                <input type="number" class="form-control" name="temperature" required>
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="mb-3 col-md-4">
+
+
+
+                                <label class="form-label">Sample weight <span class="text-danger">*</span></label>
+
+
+
+                                <input type="number" class="form-control" name="weight" required>
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="mb-3 col-md-4">
+
+
+
+                                <label class="form-label">Sample quantity <span class="text-danger">*</span></label>
+
+
+
+                                <input type="number" class="form-control" name="quantity" required>
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="mb-3 col-md-4">
+
+
+
+                                <label class="form-label">Amount<span class="text-danger">*</span></label>
+
+
+
+                                <input type="number" class="form-control" name="amount" required>
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class=" mb-3 col-md-4">
+
+
+
+                                <label class="form-label">Select client</label>
+
+
+
+
+
+
+
+                                <select class="form-select" name="client" id="">
+
+
+
+                                    @foreach ($clients as $c)
+                                        <option value="{{ $c->id }}">{{ $c->organisation_name }} </option>
+                                    @endforeach
+
+
+
+
+
+
+
+                                </select>
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="mb-3 col-md-4">
+
+
+
+
+
+
+
+                                <label class="form-label">Select members</label>
+
+
+
+                                <select id="select-members" multiple name="members" placeholder=" Select"
+                                    data-search="true" data-silent-initial-value-set="true">
+
+
+
+                                    @foreach ($users as $u)
+                                        <option value="{{ $u->id }}">{{ $u->name }}</option>
+                                    @endforeach
+
+
+
+                                </select>
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="mb-3 col-md-4">
+
+
+
+
+
+
+
+                                <label class="form-label">Select parameters</label>
+
+
+
+                                <select id="select-attendees" multiple name="parameters" placeholder=" Select"
+                                    data-search="true" data-silent-initial-value-set="true">
+
+
+
+                                    @foreach ($parameters as $s)
+                                        <option value="{{ $s->id }}">{{ $s->name }}</option>
+                                    @endforeach
+
+
+
+                                </select>
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="modal-footer">
+
+
+
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+
+
+                                <button type="submit" id="formSubmission" class="btn btn-primary">ADD</button>
+
+
+
+                            </div>
 
 
 
@@ -1798,247 +1835,19 @@
 
 
 
+                        {{-- <button type="submit" class="btn btn-primary">Submit</button> --}}
 
 
 
+                    </form>
 
-                        <div class="mb-3 col-md-4">
 
 
 
-                            <label class="form-label">Sample temperature (°C)<span class="text-danger">*</span></label>
 
 
 
-                            <input type="text" class="form-control" name="temperature" required>
-
-
-
-                        </div>
-
-
-
-
-
-
-
-                        <div class="mb-3 col-md-4">
-
-
-
-                            <label class="form-label">Sample weight <span class="text-danger">*</span></label>
-
-
-
-                            <input type="text" class="form-control" name="weight" required>
-
-
-
-                        </div>
-
-
-
-
-
-
-
-                        <div class="mb-3 col-md-4">
-
-
-
-                            <label class="form-label">Sample quantity <span class="text-danger">*</span></label>
-
-
-
-                            <input type="text" class="form-control" name="quantity" required>
-
-
-
-                        </div>
-
-
-
-
-
-
-
-                        <div class="mb-3 col-md-4">
-
-
-
-                            <label class="form-label">Amount<span class="text-danger">*</span></label>
-
-
-
-                            <input type="text" class="form-control" name="amount" required>
-
-
-
-                        </div>
-
-
-
-
-
-
-
-                        <div class=" mb-3 col-md-4">
-
-
-
-                            <label class="form-label" >Select client</label>
-
-
-
-
-
-
-
-                            <select class="form-select" name="client" id="">
-
-
-
-                                @foreach($clients as $c)
-
-
-
-                                <option value="{{ $c->id }}">{{ $c->organisation_name }} </option>                                
-
-
-
-                                @endforeach
-
-
-
-
-
-
-
-                            </select>
-
-
-
-                        </div>
-
-
-
-
-
-
-
-                        <div class="mb-3 col-md-4">                            
-
-
-
-                           
-
-
-
-                            <label class="form-label" >Select members</label>
-
-
-
-                            <select id="select-members" multiple name="members" placeholder=" Select" data-search="true" data-silent-initial-value-set="true">
-
-
-
-                                @foreach($users as $u)
-
-
-
-                                <option value="{{ $u->id }}" >{{ $u->name }}</option>
-
-
-
-                                @endforeach                                 
-
-
-
-                            </select>
-
-
-
-                            
-
-
-
-                        </div>
-
-
-
-
-
-
-
-                        <div class="mb-3 col-md-4">                            
-
-
-
-                           
-
-
-
-                            <label class="form-label" >Select parameters</label>
-
-
-
-                            <select id="select-attendees" multiple name="parameters" placeholder=" Select" data-search="true" data-silent-initial-value-set="true">
-
-
-
-                                @foreach($parameters as $s)
-
-
-
-                                <option value="{{ $s->id }}">{{ $s->name }}</option>
-
-
-
-                                @endforeach
-
-
-
-                            </select>
-
-
-
-                            
-
-
-
-                        </div>
-
-
-
-
-
-
-
-                        <div class="modal-footer">
-
-
-
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-
-
-
-                            <button type="submit" id="formSubmission" class="btn btn-primary" >ADD</button>
-
-
-
-                        </div>
-
-
-
-                    </div>
-
-
-
-                    {{-- <button type="submit" class="btn btn-primary">Submit</button> --}}
-
-
-
-                </form>
+                </div>
 
 
 
@@ -2050,7 +1859,151 @@
 
 
 
+        </div>
 
+
+
+    </div>
+
+
+
+
+
+
+
+    <div class="modal fade" id="paraModal" tabindex="-1" aria-labelledby="paraModalLabel" aria-hidden="true">
+
+
+
+        <div class="modal-dialog">
+
+
+
+            <div class="modal-content">
+
+
+
+                <div class="modal-header">
+
+
+
+                    <h1 class="modal-title fs-5" id="paraModalLabel">Add Parameter</h1>
+
+
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+
+
+                </div>
+
+
+
+                <div class="modal-body">
+
+
+
+                    <div id="overlay" style="display: none;">
+
+
+
+                        <div id="loader"></div>
+
+
+
+                    </div>
+
+
+
+                    <form action="{{ route('store.parameter') }}" method="post" enctype="multipart/form-data">
+
+
+
+                        @csrf
+
+
+
+                        <div class="row">
+
+
+
+
+
+
+
+
+
+
+
+                            <div class="mb-3 col-md-12">
+
+
+
+                                <label class="form-label">Name of the parameter <span class="text-danger">*</span></label>
+
+
+
+                                <input type="text" class="form-control" name="name" required>
+
+
+
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <div class="modal-footer">
+
+
+
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+
+
+                                <button type="submit" id="formSubmission" class="btn btn-primary">ADD</button>
+
+
+
+                            </div>
+
+
+
+                        </div>
+
+
+
+                        {{-- <button type="submit" class="btn btn-primary">Submit</button> --}}
+
+
+
+                    </form>
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+            </div>
 
 
 
@@ -2062,187 +2015,32 @@
 
 
 
-</div>
 
 
 
 
-
-
-
-<div class="modal fade" id="paraModal" tabindex="-1" aria-labelledby="paraModalLabel" aria-hidden="true">
-
-
-
-    <div class="modal-dialog">
-
-
+    <div id="messageModal" class="modal">
 
         <div class="modal-content">
 
+            <span class="close" id="closeModal">&times;</span>
 
-
-            <div class="modal-header">
-
-
-
-                <h1 class="modal-title fs-5" id="paraModalLabel">Add Parameter</h1>
-
-
-
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
-
-
-            </div>
-
-
-
-            <div class="modal-body">
-
-
-
-                <div id="overlay" style="display: none;">
-
-
-
-                    <div id="loader"></div>
-
-
-
-                  </div>
-
-
-
-                <form action="{{ route('store.parameter') }}" method="post" enctype="multipart/form-data">
-
-
-
-                    @csrf
-
-
-
-                    <div class="row">
-
-
-
-                        
-
-
-
-
-
-
-
-                        <div class="mb-3 col-md-12">
-
-
-
-                            <label class="form-label">Name of the parameter <span class="text-danger">*</span></label>
-
-
-
-                            <input type="text" class="form-control" name="name" required>
-
-
-
-                        </div>
-
-
-
-
-
-
-
-                        
-
-
-
-
-
-
-
-                        <div class="modal-footer">
-
-
-
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-
-
-
-                            <button type="submit" id="formSubmission" class="btn btn-primary" >ADD</button>
-
-
-
-                        </div>
-
-
-
-                    </div>
-
-
-
-                    {{-- <button type="submit" class="btn btn-primary">Submit</button> --}}
-
-
-
-                </form>
-
-
-
-
-
-
-
-            </div>
-
-
-
-
-
-
+            <b>Report generation may take few seconds. Please wait.</b>
 
         </div>
 
-
-
     </div>
-
-
-
-</div>
-
-
-
-
-
-
-
-<div id="messageModal" class="modal">
-
-    <div class="modal-content">
-
-        <span class="close" id="closeModal">&times;</span>
-
-        <b>Report generation may take few seconds. Please wait.</b>
-
-    </div>
-
-</div>
 
 
 
 
 
     <script>
-
-
-
         $(document).ready(function() {
 
 
 
-            
+
 
 
 
@@ -2250,7 +2048,9 @@
 
 
 
-                order:[[0,'desc']]
+                order: [
+                    [0, 'desc']
+                ]
 
 
 
@@ -2262,7 +2062,7 @@
 
 
 
-            
+
 
 
 
@@ -2270,7 +2070,9 @@
 
 
 
-                order:[[0,'desc']]
+                order: [
+                    [0, 'desc']
+                ]
 
 
 
@@ -2290,7 +2092,9 @@
 
 
 
-                order:[[0,'desc']]
+                order: [
+                    [0, 'desc']
+                ]
 
 
 
@@ -2314,23 +2118,23 @@
 
 
 
-              var popup = $(this).next('.popup');
+                var popup = $(this).next('.popup');
 
 
 
-              // Hide all other popups
+                // Hide all other popups
 
 
 
-              $('.popup').not(popup).hide();
+                $('.popup').not(popup).hide();
 
 
 
-              // Toggle the display of the corresponding popup
+                // Toggle the display of the corresponding popup
 
 
 
-              popup.toggle();
+                popup.toggle();
 
 
 
@@ -2350,15 +2154,15 @@
 
 
 
-              if (!$(event.target).hasClass('popupButton') && !$(event.target).hasClass('popup')) {
+                if (!$(event.target).hasClass('popupButton') && !$(event.target).hasClass('popup')) {
 
 
 
-                $('.popup').hide();
+                    $('.popup').hide();
 
 
 
-              }
+                }
 
 
 
@@ -2378,15 +2182,15 @@
 
 
 
-        VirtualSelect.init({ 
+        VirtualSelect.init({
 
 
 
-            ele: '#select-attendees' ,
+            ele: '#select-attendees',
 
 
 
-            
+
 
 
 
@@ -2402,11 +2206,11 @@
 
 
 
-        VirtualSelect.init({ 
+        VirtualSelect.init({
 
 
 
-            ele: '#select-members' 
+            ele: '#select-members'
 
 
 
@@ -2431,14 +2235,8 @@
             messageModal.style.display = 'block';
 
         }
-
-
-
     </script>
 
 
 
 @endpush
-
-
-
