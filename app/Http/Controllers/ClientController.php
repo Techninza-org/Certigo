@@ -71,9 +71,6 @@ class ClientController extends Controller
 
     public function ajax(Request $request)
     {
-
-
-
         // print_r($request->all());
 
         if (Auth::user()->role == 1) {
@@ -249,6 +246,8 @@ class ClientController extends Controller
             'director_email' => 'nullable',
 
             'director' => 'nullable',
+
+            'password' => 'required',
         ]);
 
 
@@ -266,7 +265,7 @@ class ClientController extends Controller
 
         // $password = 'pass' . str_replace(' ', '', $request->fname) . time();
 
-        $password = "12345678";
+        $password = $request->password;
 
         $hashedPassword = Hash::make($password);
 

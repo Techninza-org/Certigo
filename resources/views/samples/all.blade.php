@@ -1169,40 +1169,12 @@
 
 
                                                                 <div class="option d-flex p-1">
-
-
-
-                                                                    <a class="btn pt-0 pb-0"
-                                                                        href="{{ route('downlaod.sample.pdf') }}"
-                                                                        onclick = "event.preventDefault(); document.getElementById('view-sample{{ $train->id }}').submit();showCustomModal();">
-
-
-
+                                                                    <a class="btn pt-0 pb-0" href="javascript:void(0)"
+                                                                        onclick="previewSamplePDF('{{ route('downlaod.sample.pdf', ['sampleId' => $train->id]) }}')">
                                                                         <i class="fa-regular fa-file-lines"></i> Report
                                                                     </a>
-
-
-
-                                                                    <form id="view-sample{{ $train->id }}"
-                                                                        action="{{ route('downlaod.sample.pdf') }}"
-                                                                        method="get" class="d-none">
-
-
-
-
-
-
-
-                                                                        <input type="hidden" name="sampleId"
-                                                                            value="{{ $train->id }}">
-
-
-
-                                                                    </form>
-
-
-
                                                                 </div>
+
 
 
 
@@ -2031,6 +2003,22 @@
 
     </div>
 
+    <!-- Modal for Preview -->
+    <div id="samplePdfPreviewModal" class="modal fade" tabindex="-1" aria-labelledby="samplePdfPreviewModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="samplePdfPreviewModalLabel">PDF Preview</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="samplePdfPreviewContent">
+                    <!-- PDF pages will be rendered here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
 
@@ -2238,5 +2226,57 @@
     </script>
 
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
+    <script>
+        async function previewSamplePDF(pdfUrl) {
+            const content = document.getElementById('samplePdfPreviewContent');
+            content.innerHTML = '<p>Loading...</p>';
+
+            try {
+                const response = await fetch(pdfUrl);
+                if (!response.ok) throw new Error('Failed to load PDF');
+
+                const blob = await response.blob();
+                const objectURL = URL.createObjectURL(blob);
+
+                pdfjsLib.GlobalWorkerOptions.workerSrc =
+                    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.worker.min.js";
+
+                const loadingTask = pdfjsLib.getDocument(objectURL);
+                const pdf = await loadingTask.promise;
+
+                let imagesHTML = "";
+
+                for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                    const page = await pdf.getPage(pageNum);
+                    const scale = 1.5;
+                    const viewport = page.getViewport({
+                        scale
+                    });
+
+                    const canvas = document.createElement("canvas");
+                    const context = canvas.getContext("2d");
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+
+                    await page.render({
+                        canvasContext: context,
+                        viewport
+                    }).promise;
+
+                    const imgData = canvas.toDataURL("image/png");
+                    imagesHTML += `<img src="${imgData}" class="img-fluid mb-2" style="width:100%;">`;
+                }
+
+                content.innerHTML = imagesHTML;
+
+                const modal = new bootstrap.Modal(document.getElementById('samplePdfPreviewModal'));
+                modal.show();
+            } catch (error) {
+                console.error('Error loading PDF:', error);
+                content.innerHTML = '<p>Error loading content. Please try again.</p>';
+            }
+        }
+    </script>
 
 @endpush

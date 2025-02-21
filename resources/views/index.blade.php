@@ -453,6 +453,8 @@
 
 
 
+
+
                             <div class="mb-3 col-md-4">
 
                                 <label class="form-label">Designation <span class="text-danger">*</span></label>
@@ -711,6 +713,14 @@
 
                             </div>
 
+                            <div class="mb-6 col-md6">
+
+                                <label class="form-label">Password <span class="text-danger">*</span></label>
+
+                                <input type="password" class="form-control" name="password" required>
+
+                            </div>
+
 
 
                             <div class="modal-footer">
@@ -842,63 +852,101 @@
                             // Replace the code below with your own HTML markup for the action buttons
 
                             return '<div style="position: relative;">\
-                                                            <i class="fa-solid fa-ellipsis-vertical btn popupButton" ></i>\
-                                                            <div id="popup" class="popup">\
-                                                                ' + (data.status === 2 ?
+                                                                                                    <i class="fa-solid fa-ellipsis-vertical btn popupButton" ></i>\
+                                                                                                    <div id="popup" class="popup">\
+                                                                                                        ' + (data
+                                    .status ===
+                                    2 ?
                                     '<div class="option d-flex p-2 iAmInactive" >\
-                                                                    <a class="btn pt-0 pb-0" href="{{ route('active.client') }}" onclick="event.preventDefault(); document.getElementById(\'active-client' +
-                                    data.id + '\').submit();toastr.success(\'Client made Active!\', \'Success\');">\
-                                                                        <i class="fa-solid fa-pen-to-square"></i>Active Client</a>\
-                                                                        <form id="active-client' + data.id + '" action="{{ route('active.client') }}" method="get" class="d-none">\
-                                                                        <input type="hidden" value="' + data.id + '" name="clientId">\
-                                                                    </form>\
-                                                                </div>' :
+                                                                                                            <a class="btn pt-0 pb-0" href="{{ route('active.client') }}" onclick="event.preventDefault(); document.getElementById(\'active-client' +
+                                    data.id +
+                                    '\').submit();toastr.success(\'Client made Active!\', \'Success\');">\
+                                                                                                                <i class="fa-solid fa-pen-to-square"></i>Active Client</a>\
+                                                                                                                <form id="active-client' +
+                                    data
+                                    .id +
+                                    '" action="{{ route('active.client') }}" method="get" class="d-none">\
+                                                                                                                <input type="hidden" value="' +
+                                    data
+                                    .id + '" name="clientId">\
+                                                                                                            </form>\
+                                                                                                        </div>' :
                                     '<div class="option d-flex p-2">\
-                                                                    <a class="btn pt-0 pb-0" href="{{ route('view.client') }}" onclick="event.preventDefault();document.getElementById(\'view-client' +
-                                    data.id + '\').submit();">\
-                                                                        <i class="fa-solid fa-book" style="color: rgb(255, 136, 0)"></i> view </a>\
-                                                                    <form id="view-client' + data.id + '" action="{{ route('view.client') }}" method="get" class="d-none">\
-                                                                        <input type="hidden" value="' + data.id +
+                                                                                                            <a class="btn pt-0 pb-0" href="{{ route('view.client') }}" onclick="event.preventDefault();document.getElementById(\'view-client' +
+                                    data.id +
+                                    '\').submit();">\
+                                                                                                                <i class="fa-solid fa-book" style="color: rgb(255, 136, 0)"></i> view </a>\
+                                                                                                            <form id="view-client' +
+                                    data
+                                    .id +
+                                    '" action="{{ route('view.client') }}" method="get" class="d-none">\
+                                                                                                                <input type="hidden" value="' +
+                                    data
+                                    .id +
                                     '" name="id">\
-                                                                    </form>\
-                                                                </div>\
-                                                                <div class="option d-flex p-2">\
-                                                                    <a class="btn pt-0 pb-0" href="{{ route('client.audit') }}" onclick="event.preventDefault();document.getElementById(\'client-audits' +
-                                    data.id + '\').submit();">\
-                                                                    <i class="fa-solid fa-book" style="color: rgb(0, 94, 255)"></i> Audits </a>\
-                                                                    <form id="client-audits' + data.id + '" action="{{ route('client.audit') }}" method="get" class="d-none">\
-                                                                        <input type="hidden" value="' + data.id +
+                                                                                                            </form>\
+                                                                                                        </div>\
+                                                                                                        <div class="option d-flex p-2">\
+                                                                                                            <a class="btn pt-0 pb-0" href="{{ route('client.audit') }}" onclick="event.preventDefault();document.getElementById(\'client-audits' +
+                                    data.id +
+                                    '\').submit();">\
+                                                                                                            <i class="fa-solid fa-book" style="color: rgb(0, 94, 255)"></i> Audits </a>\
+                                                                                                            <form id="client-audits' +
+                                    data
+                                    .id +
+                                    '" action="{{ route('client.audit') }}" method="get" class="d-none">\
+                                                                                                                <input type="hidden" value="' +
+                                    data
+                                    .id +
                                     '" name="cid">\
-                                                                    </form>\
-                                                                </div>\
-                                                                <div class="option d-flex p-2">\
-                                                                    <a class="btn pt-0 pb-0" href="{{ route('edit.client') }}" onclick="event.preventDefault();document.getElementById(\'client-edit' +
-                                    data.id + '\').submit();">\
-                                                                    <i class="fa-solid fa-pen-to-square"></i> Edit </a>\
-                                                                    <form id="client-edit' + data.id + '" action="{{ route('edit.client') }}" method="get" class="d-none">\
-                                                                        <input type="hidden" value="' + data.id +
+                                                                                                            </form>\
+                                                                                                        </div>\
+                                                                                                        <div class="option d-flex p-2">\
+                                                                                                            <a class="btn pt-0 pb-0" href="{{ route('edit.client') }}" onclick="event.preventDefault();document.getElementById(\'client-edit' +
+                                    data.id +
+                                    '\').submit();">\
+                                                                                                            <i class="fa-solid fa-pen-to-square"></i> Edit </a>\
+                                                                                                            <form id="client-edit' +
+                                    data
+                                    .id +
+                                    '" action="{{ route('edit.client') }}" method="get" class="d-none">\
+                                                                                                                <input type="hidden" value="' +
+                                    data
+                                    .id +
                                     '" name="clid">\
-                                                                    </form>\
-                                                                </div>\
-                                                                <div class="option d-flex p-2">\
-                                                                    <a class="btn pt-0 pb-0" href="{{ route('inactive.client') }}" onclick="event.preventDefault(); document.getElementById(\'inactive-client' +
-                                    data.id + '\').submit();toastr.success(\'Client made In-active!\', \'Success\');">\
-                                                                        <i class="fa-solid fa-eye-slash" style="color: rgb(255, 136, 0)"></i> In-active </a>\
-                                                                    <form id="inactive-client' + data.id + '" action="{{ route('inactive.client') }}" method="post" class="d-none">@csrf\
-                                                                        <input type="hidden" value="' + data.id +
+                                                                                                            </form>\
+                                                                                                        </div>\
+                                                                                                        <div class="option d-flex p-2">\
+                                                                                                            <a class="btn pt-0 pb-0" href="{{ route('inactive.client') }}" onclick="event.preventDefault(); document.getElementById(\'inactive-client' +
+                                    data.id +
+                                    '\').submit();toastr.success(\'Client made In-active!\', \'Success\');">\
+                                                                                                                <i class="fa-solid fa-eye-slash" style="color: rgb(255, 136, 0)"></i> In-active </a>\
+                                                                                                            <form id="inactive-client' +
+                                    data
+                                    .id +
+                                    '" action="{{ route('inactive.client') }}" method="post" class="d-none">@csrf\
+                                                                                                                <input type="hidden" value="' +
+                                    data
+                                    .id +
                                     '" name="clientId">\
-                                                                    </form>\
-                                                                </div>\
-                                                                <div class="option d-flex p-2">\
-                                                                    <a class="btn pt-0 pb-0" href="{{ route('delete.client') }}" onclick="event.preventDefault(); document.getElementById(\'delete-client' +
-                                    data.id + '\').submit();toastr.success(\'Client removed successfully!\', \'Success\');">\
-                                                                    <i class="fa-solid fa-trash-can" style="color: red"></i> Delete </a>\
-                                                                    <form id="delete-client' + data.id + '" action="{{ route('delete.client') }}" method="get" class="d-none">\
-                                                                        <input type="hidden" value="' + data.id + '" name="dclId">\
-                                                                    </form>\
-                                                                </div>') +
+                                                                                                            </form>\
+                                                                                                        </div>\
+                                                                                                        <div class="option d-flex p-2">\
+                                                                                                            <a class="btn pt-0 pb-0" href="{{ route('delete.client') }}" onclick="event.preventDefault(); document.getElementById(\'delete-client' +
+                                    data.id +
+                                    '\').submit();toastr.success(\'Client removed successfully!\', \'Success\');">\
+                                                                                                            <i class="fa-solid fa-trash-can" style="color: red"></i> Delete </a>\
+                                                                                                            <form id="delete-client' +
+                                    data
+                                    .id +
+                                    '" action="{{ route('delete.client') }}" method="get" class="d-none">\
+                                                                                                                <input type="hidden" value="' +
+                                    data
+                                    .id + '" name="dclId">\
+                                                                                                            </form>\
+                                                                                                        </div>') +
                                 '</div>\
-                                                            </div>';
+                                                                                                    </div>';
                         }
 
                     }

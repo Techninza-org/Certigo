@@ -575,11 +575,11 @@ class TrainingController extends Controller
 
             $base64Pdf = base64_encode($pdf->output());
 
-            return view('pdfviewer', ['base64Pdf' => $base64Pdf]);
+            // return view('pdfviewer', ['base64Pdf' => $base64Pdf]);
 
             // Return PDF as stream
-            // return $pdf->stream('certigo-report.pdf');
-            
+            return $pdf->stream('certigo-report.pdf');
+
         }
 
         // Redirect back with error if client not found

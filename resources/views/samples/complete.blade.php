@@ -1,11 +1,7 @@
 @extends('layout.layout')
 
 @push('css')
-
-
-
     <style>
-
         /* Styling for the popup */
 
         .popup {
@@ -48,14 +44,12 @@
 
             display: inline-block;
 
-            max-width: -webkit-fill-available!important;
+            max-width: -webkit-fill-available !important;
 
             width: 100%;
 
         }
-
     </style>
-
 @endpush
 
 @section('content')
@@ -76,125 +70,118 @@
 
 
 
-                    <div class=" d-block align-items-center justify-content-between mb-9" >
+                    <div class=" d-block align-items-center justify-content-between mb-9">
 
                         <div class="row">
 
-                            <div class="col-md-10"> 
+                            <div class="col-md-10">
 
                                 <div class="row">
 
-                                                           
 
-                                <div class="mb-3 col-md-6">
 
-                                    <p><strong>Subject :</strong> {{ $sample->name }}</p>
+                                    <div class="mb-3 col-md-6">
 
-                                </div>
+                                        <p><strong>Subject :</strong> {{ $sample->name }}</p>
 
-                                <div class="mb-3 col-md-6">
+                                    </div>
 
-                                    <p><strong>Start Date :</strong> @php
+                                    <div class="mb-3 col-md-6">
 
-                                        $date = date('F j, Y  H:i A', strtotime($sample->date));
+                                        <p><strong>Start Date :</strong> @php
+
+                                            $date = date('F j, Y  H:i A', strtotime($sample->date));
 
                                         @endphp
 
-                                        {{ $date }}</p>
+                                            {{ $date }}</p>
 
-                                </div>
+                                    </div>
 
-                                <div class="mb-3 col-md-6">
+                                    <div class="mb-3 col-md-6">
 
-                                    <p><strong>Client :</strong> {{ $client->organisation_name }}</p>
+                                        <p><strong>Client :</strong> {{ $client->organisation_name }}</p>
 
-                                </div>
+                                    </div>
 
-                                <div class="mb-3 col-md-6">
+                                    <div class="mb-3 col-md-6">
 
-                                    <p><strong>Location :</strong> {{ $sample->location }}</p>
+                                        <p><strong>Location :</strong> {{ $sample->location }}</p>
 
-                                </div>
-
-                                
-
-                                <div class="mb-3 col-md-6">
-
-                                    <p><strong>Quantity : </strong>  {{ $sample->quantity }} </p>
-
-                                </div>
+                                    </div>
 
 
 
-                                <div class="mb-3 col-md-6">
+                                    <div class="mb-3 col-md-6">
 
-                                    <p><strong>Sample Type :</strong>
+                                        <p><strong>Quantity : </strong> {{ $sample->quantity }} </p>
 
-                                         @if($sample->type == 1) 
+                                    </div>
 
-                                         Food
 
-                                         @elseif($sample->type == 2)
 
-                                         Water
+                                    <div class="mb-3 col-md-6">
 
-                                         @else
+                                        <p><strong>Sample Type :</strong>
 
-                                         Swad
+                                            @if ($sample->type == 1)
+                                                Food
+                                            @elseif($sample->type == 2)
+                                                Water
+                                            @else
+                                                Swad
+                                            @endif
 
-                                         @endif
+                                        </p>
 
-                                    </p>
+                                    </div>
 
-                                </div>
+                                    <div class="mb-3 col-md-6">
 
-                                <div class="mb-3 col-md-6">
+                                        <p><strong>Weight : </strong> {{ $sample->weight }}</p>
 
-                                    <p><strong>Weight : </strong>  {{ $sample->weight }}</p>
+                                    </div>
 
-                                </div>
+                                    <div class="mb-3 col-md-6">
 
-                                <div class="mb-3 col-md-6">
+                                        <p><strong>Temperature : </strong> {{ $sample->temperature }} °C</p>
 
-                                    <p><strong>Temperature : </strong>  {{ $sample->temperature }} °C</p>
+                                    </div>
 
-                                </div>
 
-                                
 
-                                <div class="mb-3 col-md-6">
+                                    <div class="mb-3 col-md-6">
 
-                                    <p><strong>Parameters : </strong> 
+                                        <p><strong>Parameters : </strong>
 
-                                    @foreach($param as $p)
-
-                                        <span style="    background-color: #d6e8f3;
+                                            @foreach ($param as $p)
+                                                <span
+                                                    style="    background-color: #d6e8f3;
 
                                         display: inline-block;
 
                                         padding: 7px;
 
                                         border-radius: 20px;color: #007ef9;">{{ $p->name }}</span>
+                                            @endforeach
 
-                                    @endforeach
+                                        </p>
 
-                                </p>
+                                    </div>
+
+                                    <div class="mb-3 col-md-6">
+
+                                        <p><strong>Amount : </strong> ₹ {{ $sample->amount }}</p>
+
+                                    </div>
+
+
 
                                 </div>
 
-                                <div class="mb-3 col-md-6">
+                            </div>
 
-                                    <p><strong>Amount : </strong> ₹ {{ $sample->amount }}</p>
 
-                                </div>
-
-                                
-
-                            </div>    
-
-                            </div> 
-
-                            
 
 
 
@@ -212,15 +199,16 @@
 
                                     <input type="hidden" value="{{ $sample->id }}" name="sampleId">
 
-    
 
-                                    <input type="file" class="form-control mb-3" name="evidences[]" multiple="">                                
 
-    
+                                    <input type="file" class="form-control mb-3" name="evidences[]" multiple
+                                        accept=".jpeg, .jpg, .png" onchange="validateFiles(this)">
 
-                                    
 
-    
+
+
+
+
 
                                     <p>Enter Sample Key Points Below ( Other than Sample Topic)</p>
 
@@ -228,7 +216,8 @@
 
                                         <div class="form-group">
 
-                                            <input type="text" name="input[]" class="form-control mb-3" placeholder="Enter key point">
+                                            <input type="text" name="input[]" class="form-control mb-3"
+                                                placeholder="Enter key point">
 
                                         </div>
 
@@ -248,59 +237,54 @@
 
 
 
-                        @if($sample->points !== null)
-
-                        <b class="mt-3">Entered Key Points :</b>
-
-
-
-                        @foreach($sample->points as $key => $point)
-
-                        @php
-
-                        $keyy = $key+1;
-
-                        @endphp
-
-                        <div class="d-flex mb-3 align-items-center ">
-
-                            @if($point !== null || $point !== "null")
-
-                            <p class="mb-0 me-2" id="text_{{ $key }}"> {{ $keyy }}. {{ $point }} </p>
-
-                            <a class=" btn p-1 text-danger " href="{{ route('remove_sample_point') }}" onclick="event.preventDefault();document.getElementById('textform_{{ $key }}').submit();"> X </a>
-
-                            <form id="textform_{{ $key }}" action="{{ route('remove_sample_point') }}" method="get">
-
-                                <input type="hidden" name="key" value="{{ $key }}">
-
-                                <input type="hidden" value="{{ $sample->id }}" name="sampleId">
+                        @if ($sample->points !== null)
+                            <b class="mt-3">Entered Key Points :</b>
 
 
 
-                            </form>
+                            @foreach ($sample->points as $key => $point)
+                                @php
 
-                            @endif
+                                    $keyy = $key + 1;
 
-                        </div>                       
+                                @endphp
+
+                                <div class="d-flex mb-3 align-items-center ">
+
+                                    @if ($point !== null || $point !== 'null')
+                                        <p class="mb-0 me-2" id="text_{{ $key }}"> {{ $keyy }}.
+                                            {{ $point }} </p>
+
+                                        <a class=" btn p-1 text-danger " href="{{ route('remove_sample_point') }}"
+                                            onclick="event.preventDefault();document.getElementById('textform_{{ $key }}').submit();">
+                                            X </a>
+
+                                        <form id="textform_{{ $key }}"
+                                            action="{{ route('remove_sample_point') }}" method="get">
+
+                                            <input type="hidden" name="key" value="{{ $key }}">
+
+                                            <input type="hidden" value="{{ $sample->id }}" name="sampleId">
 
 
 
-                        @endforeach
+                                        </form>
+                                    @endif
 
-@endif
+                                </div>
+                            @endforeach
+                        @endif
 
 
 
                         <div class="text-center">
 
-                            <a class="btn btn-success pt-0 pb-0" href="{{ route('post.complete.sample',$sample->id) }}" 
-                            {{-- onclick="event.preventDefault(); document.getElementById('completeSample').submit();" --}}
-                            >
+                            <a class="btn btn-success pt-0 pb-0" href="{{ route('post.complete.sample', $sample->id) }}"
+                                {{-- onclick="event.preventDefault(); document.getElementById('completeSample').submit();" --}}>
 
-                                 Complete Sample </a>
+                                Complete Sample </a>
 
-                              {{-- <form id="completeSample" action="{{ route('post.complete.sample') }}" method="post" class="d-none">
+                            {{-- <form id="completeSample" action="{{ route('post.complete.sample') }}" method="post" class="d-none">
 
                                 @csrf
 
@@ -312,7 +296,7 @@
 
                     </div>
 
-                    
+
 
                 </div>
 
@@ -339,32 +323,36 @@
 
 
 @push('js')
-
-
-
-
-
-
-
     <script>
+        function validateFiles(input) {
+            const allowedExtensions = ['jpeg', 'jpg', 'png'];
+            const maxSize = 3 * 1024 * 1024; // 3MB in bytes
+            const files = input.files;
 
+            for (let i = 0; i < files.length; i++) {
+                let file = files[i];
+                let fileExtension = file.name.split('.').pop().toLowerCase();
+
+                if (!allowedExtensions.includes(fileExtension)) {
+                    alert("Only JPEG, JPG, and PNG files are allowed.");
+                    input.value = ""; // Clear the input
+                    return;
+                }
+
+                if (file.size > maxSize) {
+                    alert("File size must not exceed 3MB.");
+                    input.value = ""; // Clear the input
+                    return;
+                }
+            }
+        }
+    </script>
+    <script>
         $(document).ready(function() {
 
-            
-
-          
 
 
 
-        });
-
-
-
-        VirtualSelect.init({ 
-
-            ele: '#select-attendees' ,
-
-            
 
 
 
@@ -372,9 +360,21 @@
 
 
 
-        VirtualSelect.init({ 
+        VirtualSelect.init({
 
-            ele: '#select-members' 
+            ele: '#select-attendees',
+
+
+
+
+
+        });
+
+
+
+        VirtualSelect.init({
+
+            ele: '#select-members'
 
         });
 
@@ -388,13 +388,12 @@
 
             $("#add-input").click(function() {
 
-                $("#input-fields").append('<div class="form-group"><input type="text" name="input[]" class="form-control mb-3" placeholder="Enter text"></div>');
+                $("#input-fields").append(
+                    '<div class="form-group"><input type="text" name="input[]" class="form-control mb-3" placeholder="Enter text"></div>'
+                );
 
             });
 
         });
-
     </script>
-
 @endpush
-

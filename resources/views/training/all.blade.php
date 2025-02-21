@@ -1182,8 +1182,8 @@
 
 
 
-                                                                <div class="option d-flex p-1">
-                                                                    <!-- Download PDF Button -->
+                                                                {{-- <div class="option d-flex p-1">
+                                                                    
                                                                     <a class="btn pt-0 pb-0"
                                                                         href="{{ route('downlaod.training.pdf') }}"
                                                                         onclick="event.preventDefault(); document.getElementById('view-training{{ $train->id }}').submit(); showCustomModal();">
@@ -1199,7 +1199,7 @@
                                                                     </form>
 
 
-                                                                </div>
+                                                                </div> --}}
 
                                                                 <div class="option d-flex p-1">
                                                                     <!-- Preview PDF Button -->
@@ -1207,10 +1207,7 @@
                                                                         onclick="previewPDF('{{ route('downlaod.training.pdf', ['trainingId' => $train->id]) }}')">
                                                                         <i class="fa-regular fa-eye"></i> Preview
                                                                     </a>
-
                                                                 </div>
-
-
 
 
 
@@ -1434,7 +1431,7 @@
 
 @push('js')
 
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
 
     {{-- ==================== Schedule training ================== --}}
 
@@ -2005,23 +2002,22 @@
         </div>
 
     </div>
-
     <!-- Modal for Preview -->
     <div id="pdfPreviewModal" class="modal fade" tabindex="-1" aria-labelledby="pdfPreviewModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-xl">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="pdfPreviewModalLabel">PDF Preview</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <iframe id="pdfPreviewIframe" src="" frameborder="0" width="100%"
-                        height="500px"></iframe>
+                <div class="modal-body" id="pdfPreviewContent">
+                    <!-- PDF content will be loaded dynamically as images -->
                 </div>
             </div>
         </div>
     </div>
+
 
     <!-- Delete Modal -->
     <!-- Delete Attendee Modal -->
@@ -2300,14 +2296,58 @@
     </script>
 
 
-    <script>
-        function previewPDF(pdfUrl) {
-            // Set the iframe source to the PDF URL
-            document.getElementById('pdfPreviewIframe').src = pdfUrl;
+    <!-- Include PDF.js Library -->
 
-            // Show the modal
-            const modal = new bootstrap.Modal(document.getElementById('pdfPreviewModal'));
-            modal.show();
+
+    <script>
+        async function previewPDF(pdfUrl) {
+            const content = document.getElementById('pdfPreviewContent');
+            content.innerHTML = '<p>Loading...</p>';
+
+            try {
+                const response = await fetch(pdfUrl);
+                if (!response.ok) throw new Error('Failed to load PDF');
+
+                const blob = await response.blob();
+                const objectURL = URL.createObjectURL(blob);
+
+                pdfjsLib.GlobalWorkerOptions.workerSrc =
+                    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.worker.min.js";
+
+                const loadingTask = pdfjsLib.getDocument(objectURL);
+                const pdf = await loadingTask.promise;
+
+                let imagesHTML = "";
+
+                for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                    const page = await pdf.getPage(pageNum);
+                    const scale = 1.5;
+                    const viewport = page.getViewport({
+                        scale
+                    });
+
+                    const canvas = document.createElement("canvas");
+                    const context = canvas.getContext("2d");
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+
+                    await page.render({
+                        canvasContext: context,
+                        viewport
+                    }).promise;
+
+                    const imgData = canvas.toDataURL("image/png");
+                    imagesHTML += `<img src="${imgData}" class="img-fluid mb-2" style="width:100%;">`;
+                }
+
+                content.innerHTML = imagesHTML;
+
+                const modal = new bootstrap.Modal(document.getElementById('pdfPreviewModal'));
+                modal.show();
+            } catch (error) {
+                console.error('Error loading PDF:', error);
+                content.innerHTML = '<p>Error loading content. Please try again.</p>';
+            }
         }
     </script>
 @endpush
