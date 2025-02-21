@@ -46,7 +46,7 @@
 
 
 
-        #sig canvas{ width: 100% !important; height: auto;}
+        #sig canvas{ width: 100% !important; height: 200px;}
 
 
 

@@ -1575,9 +1575,9 @@ class AuditController extends Controller
         }
 
 
-        $myaudits_latest = Audit::whereIn('month', $qFound)->where(['client_id' => $id, 'auditing_for' => 0])->latest()->first();
-        if ($myaudits_latest) {
-            $nwgAns = AuditDetail::where(['audit_id' => $myaudits_latest->id, 'response_score' => 0])->get();
+        $myaudits = Audit::whereIn('month', $qFound)->where(['client_id' => $id, 'auditing_for' => 0])->get();
+        foreach ($myaudits as $audit) {
+            $nwgAns = AuditDetail::where(['audit_id' => $audit->id, 'response_score' => 0])->get();
             $negAnsArr[] = $nwgAns;
         }
 
@@ -1801,18 +1801,16 @@ class AuditController extends Controller
         }
 
         // for getting final negative answers from last audit  
-        $myaudits_latest = Audit::where(['month' => end($qFound), 'client_id' => $id, 'auditing_for' => 0])->latest()->first();
-        if ($myaudits_latest) {
-            $nwgAns = AuditDetail::where(['audit_id' => $myaudits_latest->id, 'response_score' => 0])->get();
-
+        $myaudits = Audit::whereIn('month', $qFound)->where(['client_id' => $id, 'auditing_for' => 0])->get();
+        foreach ($myaudits as $audit) {
+            $nwgAns = AuditDetail::where(['audit_id' => $audit->id, 'response_score' => 0])->get();
             $negAnsArr[] = $nwgAns;
         }
 
 
         // all audits IDs as string 
         $commaSeparatedAudits = implode(',', $audits);
-        // dd($commaSeparatedAudits);
-        // dd($createdArrays);     
+   
         /*array:2 [
             4 => array:2 [
             0 => 40
@@ -1837,15 +1835,22 @@ class AuditController extends Controller
                 $onee->nc = $qNC->nc;
 
                 $dates = [];
+                $addedQuestions = [];
                 foreach ($audits as $audit) {
                     $ques = [];
                     // audit:66, ques. no. 100                    
                     $nwgAns = AuditDetail::where(['audit_id' => $audit, 'question_id' => $onee->question_id])->first();
-                    // $ques['q_no'] = $nwgAns->question_id;
                     if ($nwgAns) {
+                        // Check if this question has already been added
+                        if (!in_array($nwgAns->question_id, $addedQuestions)) {
+                            $tempQues = TemplateDetail::where(['id' => $nwgAns->question_id])->first();
+                            $ques['q_no'] = $nwgAns->question_id;
+                            $ques['q_name'] = $tempQues->question;
+                            $ques['response_date'] = $nwgAns->created_at;
 
-                        $ques[] = $nwgAns->created_at;
-                        $dates[] = $ques;
+                            $dates[] = $ques;
+                            $addedQuestions[] = $nwgAns->question_id;  // Mark this question as added
+                        }
                     }
                 }
                 $onee->datess = $dates;
@@ -1935,16 +1940,16 @@ class AuditController extends Controller
 
 
         // =================mail code======================
-        Mail::send('consolidate-mail', $dataToGraph, function ($message) use ($client, $quartersWithFound) {
+        // Mail::send('consolidate-mail', $dataToGraph, function ($message) use ($client, $quartersWithFound) {
 
-            $message->to('smsunnythefunny@gmail.com', 'Consolidated report')->subject('Consolidated report from Certigo QAS');
+        //     $message->to('krrishbiserwal2002@gmail.com', 'Consolidated report')->subject('Consolidated report from Certigo QAS');
 
-            // $message->attach('C:\laravel-master\laravel\public\uploads\image.png');
+        //     // $message->attach('C:\laravel-master\laravel\public\uploads\image.png');
 
-            // $message->attach(public_path('/pdfs/consolidate'.$client->id.$quartersWithFound.'.pdf'));
+        //     // $message->attach(public_path('/pdfs/consolidate'.$client->id.$quartersWithFound.'.pdf'));
 
-            $message->from('xyz@gmail.com', 'Certigo QAS');
-        });
+        //     $message->from('biserwalk25@gmail.com', 'Certigo QAS');
+        // });
 
         return view('consolidated', ['client' => $client, 'formattedData' => $formattedData, 'nameValuesArray' => $nameValuesArray, 'avgValuesArray' => $avgValuesArray, 'negAnsArr' => $negAnsArr]);
         // return redirect()->back()->with('success','Report sent');
@@ -2102,10 +2107,9 @@ class AuditController extends Controller
 
 
         // for getting final negative answers from last audit  
-        $myaudits_latest = Audit::where(['month' => end($qFound), 'client_id' => $id, 'auditing_for' => 0])->latest()->first();
-        if ($myaudits_latest) {
-            $nwgAns = AuditDetail::where(['audit_id' => $myaudits_latest->id, 'response_score' => 0])->get();
-
+        $myaudits = Audit::whereIn('month', $qFound)->where(['client_id' => $id, 'auditing_for' => 0])->get();
+        foreach ($myaudits as $audit) {
+            $nwgAns = AuditDetail::where(['audit_id' => $audit->id, 'response_score' => 0])->get();
             $negAnsArr[] = $nwgAns;
         }
 
@@ -2255,13 +2259,13 @@ class AuditController extends Controller
         // =================mail code======================
         Mail::send('consolidate-mail', $dataToGraph, function ($message) use ($client, $quartersWithFound) {
 
-            $message->to('smsunnythefunny@gmail.com', 'Consolidated report')->subject('Laravel Testing Mail with Attachment');
+            $message->to('krrishbiserwal2002@gmail.com', 'Consolidated report')->subject('Laravel Testing Mail with Attachment');
 
             // $message->attach('C:\laravel-master\laravel\public\uploads\image.png');
 
             // $message->attach(public_path('/pdfs/consolidate'.$client->id.$quartersWithFound.'.pdf'));
 
-            $message->from('xyz@gmail.com', 'Certigo QAS');
+            $message->from('biserwalk25@gmail.com', 'Certigo QAS');
         });
         // =================mail code======================
         // return redirect()->back()->with('success','Consolidated Report sent to client');
