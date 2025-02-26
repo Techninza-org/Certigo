@@ -53,7 +53,7 @@
                 <span class="font-bold"> CERTIGO QAS® PRIVATE LIMITED</span> a business incorporated in India with its
                 registered office at <span class="font-bold">FLAT No.FF-2, FIRST FLOOR, DOOR No- 12-1-20/2,
                     SRINIVASA” KANNAYYAPETA, ABOVE SBI LIFE INSURANCE, NEAR GREEN PARK
-                    HOTEL, OPP LANE TO HDRC BANK, VISAKHAPATNAM-530002, ANDHRA PRADESH
+                    HOTEL, OPP LANE TO HDFC BANK, VISAKHAPATNAM-530002, ANDHRA PRADESH
                     (“Provider”); </span>
                 <br>
             <p>And</p>
@@ -186,7 +186,7 @@
 
             </ol>
 
-            <h1 class="mt-6 text-lg font-semibold">8. NO EXCULSIVITY</h1>
+            <h1 class="mt-6 text-lg font-semibold">8. NO EXCLUSIVITY</h1>
             <ol class="mt-6 flex flex-col gap-5 mb-6 text-justify">
                 <li>8.1. The parties acknowledge that this Agreement is non-exclusive and that either party will
                     be free, during and after term, to engage or contract with third parties for the provision

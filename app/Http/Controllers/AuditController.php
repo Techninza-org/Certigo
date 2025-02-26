@@ -365,6 +365,240 @@ class AuditController extends Controller
             'auditId' => 'required',
             'cid' => 'nullable'
         ]);
+    
+        $audit = Audit::where(['id' => $request->auditId])->first();
+        $client = Client::where(['id' => $request->cid])->first();
+    
+        if (!$audit) {
+            return redirect()->back()->with('error', 'Audit not found.');
+        }
+    
+        // $all_ques = json_decode($audit->questions, true);
+        $template_array = json_decode($audit->checklists, true);
+        $total_questions_array = [];
+        $total_questionsAnswered_array = [];
+        $templates_names_in_audit = [];
+        $emptyInputs = 0;
+        $questionIds = [];
+
+        // if ($all_ques == null) {
+        //     return redirect()->back()->with('error', 'No questions found.');
+        // }
+
+        // Fetch all template details and map questions to templates
+        $templatesWithQuestions = [];
+        foreach ($template_array as $templateId) {
+            $template = Template::where(['id' => $templateId])->first();
+            $templateDetails = TemplateDetail::where(['template_id' => $templateId])->get();
+            $responseGroup = $templateDetails->first()->response_group;
+            $allResponses = ObjectiveResponse::where(['group_id' => $responseGroup])->get();
+            $auditDetails = AuditDetail::where(['audit_id' => $request->auditId, 'template_id' => $templateId])->get();
+            $filledAuditCount = AuditDetail::where(['audit_id' => $request->auditId])->whereNotNull('response_score')->count();
+            $auditFilledTempQs = AuditDetail::where(['audit_id' => $request->auditId, 'template_id' => $templateId])->whereNotNull('response_score')->count();
+            $template['tot_que_answered'] = $auditFilledTempQs;
+            $template['tot_que'] = count($templateDetails);
+            $total_questions_array[] = count($templateDetails);
+            $total_questionsAnswered_array[] = count($auditDetails);
+            
+    
+            $templateQuestions = [];
+            foreach ($templateDetails as $question) {
+                $question['allResponses'] = $allResponses;
+                $auditDetail = $auditDetails->firstWhere('question_id', $question->id);
+    
+                // Map response data to the question
+                $response = null;
+                if ($auditDetail) {
+                    $response = [
+                        'response_id' => $auditDetail->response_id,
+                        'response_score' => $auditDetail->response_score,
+                        'evidences' => $auditDetail->evidences,
+                        'suggestions' => $auditDetail->suggestions,
+                        'objective_evidences' => $auditDetail->objective_evidences,
+                        'response_group' => $auditDetail->response_group,
+                        'doc_ref' => $auditDetail->doc_ref,
+                        'person_responsible' => $auditDetail->person_responsible,
+                        'timeline' => $auditDetail->timeline,
+                    ];
+    
+                    // Check for non-conformity and empty inputs
+                    if ($auditDetail->response_score == 0 || $auditDetail->response_score == 2) {
+                        $template['has_nonconformity'] = true;
+                        if (
+                            is_null($auditDetail->objective_evidences) ||
+                            is_null($auditDetail->suggestions) ||
+                            is_null($auditDetail->evidences) ||
+                            empty($auditDetail->evidences)
+                        ) {
+                            $emptyInputs++;
+                        }
+                    }
+                }
+    
+                $templateQuestions[] = [
+                    'question' => $question,
+                    'response' => $response,
+                ];
+            }
+    
+            $templatesWithQuestions[] = [
+                'template' => $template,
+                'questions' => $templateQuestions,
+            ];
+    
+            $templates_names_in_audit[] = $template;
+        }
+    
+        $total_questions_in_audit = array_sum($total_questions_array);
+        $total_answers_in_audit = $filledAuditCount ?? 0;
+    
+        $auditfilled = AuditDetail::where(['audit_id' => $request->auditId])->first();
+        $start_time = $auditfilled ? $auditfilled->created_at->format('H:i A') : '';
+    
+        $carbonDate = Carbon::parse($audit->start);
+        $formattedDate = $carbonDate->format('d-m-Y');
+        $audit->formated_date = $formattedDate;
+    
+        $signDone = ($audit->auditor_sign !== null && $audit->auditee_sign !== null) ? 1 : 0;
+    
+        $auditDetail = Audit::where(['id' => $request->auditId])->first();
+        $isSaved = ($auditDetail && $auditDetail->report_path) ? true : false;
+        // dd($templatesWithQuestions);
+        return view('audit.resume', [
+            'audit' => $audit,
+            'templatesWithQuestions' => $templatesWithQuestions, 
+            'isSaved' => $isSaved,
+            'client' => $client,
+            'emptyInputs' => $emptyInputs,
+            'clientId' => $request->cid,
+            'start_time' => $start_time,
+            'templates_names_in_audit' => $templates_names_in_audit,
+            'auditfilled' => $auditfilled,
+            'total_questions_in_audit' => $total_questions_in_audit,
+            'total_answers_in_audit' => $total_answers_in_audit,
+            'signDone' => $signDone
+        ]);
+    }
+
+    // public function resume_audit(Request $request)
+    // {
+    //     $request->validate([
+    //         'auditId' => 'required',
+    //         'cid' => 'nullable'
+    //     ]);
+
+    //     $audit = Audit::where(['id' => $request->auditId])->first();
+    //     $client = Client::where(['id' => $request->cid])->first();
+
+    //     if (!$audit) {
+    //         return redirect()->back()->with('error', 'Audit not found.');
+    //     }
+
+    //     $all_ques = json_decode($audit->questions, true);
+    //     $template_array = json_decode($audit->checklists, true);
+    //     $total_questions_array = [];
+    //     $total_questionsAnswered_array = [];
+    //     $tenplates_names_in_audit = [];
+    //     $emptyInputs = 0;
+    //     $questionIds = [];
+    //     if($all_ques == null){
+    //         return redirect()->back()->with('error', 'No questions found.');
+    //     }
+    //     foreach ($template_array as $templateId) {
+    //         $template = Template::where(['id' => $templateId])->first();
+    //         $templateDetails = TemplateDetail::where(['template_id' => $templateId])->get();
+    //         $auditDetails = AuditDetail::where(['audit_id' => $request->auditId, 'template_id' => $templateId])->get();
+    //         $template['tot_que_answered'] = count($auditDetails);
+    //         $template['tot_que'] = count($templateDetails);
+    //         $total_questions_array[] = count($templateDetails);
+    //         $total_questionsAnswered_array[] = count($auditDetails);
+    //         foreach ($auditDetails as $detail) {
+    //             if ($detail->response_score == 0) {
+    //                 $template['has_nonconformity'] = true;
+    //                 if (
+    //                     is_null($detail->objective_evidences) ||
+    //                     is_null($detail->suggestions) ||
+    //                     is_null($detail->evidences) ||
+    //                     empty($detail->evidences)
+    //                 ) {
+    //                     $emptyInputs++;
+    //                 }
+    //             }
+    //         }
+    //         $tenplates_names_in_audit[] = $template;
+    //     }
+    //     foreach ($all_ques as $key => $ids) {
+    //         $questionIds = array_merge($questionIds, $ids);
+    //     }
+
+    //     $questionsDetails = TemplateDetail::whereIn('id', $questionIds)->get();
+
+    //     $auditDetails = AuditDetail::where('audit_id', $request->auditId)
+    //         ->whereIn('question_id', $questionIds)
+    //         ->get()
+    //         ->keyBy('question_id'); 
+    //     $templateNames = [];
+    //     foreach ($all_ques as $group => $ids) {
+    //         $firstQuestion = $questionsDetails->firstWhere('id', $ids[0]);
+    //         if ($firstQuestion) {
+    //             $templateNames[$group] = $firstQuestion->template_name;
+    //         }
+    //     }
+
+    //     $mappedQuestions = [];
+    //     foreach ($all_ques as $group => $ids) {
+    //         $mappedQuestions[$group] = [];
+    //         foreach ($ids as $questionId) {
+    //             $questionDetail = $questionsDetails->firstWhere('id', $questionId);
+    //             if ($questionDetail) {
+    //                 $questionDetail->response_id = $auditDetails->get($questionId)->response_id ?? null;
+    //                 $questionDetail->response_score = $auditDetails->get($questionId)->response_score ?? null;
+    //                 $questionDetail->evidences = $auditDetails->get($questionId)->evidences ?? null;
+    //                 $questionDetail->suggestions = $auditDetails->get($questionId)->suggestions ?? null;
+    //                 $questionDetail->objective_evidences = $auditDetails->get($questionId)->objective_evidences ?? null;
+    //                 $mappedQuestions[$group][] = $questionDetail;
+    //             }
+    //         }
+    //     }
+    //     $total_questions_in_audit = array_sum($total_questions_array);
+    //     $total_answers_in_audit = array_sum($total_questionsAnswered_array);
+
+    //     $auditfilled = AuditDetail::where(['audit_id' => $request->auditId])->first();
+    //     $start_time = $auditfilled ? $auditfilled->created_at->format('H:i A') : '';
+
+    //     $carbonDate = Carbon::parse($audit->start);
+    //     $formattedDate = $carbonDate->format('d-m-Y');
+    //     $audit->formated_date = $formattedDate;
+
+    //     $signDone = ($audit->auditor_sign !== null && $audit->auditee_sign !== null) ? 1 : 0;
+
+    //     $auditDetail = Audit::where(['id' => $request->auditId])->first();
+    //     $isSaved = ($auditDetail && $auditDetail->report_path) ? true : false;
+   
+    //     return view('audit.resume', [
+    //         'audit' => $audit,
+    //         'mappedQuestions' => $mappedQuestions,
+    //         'templateNames' => $templateNames,
+    //         'audit_checklist' => $template_array,
+    //         'isSaved' => $isSaved,
+    //         'client' => $client,
+    //         'emptyInputs' => $emptyInputs,
+    //         'clientId' => $request->cid,
+    //         'start_time' => $start_time,
+    //         'tenplates_names_in_audit' => $tenplates_names_in_audit,
+    //         'auditfilled' => $auditfilled,
+    //         'total_questions_in_audit' => $total_questions_in_audit,
+    //         'total_answers_in_audit' => $total_answers_in_audit,
+    //         'signDone' => $signDone
+    //     ]);
+    // }
+
+    public function resume_audit_old(Request $request)
+    {
+        $request->validate([
+            'auditId' => 'required',
+            'cid' => 'nullable'
+        ]);
 
         $audit = Audit::where(['id' => $request->auditId])->first();
         $client = Client::where(['id' => $request->cid])->first();
@@ -492,7 +726,91 @@ class AuditController extends Controller
     }
 
     public function fillAudit(Request $request)
+{
+
+    // dd($request->all());
+    $request->validate([
+        'audit_id' => 'required',
+        'questions' => 'required|array', // Ensure questions is an array
+    ]);
+
+    $audit_id = $request->audit_id;
+    $questions = $request->questions; // Get all question details
+
+    foreach ($questions as $questionData) {
+        $question_id = $questionData['question_id'];
+
+        // Check if an existing AuditDetail entry exists
+        $auditDetail = AuditDetail::where([
+            'audit_id' => $audit_id,
+            'question_id' => $question_id
+        ])->first();
+
+        $imgArr = [];
+        
+        if ($auditDetail !== null) {
+            $existingImages = json_decode($auditDetail->evidences, true);
+            if (!empty($existingImages)) {
+                $imgArr = $existingImages;
+            }
+        }
+
+        // Handle file uploads for evidences
+        if (!empty($questionData['evidences']) && is_array($questionData['evidences'])) {
+            foreach ($questionData['evidences'] as $file) {
+                $image_name = md5(rand(1000, 10000)) . '.' . $file->getClientOriginalExtension();
+                $upload_path = 'storage/evidences/';
+                $image_url = $upload_path . $image_name;
+                $file->move(public_path($upload_path), $image_name);
+                $imgArr[] = $image_url;
+            }
+        }
+
+        $response_id = $questionData['response'] ?? null;
+        $response_score = null;
+
+        if ($response_id) {
+            $objectiveResponse = ObjectiveResponse::find($response_id);
+            if ($objectiveResponse) {
+                $response_score = $objectiveResponse->score; 
+            }
+        }
+
+        $input = [
+            'audit_id' => $audit_id,
+            'question_id' => $question_id,
+            'template_id' => $questionData['template_id'],
+            'response_score' => $response_score,
+            'response_id' => $response_id,
+            'objective_evidences' => $questionData['objective_evidences'] ?? null,
+            'suggestions' => $questionData['suggestions'] ?? null,
+            'doc_ref' => $questionData['doc_ref'] ?? null,
+            'person_responsible' => $questionData['person_responsible'] ?? null,
+            'timeline' => $questionData['timeline'] ?? null,
+            'evidences' => json_encode($imgArr),
+            'start_time' => Carbon::now()->addHours(5)->addMinutes(30)->format('H:i A'),
+        ];
+
+        if ($auditDetail === null) {
+            AuditDetail::create($input);
+        } else {
+            $auditDetail->update($input);
+        }
+    }
+
+    $audit = Audit::find($audit_id);
+    if ($audit) {
+        $audit->completion = $this->quick_completion_percentage($audit->id);
+        $audit->save();
+    }
+
+    return redirect()->back()->with('success', 'Audit details saved successfully');
+}
+
+    public function fillAuditOld(Request $request)
     {
+
+        dd($request->all());
 
         $request->validate([
             'audit_id' => 'required',
@@ -719,9 +1037,15 @@ class AuditController extends Controller
         // dd($audit);
 
         // Decode the questions and checklists
-        $all_ques = json_decode($audit->questions, true);
+        // $all_ques = json_decode($audit->questions, true);
         // dd($all_ques);
         $audit_checklist = json_decode($audit->checklists, true);
+        $all_ques = [];
+        foreach ($audit_checklist as $templateId) {
+            $templateDetails = TemplateDetail::where('template_id', $templateId)->get();
+            $questionIds = $templateDetails->pluck('id')->toArray();
+            $all_ques[] = $questionIds;
+        }
 
         // Flatten the all_ques array to get all question IDs
         $questionIds = [];
@@ -889,6 +1213,9 @@ class AuditController extends Controller
             $actual_score_array = [];
             foreach ($questions as $q) {
                 $qResponse = AuditDetail::where(['audit_id' => $request->auditId, 'question_id' => $q->id])->first();
+                if(!$qResponse){
+                   return redirect()->back()->with('error', 'Please fill all the questions');
+                }
                 $actual_score_array[] = $qResponse->response_score;
             }
             $actual__score = array_sum($actual_score_array);
@@ -1721,7 +2048,7 @@ class AuditController extends Controller
         //  $pdf->save(storage_path('app/public/pdfs/consolidate'.$client->id.$quartersWithFound.'.pdf'));
         // generate pdf and download 
 
-        // dd($negAnsArr);
+        dd($negAnsArr);
 
 
 

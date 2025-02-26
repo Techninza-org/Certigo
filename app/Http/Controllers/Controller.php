@@ -90,7 +90,9 @@ class Controller extends BaseController
 
             }            
 
-            $completion_percent = round(($answered_ques/$total_questions)*100,2);
+            $filledQuestions = AuditDetail::where(['audit_id' => $audit_id])->whereNotNull('response_score')->count();
+
+            $completion_percent = round(($filledQuestions/$total_questions)*100,2);
 
             // $audit->compl_percent  = $completion_percent;
 
@@ -127,10 +129,8 @@ class Controller extends BaseController
             }
             
 
-            $answered_ques = AuditDetail::where(['audit_id'=>$audit->id])->count();
-
-                      
-
+            $answered_ques = AuditDetail::where(['audit_id' => $audit_id])->whereNotNull('response_score')->count();
+            
             $completion_percent = round(($answered_ques/$total_questions)*100,2);
 
             // $audit->compl_percent  = $completion_percent;

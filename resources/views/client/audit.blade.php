@@ -256,7 +256,7 @@
                         <td>{{ $audit->auditing_for }}</td>
                         --}}
                                             <td>
-                                                @if ($audit->completion < 100)
+                                                @if ($audit->completion <= 100)
                                                     {{ $audit->compl_percent }}%
                                                     <div class="progress-bar">
                                                         <div class="progress" data-value="{{ $audit->compl_percent }}">
